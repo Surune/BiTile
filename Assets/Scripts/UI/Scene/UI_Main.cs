@@ -1,65 +1,61 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class UI_Main : UI_Scene
+public class UI_Main : MonoBehaviour
 {
-    enum Texts
+    [SerializeField] private Image background;
+    
+    [SerializeField] private Button exitButton;
+    [SerializeField] private Button bgmButton;
+    [SerializeField] private Button sfxButton;
+    [SerializeField] private Button skinButton;
+    
+    [SerializeField] private TMP_Text stageText;
+    [SerializeField] private TMP_Text maxClicksText;
+    [SerializeField] private TMP_Text currentClicksText;
+
+    [SerializeField] private UI_SkinPopup skinPopupPrefab;
+    
+    private void Awake()
     {
-        StageText,
-        StageNumText,
-        MoveTurnText
+        exitButton.onClick.AddListener(OnExitButton);
+        bgmButton.onClick.AddListener(OnBGMButton);
+        sfxButton.onClick.AddListener(OnSFXButton);
+        skinButton.onClick.AddListener(OnSkinButton);
     }
 
-    enum Buttons
+    public void Init(int stage, int maxClicks, int currentClicks)
     {
-        //BindColorButton,
-        //ChangeColorButton,
-        BGMButton,
-        SFXButton,
-        SkinButton,
-        ResetButton,
-        HintButton,
-        ExitButton
+        background.color = GameManager.Instance.Color.GetBackgroundColor(stage);
+        stageText.text = stage.ToString();
+        UpdateClicks(maxClicks, currentClicks);
+    }
+
+    public void UpdateClicks(int maxClicks, int currentClicks)
+    {
+        maxClicksText.text = maxClicks.ToString();
+        currentClicksText.text = currentClicks.ToString();
+    }
+
+    private void OnExitButton()
+    {
+        SceneManager.LoadScene(Definitions.StageSelectSceneName);
+    }
+
+    private void OnBGMButton()
+    {
+        GameManager.Instance.Sound.ToggleBGMMute();
+    }
+
+    private void OnSFXButton()
+    {
+        GameManager.Instance.Sound.ToggleSFXMute();
     }
     
-    public override void Init()
+    private void OnSkinButton()
     {
-        base.Init();
-
-        BindButton(typeof(Buttons));
-        BindText(typeof(Texts));
-        
-        GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnExitButton);
-        GetButton((int)Buttons.BGMButton).gameObject.BindEvent(OnBGMButton);
-        GetButton((int)Buttons.SFXButton).gameObject.BindEvent(OnSFXButton);
-        
-        GetButton((int)Buttons.BGMButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.bgmOn);
-        GetButton((int)Buttons.SFXButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.sfxOn);
-        
-    }
-
-    void OnSkinButton(PointerEventData eventData)
-    {
-        Managers.UI.ShowPopupUI<UI_Popup>("UI_Skin");
-    }
-    
-    void OnBGMButton(PointerEventData eventData)
-    {
-        Managers.Sound.ToggleBGMMute();
-        GetButton((int)Buttons.BGMButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.bgmOn);
-    }
-    
-    void OnSFXButton(PointerEventData eventData)
-    {
-        Managers.Sound.ToggleSFXMute();
-        GetButton((int)Buttons.SFXButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.sfxOn);
-    }
-
-    void OnExitButton(PointerEventData eventData)
-    {
-        Managers.Scene.LoadScene(Define.Scene.WorldSelectScene);
+        Instantiate(skinPopupPrefab, transform);
     }
 }
