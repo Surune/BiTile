@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -10,16 +8,16 @@ public class UI_World_Stage : UI_Base
         StageNameText
     }
 
-    public string _name;
+    [SerializeField] private string name;
 
     public override void Init()
     {
         BindObject(typeof(GameObjects));
-        GetComponentInChildren<TextMeshProUGUI>().text = _name;
+        GetComponentInChildren<TextMeshProUGUI>().text = name;
     }
 
     public void Setinfo(string name)
     {
-        _name = name;
+        this.name = name;
     }
 }

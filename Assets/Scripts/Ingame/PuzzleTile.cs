@@ -43,13 +43,11 @@ public class PuzzleTile : MonoBehaviour
                     StartCoroutine(StartShake());
                     Managers.Sound.Play("decline");
                     break;
-                default:
-                    break;
             }
         }
     }
 
-    void ChangeAdjacentColors()
+    private void ChangeAdjacentColors()
     {
         delay = 0;
         delay += puzzleManager.ChangeTileColor(row , col, delay) ? delayInterval : 0;
@@ -63,7 +61,7 @@ public class PuzzleTile : MonoBehaviour
         delay += puzzleManager.ChangeTileColor(row - 1, col - 1, delay) ? delayInterval : 0;
     }
 
-    void ChangeCrossColors()
+    private void ChangeCrossColors()
     {
         delay = 0;
         delay += puzzleManager.ChangeTileColor(row , col) ? delayInterval : 0;
@@ -73,7 +71,7 @@ public class PuzzleTile : MonoBehaviour
         delay += puzzleManager.ChangeTileColor(row, col + 1) ? delayInterval : 0;
     }
 
-    void ChangeXcrossColors()
+    private void ChangeXcrossColors()
     {
         delay = 0;
         delay += puzzleManager.ChangeTileColor(row, col) ? delayInterval : 0;
@@ -99,10 +97,10 @@ public class PuzzleTile : MonoBehaviour
         isAnimating = true;
         yield return new WaitForSeconds(delayTime);
         
-        Vector3 originalPosition = transform.position;
+        var originalPosition = transform.position;
         
-        Sequence shakeSequence = DOTween.Sequence();
-        for (int i = 0; i < 4; i++)
+        var shakeSequence = DOTween.Sequence();
+        for (var i = 0; i < 4; i++)
         {
             shakeSequence.Append(transform.DOMoveX(originalPosition.x + 2f, 0.04f));
             shakeSequence.Append(transform.DOMoveX(originalPosition.x - 2f, 0.04f));

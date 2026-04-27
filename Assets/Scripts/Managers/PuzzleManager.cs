@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
@@ -37,28 +38,23 @@ public class PuzzleManager : MonoBehaviour
     private int height;
 
     private PuzzleTile[] puzzleTiles;
-
 	private int currentSkinIndex;
-
-   
+    
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-    }
-
-    void Start()
-    {
+        
         StartGame(Managers.UI.loadStageNum);
     }
 
-    public void StartGame(int loadStageNum = 0)
+    private void StartGame(int loadStageNum = 0)
     {
         admobManager = FindObjectOfType<AdmobManager>();
 
-        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.TutorialScene) return;
+        // TODO: skip if current scene is Tutorial
         
         board = GameObject.Find("Tiles");
         
@@ -90,10 +86,10 @@ public class PuzzleManager : MonoBehaviour
         
         LoadStage(currentStage);
 
-        Managers.Sound.Play("music", Define.Sound.Bgm);
+        Managers.Sound.Play("music", Definitions.Sound.Bgm);
     }
 
-    public void LoadStage(int stage)
+    private void LoadStage(int stage)
     {
         ColorManager.Instance.SetColor(stage);
         GameObject.Find("StageNumText").GetComponent<TextMeshProUGUI>().text = $"{stage}";
@@ -111,17 +107,14 @@ public class PuzzleManager : MonoBehaviour
 
     private void LoadStageInfoFromCSV(int stage)
     {
-        if (levelInfo == null)
-        {
-            levelInfo = Resources.Load<TextAsset>("level_info").text.Split('\n');
-        }
-        string[] values = levelInfo[stage].Split(',');
+        levelInfo ??= Resources.Load<TextAsset>("level_info").text.Split('\n');
+        var values = levelInfo[stage].Split(',');
         
         maxClicks = int.Parse(values[1]);
-        int row = int.Parse(values[2]);
-        int column = int.Parse(values[3]);
-        string type = values[4];
-        string color = values[5];
+        var row = int.Parse(values[2]);
+        var column = int.Parse(values[3]);
+        var type = values[4];
+        var color = values[5];
 
         GameObject.Find("LimitTurnText").GetComponent<TextMeshProUGUI>().text = $"{maxClicks}";
         GameObject.Find("MoveTurnText").GetComponent<TextMeshProUGUI>().text = $"{currentClicks}";
@@ -129,12 +122,12 @@ public class PuzzleManager : MonoBehaviour
         width = stageInfo.GetLength(0);
         height = stageInfo.GetLength(1);
 
-        for (int r = 0; r < row; r++)
+        for (var r = 0; r < row; r++)
         {
-            for (int c = 0; c < column; c++)
+            for (var c = 0; c < column; c++)
             {
-                char tileType = type[r * column + c];
-                char tileColor = color[r * column + c];
+                var tileType = type[r * column + c];
+                var tileColor = color[r * column + c];
                 stageInfo[r, c] = new TileInfo(tileType, tileColor);
             }
         }
@@ -154,20 +147,20 @@ public class PuzzleManager : MonoBehaviour
         puzzleTiles = new PuzzleTile[width*height];
         RectTransform canvasRect = board.GetComponent<RectTransform>();
 
-        for (int row = 0; row < width; row++)
+        for (var row = 0; row < width; row++)
         {
-            for (int col = 0; col < height; col++)
+            for (var col = 0; col < height; col++)
             {
-                char type = stageInfo[row, col].Type;
-                char color = stageInfo[row, col].Color;
+                var type = stageInfo[row, col].Type;
+                var color = stageInfo[row, col].Color;
 
-                float x = GetDistanceFromCenter(row, width) * tileSpacing;
-                float y = -GetDistanceFromCenter(col, height) * tileSpacing;
+                var x = GetDistanceFromCenter(row, width) * tileSpacing;
+                var y = -GetDistanceFromCenter(col, height) * tileSpacing;
 
-                GameObject tileObj = Instantiate(tilePrefab, canvasRect);
+                var tileObj = Instantiate(tilePrefab, canvasRect);
                 tileObj.transform.localPosition = new Vector3(x, y, 0);
 
-                PuzzleTile tile = tileObj.GetComponent<PuzzleTile>();
+                var tile = tileObj.GetComponent<PuzzleTile>();
                 tile.row = row;
                 tile.col = col;
                 tile.type = type;
@@ -176,8 +169,8 @@ public class PuzzleManager : MonoBehaviour
                 tile.puzzleManager = Instance;
                 puzzleTiles[row * width + col] = tile;
 
-                int tileInfoIndex = GetIndexByType(type);
-                TileScriptableObject tileInfo = tileInfoObjects[tileInfoIndex];
+                var tileInfoIndex = GetIndexByType(type);
+                var tileInfo = tileInfoObjects[tileInfoIndex];
 
                 if (tileInfoIndex == 0 && color == 'W')
                 {
@@ -188,14 +181,12 @@ public class PuzzleManager : MonoBehaviour
                     tile.imageObject.sprite = tileInfo.whiteSprite;
                 }
 
-                if (color == 'B')
+                tile.imageObject.color = color switch
                 {
-                    tile.imageObject.color = ColorManager.Instance.tileColor;
-                }
-                else if (color == 'W')
-                {
-                    tile.imageObject.color = Color.white;
-                }
+                    'B' => ColorManager.Instance.tileColor,
+                    'W' => Color.white,
+                    _ => tile.imageObject.color
+                };
             }
         }
 
@@ -227,7 +218,7 @@ public class PuzzleManager : MonoBehaviour
     public void ChangeTileSkin(int skinIndex)
     {
         currentSkinIndex = skinIndex;
-        foreach (PuzzleTile tile in puzzleTiles)
+        foreach (var tile in puzzleTiles)
         {
             if (tile.type == '.' && tile.color == 'W')
             {
@@ -238,103 +229,92 @@ public class PuzzleManager : MonoBehaviour
     
     public bool ChangeTileColor(int row, int col, float delay = 0f)
 	{
-    	if (row >= 0 && row < width && col >= 0 && col < height)
-    	{
-        	stageInfo[row, col].Color = (stageInfo[row, col].Color == 'W') ? 'B' : 'W';
+        if (row < 0 || row >= width || col < 0 || col >= height)
+        {
+            return false;
+        }
+        
+        stageInfo[row, col].Color = (stageInfo[row, col].Color == 'W') ? 'B' : 'W';
 
-            var tile = puzzleTiles[row * width + col];
-            tile.color = stageInfo[row, col].Color;
-            tile.type = stageInfo[row, col].Type;
+        var tile = puzzleTiles[row * width + col];
+        tile.color = stageInfo[row, col].Color;
+        tile.type = stageInfo[row, col].Type;
             
-            if (tile.type == '!')
+        if (tile.type == '!')
+        {
+            tile.color = 'W';
+            StartCoroutine(tile.StartShake(delay));
+        }
+        else
+        {
+            StartCoroutine(tile.StartRotate(delay));
+            if (tile.type == '.')
             {
-                tile.color = 'W';
-                StartCoroutine(tile.StartShake(delay));
+                if (tile.color == 'B')
+                {
+                    StartCoroutine(DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay));
+                    StartCoroutine(DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay));
+                }
+                else if (tile.color == 'W')
+                {
+                    StartCoroutine(DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay));
+                    StartCoroutine(DelayedColorChange(tile.imageObject, Color.white, delay));
+                }
             }
             else
             {
-                StartCoroutine(tile.StartRotate(delay));
-                if (tile.type == '.')
+                if (tile.color == 'B')
                 {
-                    if (tile.color == 'B')
-                    {
-                        StartCoroutine(DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay));
-                        StartCoroutine(DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay));
-                    }
-                    else if (tile.color == 'W')
-                    {
-                        StartCoroutine(DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay));
-                        StartCoroutine(DelayedColorChange(tile.imageObject, Color.white, delay));
-                    }
+                    StartCoroutine(DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay));
                 }
-                else
+                else if (tile.color == 'W')
                 {
-                    if (tile.color == 'B')
-                    {
-                        StartCoroutine(DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay));
-                    }
-                    else if (tile.color == 'W')
-                    {
-                        StartCoroutine(DelayedColorChange(tile.imageObject, Color.white, delay));
-                    }
+                    StartCoroutine(DelayedColorChange(tile.imageObject, Color.white, delay));
                 }
             }
-        	return true;
-    	}
-    	else
-    	{
-        	return false;
-    	}
-	}
+        }
+        
+        return true;
+    }
 
     private int GetIndexByType(char type)
     {
-        switch (type)
+        return type switch
         {
-            case '.':
-                return 0;
-            case '+':
-                return 1;
-            case '*':
-                return 2;
-            case '!':
-                return 3;
-            default:
-                return -1;
-        }
+            '.' => 0,
+            '+' => 1,
+            '*' => 2,
+            '!' => 3,
+            _ => -1
+        };
     }
 
     private bool CheckStageClear()
     {
-        foreach (PuzzleTile tile in puzzleTiles)
-        {
-            if (tile.color != 'W')
-            {
-                return false;
-            }
-        }
-        return true;
+        return puzzleTiles.All(tile => tile.color == 'W');
     }
     
     public void TileClicked()
     {
-        if (clickable)
+        if (!clickable)
         {
-            hintButton.GetComponent<Button>().interactable = false;
-            currentClicks++;
-            Managers.Sound.Play("flip2");
-            GameObject.Find("MoveTurnText").GetComponent<TextMeshProUGUI>().text = $"{currentClicks}";
-            if (CheckStageClear())
-            {
-                clickable = false;
-                Invoke("SetNextButtonActive", 0.45f);
-            }
-            else if (currentClicks >= maxClicks)
-            {
-                // 클리어하지 못한 경우 처리
-                clickable = false;
-                Invoke("SetRetryButtonActive", 0.45f);
-            }
+            return;
+        }
+        
+        hintButton.GetComponent<Button>().interactable = false;
+        currentClicks++;
+        Managers.Sound.Play("flip2");
+        GameObject.Find("MoveTurnText").GetComponent<TextMeshProUGUI>().text = $"{currentClicks}";
+        if (CheckStageClear())
+        {
+            clickable = false;
+            Invoke("SetNextButtonActive", 0.45f);
+        }
+        else if (currentClicks >= maxClicks)
+        {
+            // 클리어하지 못한 경우 처리
+            clickable = false;
+            Invoke("SetRetryButtonActive", 0.45f);
         }
     }
 
@@ -394,16 +374,16 @@ public class PuzzleManager : MonoBehaviour
         clickable = true;
     }
 
-    public void ShowAdForHint()
+    private void ShowAdForHint()
     {
         Managers.UI.ShowPopupUI<UI_ShowAdAskScreen>();
     }
 
     public void ShowHint()
     {
-        string[] values = levelInfo[currentStage].Split(',');
-        int hintX = int.Parse(values[6][2].ToString());
-        int hintY = int.Parse(values[7][1].ToString());
+        var values = levelInfo[currentStage].Split(',');
+        var hintX = int.Parse(values[6][2].ToString());
+        var hintY = int.Parse(values[7][1].ToString());
         var s = puzzleTiles[hintX * width + hintY].AddComponent<Outline>();
         s.effectColor = Color.red;
         s.effectDistance = new Vector2(7f, 7f);

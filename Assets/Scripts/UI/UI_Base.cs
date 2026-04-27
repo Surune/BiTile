@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public abstract class UI_Base : MonoBehaviour
@@ -11,9 +8,8 @@ public abstract class UI_Base : MonoBehaviour
     protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 
     public abstract void Init();
-
-
-    private void Start()
+    
+    private void Awake()
     {
         Init();
     }
@@ -30,9 +26,9 @@ public abstract class UI_Base : MonoBehaviour
         for (int i = 0; i < names.Length; i++)
         {
             if (typeof(T) == typeof(GameObject))
-                objects[i] = Util.FindChild(go, names[i], true);
+                objects[i] = Utils.FindChild(go, names[i], true);
             else
-                objects[i] = Util.FindChild<T>(go, names[i], true);
+                objects[i] = Utils.FindChild<T>(go, names[i], true);
 
             if (objects[i] == null)
                 Debug.Log("Binding Failed : " + names[i]);
@@ -41,8 +37,6 @@ public abstract class UI_Base : MonoBehaviour
     }
     
     protected void BindObject(Type type) { Bind<GameObject>(type);  }
-    protected void BindImage(Type type) { Bind<Image>(type);  }
-    protected void BindText(Type type) { Bind<TextMeshProUGUI>(type);  }
     protected void BindButton(Type type) { Bind<Button>(type);  }
 
     protected T Get<T>(int idx) where T : UnityEngine.Object
@@ -55,15 +49,5 @@ public abstract class UI_Base : MonoBehaviour
     }
 
     protected GameObject GetGameObject(int idx) { return Get<GameObject>(idx); }
-    protected TextMeshProUGUI GetText(int idx) { return Get<TextMeshProUGUI>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
-    protected Image GetImage(int idx) { return Get<Image>(idx); }
-
-    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type =Define.UIEvent.Click)
-    {
-        UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
-        evt.OnClickHandler -= action;
-        evt.OnClickHandler += action;
-    }
-
 }
