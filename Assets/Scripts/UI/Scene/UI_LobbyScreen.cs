@@ -1,52 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class UI_LobbyScreen : UI_Scene
+public class UI_LobbyScreen : MonoBehaviour
 {
-    enum Texts
-    {
-        TitleText
-    }
-    
-    enum GameObjects
-    {
-        LobbyPanel,
-        TitleIcon
-    }
+    [SerializeField] private Button startSceneButton;
+    [SerializeField] private Button privacyPolicyButton;
 
-    enum Buttons
+    private void Awake()
     {
-        StartButton,
-        PrivacyPolicyButton,
+        startSceneButton.onClick.AddListener(OnWorldSelect);
+        privacyPolicyButton.onClick.AddListener(OnPrivacyPolicy);
+
+        Managers.Sound.Play("Music", Definitions.Sound.Bgm);
     }
 
-    public override void Init()
+    private void OnWorldSelect()
     {
-        base.Init();
-
-        BindButton(typeof(Buttons));
-        //BindText(typeof(Texts));
-        BindObject(typeof(GameObjects));
-
-        GetButton((int)Buttons.StartButton).gameObject.BindEvent(OnWorldSelect);
-        GetButton((int)Buttons.PrivacyPolicyButton).gameObject.BindEvent(OnPrivacyPolicy);
-
-        int height = Screen.height - 300;
-        GetGameObject((int)GameObjects.TitleIcon).transform.localPosition = new Vector3(0f, height / 6, 0);
-        GetGameObject((int)GameObjects.TitleIcon).transform.localPosition = new Vector3(0f, height / 6 - 150, 0);
-
-        Managers.Sound.Play("Music", Define.Sound.Bgm);
+        SceneManager.LoadScene(Definitions.WorldSelectSceneName);
     }
 
-    void OnWorldSelect(PointerEventData eventData)
-    {
-        Managers.Scene.LoadScene(Define.Scene.WorldSelectScene);
-    }
-    
-    void OnPrivacyPolicy(PointerEventData eventData)
+    private void OnPrivacyPolicy()
     {
         Application.OpenURL("https://sites.google.com/view/bitile-privacy-policy");
     }

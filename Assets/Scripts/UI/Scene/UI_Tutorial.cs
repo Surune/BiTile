@@ -1,65 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class UI_Tutorial : UI_Scene
+public class UI_Tutorial : MonoBehaviour
 {
-    enum Texts
-    {
-        StageText,
-        MoveTurnText
-    }
-
-    enum Buttons
-    {
-        //BindColorButton,
-        //ChangeColorButton,
-        BGMButton,
-        SFXButton,
-        SkinButton,
-        ResetButton,
-        HintButton,
-        ExitButton
-    }
+    [SerializeField] private Button exitButton;
+    [SerializeField] private Button bgmButton;
+    [SerializeField] private Button sfxButton;
     
-    public override void Init()
+    private void Awake()
     {
-        base.Init();
-
-        BindButton(typeof(Buttons));
-        BindText(typeof(Texts));
-        
-        GetButton((int)Buttons.ExitButton).gameObject.BindEvent(OnExitButton);
-        GetButton((int)Buttons.BGMButton).gameObject.BindEvent(OnBGMButton);
-        GetButton((int)Buttons.SFXButton).gameObject.BindEvent(OnSFXButton);
-        
-        GetButton((int)Buttons.BGMButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.bgmOn);
-        GetButton((int)Buttons.SFXButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.sfxOn);
-        
+        exitButton.onClick.AddListener(OnExitButton);
+        bgmButton.onClick.AddListener(OnBGMButton);
+        sfxButton.onClick.AddListener(OnSFXButton);
+        // TODO: OnSkinButton
     }
 
-    void OnSkinButton(PointerEventData eventData)
+    private void OnExitButton()
     {
-        Managers.UI.ShowPopupUI<UI_Popup>("UI_Skin");
+        SceneManager.LoadScene(Definitions.WorldSelectSceneName);
     }
-    
-    void OnBGMButton(PointerEventData eventData)
+
+    private void OnBGMButton()
     {
         Managers.Sound.ToggleBGMMute();
-        GetButton((int)Buttons.BGMButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.bgmOn);
-    }
-    
-    void OnSFXButton(PointerEventData eventData)
-    {
-        Managers.Sound.ToggleSFXMute();
-        GetButton((int)Buttons.SFXButton).transform.GetChild(0).gameObject.SetActive(Managers.Sound.sfxOn);
     }
 
-    void OnExitButton(PointerEventData eventData)
+    private void OnSFXButton()
     {
-        Managers.Scene.LoadScene(Define.Scene.WorldSelectScene);
-        //Managers.UI.ShowPopupUI<UI_ExitAskScreen>();
+        Managers.Sound.ToggleSFXMute();
+    }
+
+    private void OnSkinButton(PointerEventData eventData)
+    {
+        Managers.UI.ShowPopupUI<UI_Popup>("UI_Skin");
     }
 }

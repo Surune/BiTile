@@ -52,13 +52,14 @@ public class UI_Stage_Container : UI_Base
         BindButton(typeof(Buttons));
         for (int i = 0; i < 35; i++)
         {
-            GetButton(i).gameObject.BindEvent(OnButtonClicked);
+            //TODO : Button dynamic generate and bind onclick
+            //GetButton(i).gameObject.BindEvent(OnButtonClicked);
         }
     }
 
     void OnButtonClicked(PointerEventData eventData)
     {
-        int loadStageNum = int.Parse(eventData.pointerClick.GetComponent<UI_World_Stage>()._name);
+        int loadStageNum = int.Parse(eventData.pointerClick.GetComponent<UI_World_Stage>().name);
         Debug.Log($"{loadStageNum}");
 
         int recentlyCleared = PlayerPrefs.GetInt("STAGE", 1);
@@ -70,7 +71,7 @@ public class UI_Stage_Container : UI_Base
         else
         {
             Managers.UI.loadStageNum = loadStageNum;
-            Managers.Scene.LoadScene(Define.Scene.GameScene);
+            SceneManager.LoadScene(Definitions.GameSceneName);
         }
     }
 }

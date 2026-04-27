@@ -1,53 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using DG.Tweening;
+using UnityEngine.SceneManagement;
 
-public class UI_WorldSelect : UI_Scene
+public class UI_WorldSelect : MonoBehaviour
 {
-    enum Texts
-    {
-        WorldText,
-        StageText
-    }
+    [SerializeField] private Button worldButton;
+    [SerializeField] private Button leftButton;
+    [SerializeField] private Button rightButton;
     
-    enum Buttons
-    {
-        WorldButton,
-        LeftArrowButton,
-        RightArrowButton,
-    }
-
-    enum GameObjects
-    {
-        StagePanel
-    }
+    [SerializeField] private TMP_Text worldText;
+    [SerializeField] private TMP_Text stageText;
 
     private const int tutorialWorldNum = 0;
     private int worldNum = 1;
     private int worldMax = 6;
 
-    public override void Init()
+    private void Awake()
     {
-        BindButton(typeof(Buttons));
-        BindText(typeof(Texts));
-        BindObject(typeof(GameObjects));
-        
-        GetButton((int)Buttons.WorldButton).gameObject.BindEvent(OnWorld);
-        GetButton((int)Buttons.LeftArrowButton).gameObject.BindEvent(OnLeftArrowButton);
-        GetButton((int)Buttons.RightArrowButton).gameObject.BindEvent(OnRightArrowButton);
+        worldButton.onClick.AddListener(OnWorld);
+        leftButton.onClick.AddListener(OnLeftArrowButton);
+        rightButton.onClick.AddListener(OnRightArrowButton);
 
         worldNum = PlayerPrefs.GetInt("WORLD", 0);
         SetContents();
     }
-    
-    void OnWorld(PointerEventData eventData)
+
+    private void OnWorld()
     {
         if (worldNum == tutorialWorldNum)
         {
-            Managers.Scene.LoadScene(Define.Scene.TutorialScene);
+            SceneManager.LoadScene(Definitions.TutorialSceneName);
         }
         else
         {
@@ -55,34 +39,8 @@ public class UI_WorldSelect : UI_Scene
             Managers.UI.justClickedWorld = worldNum;
         }
     }
-
-    void SetContents()
-    {
-        if (worldNum == tutorialWorldNum)
-        {
-            GetText((int)Texts.WorldText).text = $"Tutorial";
-            GetText((int)Texts.WorldText).DOColor(Color.black, 0.5f);
-            GetText((int)Texts.StageText).text = $"HOW TO PLAY";
-            GetText((int)Texts.StageText).DOColor(Color.white, 0.5f);
-            GetButton((int)Buttons.WorldButton).gameObject.GetComponentInChildren<Image>()
-                .DOColor(Color.white, 0.5f);
-            GetGameObject((int)GameObjects.StagePanel).gameObject.GetComponentInChildren<Image>()
-                .DOColor(Color.black, 0.5f);
-        }
-        else
-        {
-            GetText((int)Texts.WorldText).text = $"World {worldNum}";
-            GetText((int)Texts.WorldText).DOColor(Color.white, 0.5f);
-            GetText((int)Texts.StageText).text = $"STAGE {1 + 35 * (worldNum - 1)}~{(35 * worldNum)}";
-            GetText((int)Texts.StageText).DOColor(Colorset.tileColors[worldNum - 1], 0.5f);
-            GetButton((int)Buttons.WorldButton).gameObject.GetComponentInChildren<Image>()
-                .DOColor(Colorset.tileColors[worldNum - 1], 0.5f);
-            GetGameObject((int)GameObjects.StagePanel).gameObject.GetComponentInChildren<Image>()
-                .DOColor(Colorset.backgroundColors[worldNum - 1], 0.5f);
-        }
-    }
     
-    void OnLeftArrowButton(PointerEventData eventData)
+    private void OnLeftArrowButton()
     {
         worldNum--;
         if (worldNum < 0)
@@ -92,8 +50,8 @@ public class UI_WorldSelect : UI_Scene
         PlayerPrefs.SetInt("WORLD", worldNum);
         SetContents();
     }
-    
-    void OnRightArrowButton(PointerEventData eventData)
+
+    private void OnRightArrowButton()
     {
         worldNum++;
         if (worldNum > worldMax)
@@ -102,5 +60,23 @@ public class UI_WorldSelect : UI_Scene
         }
         PlayerPrefs.SetInt("WORLD", worldNum);
         SetContents();
+    }
+
+    private void SetContents()
+    {
+        if (worldNum == tutorialWorldNum)
+        {
+            worldText.text = $"Tutorial";
+            worldText.DOColor(Color.black, 0.5f);
+            stageText.text = $"HOW TO PLAY";
+            stageText.DOColor(Color.white, 0.5f);
+        }
+        else
+        {
+            worldText.text = $"World {worldNum}";
+            worldText.DOColor(Color.white, 0.5f);
+            stageText.text = $"STAGE {1 + 35 * (worldNum - 1)}~{(35 * worldNum)}";
+            stageText.DOColor(Colorset.tileColors[worldNum - 1], 0.5f);
+        }
     }
 }
