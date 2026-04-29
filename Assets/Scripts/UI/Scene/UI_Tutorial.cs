@@ -19,7 +19,7 @@ public class UI_Tutorial : MonoBehaviour
 
     private void OnExitButton()
     {
-        SceneManager.LoadScene(Definitions.WorldSelectSceneName);
+        SceneManager.LoadScene(Definitions.StageSelectSceneName);
     }
 
     private void OnBGMButton()

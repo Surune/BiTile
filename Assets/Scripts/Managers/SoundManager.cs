@@ -65,7 +65,7 @@ public class SoundManager
             AudioClip audioClip = Managers.Resource.Load<AudioClip>(path);
             if (audioClip == null)
             {
-                Debug.Log($"AudioCLup Missing ! {path}");
+                Debug.Log($"AudioClip Missing ! {path}");
                 return;
             }
 
