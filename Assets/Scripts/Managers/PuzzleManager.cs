@@ -126,9 +126,10 @@ public class PuzzleManager : MonoBehaviour
         {
             for (var c = 0; c < column; c++)
             {
-                var tileType = type[r * column + c];
-                var tileColor = color[r * column + c];
-                stageInfo[r, c] = new TileInfo(tileType, tileColor);
+                TileInfo info;
+                info.Type = type[r * column + c];
+                info.Color = color[r * column + c];
+                stageInfo[r, c] = info;
             }
         }
     }

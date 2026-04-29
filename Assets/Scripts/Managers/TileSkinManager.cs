@@ -24,34 +24,37 @@ public class TileskinManager : MonoBehaviour
 
     public void ShowPopupOnClick()
     {
-        if (popup == null)
-        {
-            popup = Instantiate(UI_SkinPrefab, Managers.UI.Root.transform.GetChild(0));
-            //popup.transform.localScale *= (Screen.width / 700f);
-            SetPanels();
-            popup.transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(ClosePopupOnClick);
-            Managers.Sound.Play("select");
-        }
-    }
-
-    public void ClosePopupOnClick()
-    {
         if (popup != null)
         {
-            ApplyCurrentSkinToTiles();
-            Managers.Sound.Play("undo2");
-            Destroy(popup);
-            popup = null;
+            return;
         }
+        
+        popup = Instantiate(UI_SkinPrefab, Managers.UI.Root.transform.GetChild(0));
+        SetPanels();
+        popup.transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(ClosePopupOnClick);
+        Managers.Sound.Play("select");
+    }
+
+    private void ClosePopupOnClick()
+    {
+        if (popup == null)
+        {
+            return;
+        }
+        
+        ApplyCurrentSkinToTiles();
+        Managers.Sound.Play("undo2");
+        Destroy(popup);
+        popup = null;
     }
 
     private void SetPanels()
     {
-        for (int i = 0 ; i < availableSkins.Length; i++)
+        for (var i = 0 ; i < availableSkins.Length; i++)
         {
             var panel = Instantiate(skinPanelPrefab, GameObject.Find("SkinGrid").transform);
             panel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = availableSkins[i].skinImage;
-            int skinIndex = i;
+            var skinIndex = i;
             if (PlayerPrefs.GetInt($"HAVE_SKIN_{skinIndex}", 0) == 1)
             {
                 panel.transform.GetComponentInChildren<Button>().interactable = true;
@@ -64,17 +67,18 @@ public class TileskinManager : MonoBehaviour
             panel.transform.GetComponentInChildren<Button>().onClick.AddListener(() => SetCurrentSkin(skinIndex));
         }
     }
-
     
-    public void SetCurrentSkin(int skinIndex)
+    private void SetCurrentSkin(int skinIndex)
     {
-        if (skinIndex >= 0 && skinIndex < availableSkins.Length)
+        if (skinIndex < 0 || skinIndex >= availableSkins.Length)
         {
-            currentSkinIndex = skinIndex;
-            PlayerPrefs.SetInt("TILE_SKIN", currentSkinIndex);
-            PlayerPrefs.Save();
-            Managers.Sound.Play("flip4");
+            return;
         }
+        
+        currentSkinIndex = skinIndex;
+        PlayerPrefs.SetInt("TILE_SKIN", currentSkinIndex);
+        PlayerPrefs.Save();
+        Managers.Sound.Play("flip4");
     }
 
     private void ApplyCurrentSkinToTiles()
