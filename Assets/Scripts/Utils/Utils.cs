@@ -2,12 +2,12 @@ using UnityEngine;
 
 public static class Utils
 {
-    public static T GetOrAddComponent<T>(GameObject go) where T : Component
+    public static T GetOrAddComponent<T>(this GameObject go) where T : Component
     {
         var component = go.GetComponent<T>();
         if (component == null)
         {
-            component= go.AddComponent<T>();
+            component = go.AddComponent<T>();
         }
         return component;
     }
@@ -37,7 +37,9 @@ public static class Utils
                 
                 var component = transform.GetComponent<T>();
                 if (component != null)
+                {
                     return component;
+                }
             }
         }
         else

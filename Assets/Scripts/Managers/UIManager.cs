@@ -3,12 +3,10 @@ using UnityEngine;
 
 public class UIManager
 {
-    int order = 10;
     private int popupOrder = 10;
 
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     
-    public int justClickedWorld = 0; // 월드 클릭시 클릭한 월드 값
     public int loadStageNum = 1; // 스테이지 클릭시 로딩값
     
     public GameObject Root
@@ -23,38 +21,6 @@ public class UIManager
 
             return root;
         }
-    }
-
-    public void SetCanvas(GameObject go, bool sort = true)
-    {
-        Canvas canvas = Utils.GetOrAddComponent<Canvas>(go);
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true;
-        if (sort)
-        {
-            canvas.sortingOrder = order;
-            order++;
-        }
-        else
-        {
-            canvas.sortingOrder = 0;
-        }
-    }
-    
-    public T MakeStage<T>(Transform parent = null,string name = null) where T : UI_Base
-    {
-        if (string.IsNullOrEmpty(name))
-        {
-            name = typeof(T).Name;
-        }
-
-        GameObject go = Managers.Resource.Instantiate($"UI/Stage/{name}");
-        if (parent != null)
-        {
-            go.transform.SetParent(parent);
-        }
-
-        return Utils.GetOrAddComponent<T>(go);
     }
 
     public T ShowPopupUI <T>(string name = null) where T : UI_Popup
@@ -100,6 +66,5 @@ public class UIManager
         
         var popup = _popupStack.Pop();
         Managers.Resource.Destroy(popup.gameObject);
-        order--;
     }
 }
