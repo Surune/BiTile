@@ -1,23 +1,40 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class UI_World_Stage : UI_Base
+public class UI_World_Stage : MonoBehaviour
 {
-    enum GameObjects
+    [SerializeField] private TMP_Text stageText;
+    [SerializeField] private Button button;
+    [SerializeField] private Sprite clearedSprite;
+    private int stageNum;
+
+    public void SetInfo(int cur, int cleared)
     {
-        StageNameText
+        stageNum = cur;
+        stageText.text = stageNum.ToString();
+        
+        if (cur <= cleared)
+        {
+            GetComponentInChildren<Image>().overrideSprite = clearedSprite;
+            GetComponentInChildren<TextMeshProUGUI>().color = Color.black;
+            button.onClick.AddListener(Accept);
+        }
+        else
+        {
+            button.onClick.AddListener(Deny);
+        }
     }
 
-    [SerializeField] private string name;
-
-    public override void Init()
+    private void Accept()
     {
-        BindObject(typeof(GameObjects));
-        GetComponentInChildren<TextMeshProUGUI>().text = name;
+        Managers.UI.loadStageNum = stageNum;
+        SceneManager.LoadScene(Definitions.GameSceneName);
     }
 
-    public void Setinfo(string name)
+    private void Deny()
     {
-        this.name = name;
+        Managers.Sound.Play("decline");
     }
 }
