@@ -16,13 +16,13 @@ public class UI_ShowAdAskScreen : UI_Popup
 
     private void OnYes()
     {
-        Managers.UI.ClosePopupUI();
+        GameManager.UI.ClosePopupUI();
 
         FindObjectOfType<AdmobManager>().ShowRewardedAd();
     }
 
     private void OnNo()
     {
-        Managers.UI.ClosePopupUI();
+        GameManager.UI.ClosePopupUI();
     }
 }

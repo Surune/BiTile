@@ -29,12 +29,12 @@ public class UI_World_Stage : MonoBehaviour
 
     private void Accept()
     {
-        Managers.UI.loadStageNum = stageNum;
+        GameManager.StageSelection.LoadStageNum = stageNum;
         SceneManager.LoadScene(Definitions.GameSceneName);
     }
 
     private void Deny()
     {
-        Managers.Sound.Play("decline");
+        GameManager.Sound.Play("decline");
     }
 }

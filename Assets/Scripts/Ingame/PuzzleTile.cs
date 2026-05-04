@@ -41,7 +41,7 @@ public class PuzzleTile : MonoBehaviour
                     break;
                 case '!':
                     StartCoroutine(StartShake());
-                    Managers.Sound.Play("decline");
+                    GameManager.Sound.Play("decline");
                     break;
             }
         }
