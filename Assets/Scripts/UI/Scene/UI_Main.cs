@@ -23,16 +23,16 @@ public class UI_Main : MonoBehaviour
 
     private void OnBGMButton()
     {
-        GameManager.Sound.ToggleBGMMute();
+        GameManager.Instance.Sound.ToggleBGMMute();
     }
 
     private void OnSFXButton()
     {
-        GameManager.Sound.ToggleSFXMute();
+        GameManager.Instance.Sound.ToggleSFXMute();
     }
     
     private void OnSkinButton()
     {
-        GameManager.UI.ShowPopupUI<UI_Popup>("UI_Skin");
+        GameManager.Instance.UI.ShowPopupUI<UI_Popup>("UI_Skin");
     }
 }

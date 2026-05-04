@@ -3,18 +3,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     static GameManager s_instance;
-    static GameManager Instance { get { Init(); return s_instance; } }
+    public static GameManager Instance { get { Init(); return s_instance; } }
 
     #region  Core
 
-    ResourceManager _resource = new ResourceManager();
-    SoundManager _sound = new SoundManager();
-    UIManager _ui = new UIManager();
-    StageSelectionManager _stageSelection = new StageSelectionManager();
-    public static ResourceManager Resource { get { return Instance._resource; } }
-    public static SoundManager Sound { get { return Instance._sound; } }
-    public static UIManager UI { get { return Instance._ui; } }
-    public static StageSelectionManager StageSelection { get { return Instance._stageSelection; } }
+    public ResourceManager Resource => _resource;
+    public SoundManager Sound => _sound;
+    public UIManager UI => _ui;
+    public StageSelectionState StageSelection => _stageSelection;
+    
+    private ResourceManager _resource = new ResourceManager();
+    private SoundManager _sound = new SoundManager();
+    private UIManager _ui = new UIManager();
+    private StageSelectionState _stageSelection = new StageSelectionState();
     
     #endregion
     

@@ -53,7 +53,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         BindSceneObjects();
-        StartGame(GameManager.StageSelection.LoadStageNum);
+        StartGame(GameManager.Instance.StageSelection.LoadStageNum);
     }
 
     private void BindSceneObjects()
@@ -87,7 +87,7 @@ public class PuzzleManager : MonoBehaviour
 
         LoadStage(currentStage);
 
-        GameManager.Sound.Play("music", Definitions.Sound.Bgm);
+        GameManager.Instance.Sound.Play("music", Definitions.Sound.Bgm);
     }
 
     private void LoadStage(int stage)
@@ -271,7 +271,7 @@ public class PuzzleManager : MonoBehaviour
 
         hintButton.interactable = false;
         currentClicks++;
-        GameManager.Sound.Play("flip2");
+        GameManager.Instance.Sound.Play("flip2");
         moveTurnText.text = $"{currentClicks}";
 
         if (CheckStageClear())
@@ -288,7 +288,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void SetNextButtonActive()
     {
-        GameManager.Sound.Play("stageclear");
+        GameManager.Instance.Sound.Play("stageclear");
         nextButtonObject.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButtonObject.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
         resetButton.interactable = false;
@@ -315,7 +315,7 @@ public class PuzzleManager : MonoBehaviour
             admobManager.ShowInterstitialAd();
         }
 
-        GameManager.Sound.Play("undo1");
+        GameManager.Instance.Sound.Play("undo1");
         currentClicks = 0;
         LoadStage(currentStage);
         board.SetActive(true);
@@ -349,7 +349,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void ShowAdForHint()
     {
-        GameManager.UI.ShowPopupUI<UI_ShowAdAskScreen>();
+        GameManager.Instance.UI.ShowPopupUI<UI_ShowAdAskScreen>();
     }
 
     public void ShowHint()
