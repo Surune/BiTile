@@ -29,10 +29,10 @@ public class TileskinManager : MonoBehaviour
             return;
         }
         
-        popup = Instantiate(UI_SkinPrefab, Managers.UI.Root.transform.GetChild(0));
+        popup = Instantiate(UI_SkinPrefab, GameManager.UI.Root.transform.GetChild(0));
         SetPanels();
         popup.transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(ClosePopupOnClick);
-        Managers.Sound.Play("select");
+        GameManager.Sound.Play("select");
     }
 
     private void ClosePopupOnClick()
@@ -43,7 +43,7 @@ public class TileskinManager : MonoBehaviour
         }
         
         ApplyCurrentSkinToTiles();
-        Managers.Sound.Play("undo2");
+        GameManager.Sound.Play("undo2");
         Destroy(popup);
         popup = null;
     }
@@ -78,7 +78,7 @@ public class TileskinManager : MonoBehaviour
         currentSkinIndex = skinIndex;
         PlayerPrefs.SetInt("TILE_SKIN", currentSkinIndex);
         PlayerPrefs.Save();
-        Managers.Sound.Play("flip4");
+        GameManager.Sound.Play("flip4");
     }
 
     private void ApplyCurrentSkinToTiles()
