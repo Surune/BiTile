@@ -22,6 +22,6 @@ public class UI_ExitAskScreen : UI_Popup
 
     private void OnNo()
     {
-        GameManager.UI.ClosePopupUI();
+        GameManager.Instance.UI.ClosePopupUI();
     }
 }

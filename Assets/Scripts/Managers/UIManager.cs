@@ -28,7 +28,7 @@ public class UIManager
             name = typeof(T).Name;
         }
 
-        var go = GameManager.Resource.Instantiate($"UI/Popup/{name}");
+        var go = GameManager.Instance.Resource.Instantiate($"UI/Popup/{name}");
         go.GetOrAddComponent<Canvas>().sortingOrder = popupOrder;
         popupOrder += 10;
 
@@ -63,6 +63,6 @@ public class UIManager
         }
 
         var popup = _popupStack.Pop();
-        GameManager.Resource.Destroy(popup.gameObject);
+        GameManager.Instance.Resource.Destroy(popup.gameObject);
     }
 }

@@ -46,7 +46,7 @@ public class SoundManager
         
         if (type == Definitions.Sound.Bgm)
         {
-            var audioClip = GameManager.Resource.Load<AudioClip>(path);
+            var audioClip = GameManager.Instance.Resource.Load<AudioClip>(path);
             if (audioClip == null )
             {
                 Debug.Log($"AudioClip Missing ! {path}");
@@ -66,7 +66,7 @@ public class SoundManager
         }
         else
         {
-            var audioClip = GameManager.Resource.Load<AudioClip>(path);
+            var audioClip = GameManager.Instance.Resource.Load<AudioClip>(path);
             if (audioClip == null)
             {
                 Debug.Log($"AudioClip Missing ! {path}");
