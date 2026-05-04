@@ -341,11 +341,6 @@ public class PuzzleManager : MonoBehaviour
 
     private void LoadNextStage()
     {
-        if (currentStage % 50 == 0)
-        {
-            PlayerPrefs.SetInt($"HAVE_SKIN_{currentStage / 50}", 1);
-        }
-
         currentStage++;
         if (currentStage > PlayerPrefs.GetInt("STAGE", 1))
         {
@@ -362,11 +357,6 @@ public class PuzzleManager : MonoBehaviour
     }
 
     private void ShowAdForHint()
-    {
-        GameManager.Instance.UI.ShowPopupUI<UI_ShowAdAskScreen>();
-    }
-
-    public void ShowHintWithRewardedAd()
     {
         admobManager.ShowRewardedAd(ShowHint);
     }

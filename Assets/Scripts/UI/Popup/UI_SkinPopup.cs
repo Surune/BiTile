@@ -1,0 +1,39 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class UI_SkinPopup : MonoBehaviour
+{
+    [SerializeField] private SkinScriptableObject[] availableSkins;
+    [SerializeField] private Transform skinGrid;
+    [SerializeField] private Button closeButton;
+    [SerializeField] private GameObject skinPanelPrefab;
+
+    private int currentSkinIndex;
+
+    private void Awake()
+    {
+        currentSkinIndex = PlayerPrefs.GetInt("TILE_SKIN", 0);
+        PlayerPrefs.SetInt("HAVE_SKIN_0", 1);
+
+        for (var i = 0 ; i < availableSkins.Length; i++)
+        {
+            var panel = Instantiate(skinPanelPrefab, skinGrid).GetComponent<UI_SkinPanel>();
+            panel.Init(availableSkins[i], i);
+        }
+        
+        closeButton.onClick.AddListener(ClosePopupOnClick);
+        GameManager.Instance.Sound.Play("select");
+    }
+    
+    private void ApplyCurrentSkinToTiles()
+    {
+        PuzzleManager.Instance.ChangeTileSkin(currentSkinIndex);
+    }
+    
+    private void ClosePopupOnClick()
+    {
+        ApplyCurrentSkinToTiles();
+        GameManager.Instance.Sound.Play("undo2");
+        Destroy(gameObject);
+    }
+}

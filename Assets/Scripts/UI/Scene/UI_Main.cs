@@ -10,17 +10,20 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Button exitButton;
     [SerializeField] private Button bgmButton;
     [SerializeField] private Button sfxButton;
+    [SerializeField] private Button skinButton;
     
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private TMP_Text maxClicksText;
     [SerializeField] private TMP_Text currentClicksText;
 
+    [SerializeField] private UI_SkinPopup skinPopupPrefab;
+    
     public void Init(int stage, int maxClicks, int currentClicks)
     {
         exitButton.onClick.AddListener(OnExitButton);
         bgmButton.onClick.AddListener(OnBGMButton);
         sfxButton.onClick.AddListener(OnSFXButton);
-        // TODO: OnSkinButton
+        skinButton.onClick.AddListener(OnSkinButton);
 
         background.color = GameManager.Instance.Color.GetBackgroundColor(stage);
         stageText.text = stage.ToString();
@@ -50,6 +53,6 @@ public class UI_Main : MonoBehaviour
     
     private void OnSkinButton()
     {
-        GameManager.Instance.UI.ShowPopupUI<UI_Popup>("UI_Skin");
+        Instantiate(skinPopupPrefab, transform);
     }
 }

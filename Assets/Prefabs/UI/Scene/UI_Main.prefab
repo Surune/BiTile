@@ -219,9 +219,11 @@ MonoBehaviour:
   exitButton: {fileID: 6542684216220939690}
   bgmButton: {fileID: 4769689787299505473}
   sfxButton: {fileID: 6323418728349712968}
+  skinButton: {fileID: 3494292335110105476}
   stageText: {fileID: 596940270641504504}
   maxClicksText: {fileID: 144502525442040489}
   currentClicksText: {fileID: 4584567062796890806}
+  skinPopupPrefab: {fileID: 7324670169506860196, guid: 23cefd95de3c808438bd8202438a8bb4, type: 3}
 --- !u!1001 &2607833505841873387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -406,6 +408,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7260780605738401822, guid: ed21d1e00ffe8e44fb29515ff3780835, type: 3}
   m_PrefabInstance: {fileID: 8044513147804789757}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3494292335110105476 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6907926216989639289, guid: ed21d1e00ffe8e44fb29515ff3780835, type: 3}
+  m_PrefabInstance: {fileID: 8044513147804789757}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4584567062796890806 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5781633881751673163, guid: ed21d1e00ffe8e44fb29515ff3780835, type: 3}
