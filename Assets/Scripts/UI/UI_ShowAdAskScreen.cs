@@ -17,7 +17,7 @@ public class UI_ShowAdAskScreen : UI_Popup
     private void OnYes()
     {
         GameManager.Instance.UI.ClosePopupUI();
-        FindObjectOfType<AdmobManager>().ShowRewardedAd();
+        PuzzleManager.Instance.ShowHintWithRewardedAd();
     }
 
     private void OnNo()
