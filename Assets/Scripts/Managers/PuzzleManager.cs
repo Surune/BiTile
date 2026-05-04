@@ -13,37 +13,33 @@ public class PuzzleManager : MonoBehaviour
     private readonly PuzzleStageRepository stageRepository = new PuzzleStageRepository();
     private PuzzleStageData currentStageData;
 
-    private int currentStage = 1;
-    private int maxClicks = 1;
-    private int currentClicks = 0;
-
-    public bool clickable = true;
-
-    public GameObject tilePrefab;
-    private GameObject board;
-    private GameObject retryButtonObject;
-    private GameObject nextButtonObject;
-    private GameObject hintButtonObject;
+    [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private UI_Main ui;
+    [SerializeField] private RectTransform board;
+    [SerializeField] private float tileSpacing = 125f;
+    [SerializeField] private TileScriptableObject[] tileInfoObjects;
+    
     private Button retryButton;
     private Button nextButton;
     private Button hintButton;
     private Button resetButton;
-    private TMP_Text stageText;
-    private TMP_Text limitTurnText;
-    private TMP_Text moveTurnText;
 
     private int retryCount = 0;
     private int retryAdNum = 10;
 
-    public float tileSpacing = 1.0f;
-
-    public TileScriptableObject[] tileInfoObjects;
-
-    private TileInfo[,] stageInfo;
     private int width;
     private int height;
 
     private PuzzleTile[] puzzleTiles;
+    private TileInfo[,] stageInfo;
+
+    public bool IsClickable => isClickable;
+    private bool isClickable = true;
+    
+    private Color tileColor;
+    private int currentStage = 1;
+    private int maxClicks = 1;
+    private int currentClicks = 0;
     private int currentSkinIndex;
 
     private void Awake()
@@ -59,51 +55,47 @@ public class PuzzleManager : MonoBehaviour
 
     private void BindSceneObjects()
     {
-        board = GameObject.Find("Tiles");
-        retryButtonObject = GameObject.Find("UI_Retry");
-        nextButtonObject = GameObject.Find("UI_Next");
-        hintButtonObject = GameObject.Find("HintButton");
-
-        retryButton = retryButtonObject.GetComponent<Button>();
-        nextButton = nextButtonObject.GetComponent<Button>();
-        hintButton = hintButtonObject.GetComponent<Button>();
+        retryButton = GameObject.Find("UI_Retry").GetComponent<Button>();
+        nextButton = GameObject.Find("UI_Next").GetComponent<Button>();
+        hintButton = GameObject.Find("HintButton").GetComponent<Button>();
         resetButton = GameObject.Find("ResetButton").GetComponent<Button>();
-        stageText = GameObject.Find("StageNumText").GetComponent<TMP_Text>();
-        limitTurnText = GameObject.Find("LimitTurnText").GetComponent<TMP_Text>();
-        moveTurnText = GameObject.Find("MoveTurnText").GetComponent<TMP_Text>();
     }
 
-    private void StartGame(int loadStageNum = 0)
+    private void StartGame(int stage)
     {
         admobManager = FindObjectOfType<AdmobManager>();
 
-        retryButtonObject.SetActive(false);
+        currentStage = stage;
+        currentSkinIndex = PlayerPrefs.GetInt("TILE_SKIN", 0);
+        
+        retryButton.gameObject.SetActive(false);
         retryButton.onClick.AddListener(Retry);
-        nextButtonObject.SetActive(false);
+        
+        nextButton.gameObject.SetActive(false);
         nextButton.onClick.AddListener(LoadNextStage);
+        
         hintButton.onClick.AddListener(ShowAdForHint);
 
-        currentStage = loadStageNum;
-        currentSkinIndex = PlayerPrefs.GetInt("TILE_SKIN", 0);
+        resetButton.interactable = false;
+        resetButton.onClick.AddListener(Retry);
 
-        LoadStage(currentStage);
+        LoadStage();
 
         GameManager.Instance.Sound.Play("music", Definitions.Sound.Bgm);
     }
 
-    private void LoadStage(int stage)
+    private void LoadStage()
     {
-        ColorManager.Instance.SetColor(stage);
-        currentStageData = stageRepository.Load(stage);
+        currentStageData = stageRepository.Load(currentStage);
         currentStage = currentStageData.StageNumber;
         maxClicks = currentStageData.MaxClicks;
+        currentClicks = 0;
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
         height = currentStageData.Height;
-
-        stageText.text = $"{stage}";
-        limitTurnText.text = $"{maxClicks}";
-        moveTurnText.text = $"{currentClicks}";
+        tileColor = GameManager.Instance.Color.GetTileColor(currentStage);
+        
+        ui.Init(currentStage, maxClicks, currentClicks);
 
         CreatePuzzle();
     }
@@ -115,13 +107,12 @@ public class PuzzleManager : MonoBehaviour
 
     private void CreatePuzzle()
     {
-        foreach (Transform child in board.transform)
+        foreach (Transform child in board)
         {
             Destroy(child.gameObject);
         }
 
         puzzleTiles = new PuzzleTile[width * height];
-        var boardRect = board.GetComponent<RectTransform>();
 
         for (var row = 0; row < width; row++)
         {
@@ -133,7 +124,7 @@ public class PuzzleManager : MonoBehaviour
                 var x = GetDistanceFromCenter(row, width) * tileSpacing;
                 var y = -GetDistanceFromCenter(col, height) * tileSpacing;
 
-                var tileObject = Instantiate(tilePrefab, boardRect);
+                var tileObject = Instantiate(tilePrefab, board);
                 tileObject.transform.localPosition = new Vector3(x, y, 0);
 
                 var tile = tileObject.GetComponent<PuzzleTile>();
@@ -154,7 +145,7 @@ public class PuzzleManager : MonoBehaviour
 
                 tile.imageObject.color = color switch
                 {
-                    'B' => ColorManager.Instance.tileColor,
+                    'B' => tileColor,
                     'W' => Color.white,
                     _ => tile.imageObject.color
                 };
@@ -229,7 +220,7 @@ public class PuzzleManager : MonoBehaviour
                     await Task.WhenAll(
                         rotateTask,
                         DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay),
-                        DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay)
+                        DelayedColorChange(tile.imageObject, tileColor, delay)
                     );
                 }
                 else if (tile.color == 'W')
@@ -251,7 +242,7 @@ public class PuzzleManager : MonoBehaviour
                 {
                     await Task.WhenAll(
                         rotateTask,
-                        DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay)
+                        DelayedColorChange(tile.imageObject, tileColor, delay)
                     );
                 }
                 else if (tile.color == 'W')
@@ -288,24 +279,25 @@ public class PuzzleManager : MonoBehaviour
 
     public void TileClicked()
     {
-        if (!clickable)
+        if (!isClickable)
         {
             return;
         }
 
+        resetButton.interactable = true;
         hintButton.interactable = false;
         currentClicks++;
         GameManager.Instance.Sound.Play("flip2");
-        moveTurnText.text = $"{currentClicks}";
+        ui.UpdateClicks(maxClicks, currentClicks);
 
         if (CheckStageClear())
         {
-            clickable = false;
+            isClickable = false;
             Invoke("SetNextButtonActive", 0.45f);
         }
         else if (currentClicks >= maxClicks)
         {
-            clickable = false;
+            isClickable = false;
             Invoke("SetRetryButtonActive", 0.45f);
         }
     }
@@ -313,17 +305,18 @@ public class PuzzleManager : MonoBehaviour
     private void SetNextButtonActive()
     {
         GameManager.Instance.Sound.Play("stageclear");
-        nextButtonObject.transform.rotation = Quaternion.Euler(0, 270, 0);
-        nextButtonObject.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
+        
+        nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
+        nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
         resetButton.interactable = false;
-        nextButtonObject.SetActive(true);
+        nextButton.gameObject.SetActive(true);
     }
 
     private void SetRetryButtonActive()
     {
-        retryButtonObject.transform.rotation = Quaternion.Euler(0, 270, 0);
-        retryButtonObject.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
-        retryButtonObject.SetActive(true);
+        retryButton.transform.rotation = Quaternion.Euler(0, 270, 0);
+        retryButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
+        retryButton.gameObject.SetActive(true);
     }
 
     public void Retry()
@@ -341,11 +334,9 @@ public class PuzzleManager : MonoBehaviour
 
         GameManager.Instance.Sound.Play("undo1");
         currentClicks = 0;
-        LoadStage(currentStage);
-        board.SetActive(true);
-        retryButtonObject.SetActive(false);
-
-        clickable = true;
+        LoadStage();
+        retryButton.gameObject.SetActive(false);
+        isClickable = true;
     }
 
     private void LoadNextStage()
@@ -363,12 +354,11 @@ public class PuzzleManager : MonoBehaviour
 
         currentClicks = 0;
         retryCount = 0;
-        LoadStage(currentStage);
-        board.SetActive(true);
-        nextButtonObject.SetActive(false);
+        LoadStage();
+        nextButton.gameObject.SetActive(false);
         resetButton.interactable = true;
 
-        clickable = true;
+        isClickable = true;
     }
 
     private void ShowAdForHint()
@@ -381,9 +371,9 @@ public class PuzzleManager : MonoBehaviour
         admobManager.ShowRewardedAd(ShowHint);
     }
 
-    public void ShowHint()
+    private void ShowHint()
     {
-        var outline = puzzleTiles[currentStageData.HintRow * width + currentStageData.HintColumn].gameObject.AddComponent<Outline>();
+        var outline = puzzleTiles[currentStageData.HintRow * width + currentStageData.HintColumn].gameObject.GetOrAddComponent<Outline>();
         outline.effectColor = Color.red;
         outline.effectDistance = new Vector2(7f, 7f);
     }
