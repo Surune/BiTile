@@ -1,6 +1,7 @@
-using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,9 +28,9 @@ public class PuzzleManager : MonoBehaviour
     private Button nextButton;
     private Button hintButton;
     private Button resetButton;
-    private TMPro.TextMeshProUGUI stageText;
-    private TMPro.TextMeshProUGUI limitTurnText;
-    private TMPro.TextMeshProUGUI moveTurnText;
+    private TMP_Text stageText;
+    private TMP_Text limitTurnText;
+    private TMP_Text moveTurnText;
 
     private int retryCount = 0;
     private int retryAdNum = 10;
@@ -67,9 +68,9 @@ public class PuzzleManager : MonoBehaviour
         nextButton = nextButtonObject.GetComponent<Button>();
         hintButton = hintButtonObject.GetComponent<Button>();
         resetButton = GameObject.Find("ResetButton").GetComponent<Button>();
-        stageText = GameObject.Find("StageNumText").GetComponent<TMPro.TextMeshProUGUI>();
-        limitTurnText = GameObject.Find("LimitTurnText").GetComponent<TMPro.TextMeshProUGUI>();
-        moveTurnText = GameObject.Find("MoveTurnText").GetComponent<TMPro.TextMeshProUGUI>();
+        stageText = GameObject.Find("StageNumText").GetComponent<TMP_Text>();
+        limitTurnText = GameObject.Find("LimitTurnText").GetComponent<TMP_Text>();
+        moveTurnText = GameObject.Find("MoveTurnText").GetComponent<TMP_Text>();
     }
 
     private void StartGame(int loadStageNum = 0)
@@ -166,15 +167,20 @@ public class PuzzleManager : MonoBehaviour
         transform.localScale = new Vector3(scale, scale, 1);
     }
 
-    private IEnumerator DelayedColorChange(Image img, Color color, float delay)
+    private static int ToMilliseconds(float seconds)
     {
-        yield return new WaitForSeconds(delay + 0.1f);
+        return Mathf.RoundToInt(seconds * 1000f);
+    }
+
+    private async Task DelayedColorChange(Image img, Color color, float delay)
+    {
+        await Task.Delay(ToMilliseconds(delay + 0.1f));
         img.color = color;
     }
 
-    private IEnumerator DelayedSpriteChange(Image img, Sprite sprite, float delay)
+    private async Task DelayedSpriteChange(Image img, Sprite sprite, float delay)
     {
-        yield return new WaitForSeconds(delay + 0.1f);
+        await Task.Delay(ToMilliseconds(delay + 0.1f));
         img.sprite = sprite;
     }
 
@@ -190,11 +196,16 @@ public class PuzzleManager : MonoBehaviour
         }
     }
 
-    public bool ChangeTileColor(int row, int col, float delay = 0f)
+    public bool CanChangeTileColor(int row, int col)
     {
-        if (row < 0 || row >= width || col < 0 || col >= height)
+        return row >= 0 && row < width && col >= 0 && col < height;
+    }
+
+    public async Task ChangeTileColor(int row, int col, float delay = 0f)
+    {
+        if (!CanChangeTileColor(row, col))
         {
-            return false;
+            return;
         }
 
         stageInfo[row, col].Color = stageInfo[row, col].Color == 'W' ? 'B' : 'W';
@@ -206,38 +217,56 @@ public class PuzzleManager : MonoBehaviour
         if (tile.type == '!')
         {
             tile.color = 'W';
-            StartCoroutine(tile.StartShake(delay));
+            await tile.StartShake(delay);
         }
         else
         {
-            StartCoroutine(tile.StartRotate(delay));
+            var rotateTask = tile.StartRotate(delay);
             if (tile.type == '.')
             {
                 if (tile.color == 'B')
                 {
-                    StartCoroutine(DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay));
-                    StartCoroutine(DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay));
+                    await Task.WhenAll(
+                        rotateTask,
+                        DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay),
+                        DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay)
+                    );
                 }
                 else if (tile.color == 'W')
                 {
-                    StartCoroutine(DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay));
-                    StartCoroutine(DelayedColorChange(tile.imageObject, Color.white, delay));
+                    await Task.WhenAll(
+                        rotateTask,
+                        DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay),
+                        DelayedColorChange(tile.imageObject, Color.white, delay)
+                    );
+                }
+                else
+                {
+                    await rotateTask;
                 }
             }
             else
             {
                 if (tile.color == 'B')
                 {
-                    StartCoroutine(DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay));
+                    await Task.WhenAll(
+                        rotateTask,
+                        DelayedColorChange(tile.imageObject, ColorManager.Instance.tileColor, delay)
+                    );
                 }
                 else if (tile.color == 'W')
                 {
-                    StartCoroutine(DelayedColorChange(tile.imageObject, Color.white, delay));
+                    await Task.WhenAll(
+                        rotateTask,
+                        DelayedColorChange(tile.imageObject, Color.white, delay)
+                    );
+                }
+                else
+                {
+                    await rotateTask;
                 }
             }
         }
-
-        return true;
     }
 
     private int GetIndexByType(char type)

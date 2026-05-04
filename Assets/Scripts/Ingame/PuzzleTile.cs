@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class PuzzleTile : MonoBehaviour
 {
@@ -25,8 +26,8 @@ public class PuzzleTile : MonoBehaviour
         this.type = type;
         this.color = color;
     }
-    
-    public void OnTileClick()
+
+    public async void OnTileClick()
     {
         if (!isAnimating && puzzleManager.clickable)
         {
@@ -34,80 +35,99 @@ public class PuzzleTile : MonoBehaviour
             {
                 Destroy(gameObject.GetComponent<Outline>());
             }
+
             switch (type)
             {
                 case '.':
-                    ChangeAdjacentColors();
+                    var adjacentTask = ChangeAdjacentColors();
                     puzzleManager.TileClicked();
+                    await adjacentTask;
                     break;
                 case '+':
-                    ChangeCrossColors();
+                    var crossTask = ChangeCrossColors();
                     puzzleManager.TileClicked();
+                    await crossTask;
                     break;
                 case '*':
-                    ChangeXcrossColors();
+                    var xcrossTask = ChangeXcrossColors();
                     puzzleManager.TileClicked();
+                    await xcrossTask;
                     break;
                 case '!':
-                    StartCoroutine(StartShake());
+                    await StartShake();
                     GameManager.Instance.Sound.Play("decline");
                     break;
             }
         }
     }
 
-    private void ChangeAdjacentColors()
+    private Task ChangeAdjacentColors()
     {
         delay = 0;
-        delay += puzzleManager.ChangeTileColor(row , col, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row, col - 1, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row + 1, col - 1, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row + 1, col, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row + 1, col + 1, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row, col + 1, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row - 1, col + 1, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row - 1, col, delay) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row - 1, col - 1, delay) ? delayInterval : 0;
+        var tasks = new List<Task>(9);
+        QueueTileColorChange(tasks, row, col);
+        QueueTileColorChange(tasks, row, col - 1);
+        QueueTileColorChange(tasks, row + 1, col - 1);
+        QueueTileColorChange(tasks, row + 1, col);
+        QueueTileColorChange(tasks, row + 1, col + 1);
+        QueueTileColorChange(tasks, row, col + 1);
+        QueueTileColorChange(tasks, row - 1, col + 1);
+        QueueTileColorChange(tasks, row - 1, col);
+        QueueTileColorChange(tasks, row - 1, col - 1);
+        return Task.WhenAll(tasks);
     }
 
-    private void ChangeCrossColors()
+    private Task ChangeCrossColors()
     {
         delay = 0;
-        delay += puzzleManager.ChangeTileColor(row , col) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row, col - 1) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row + 1, col) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row - 1, col) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row, col + 1) ? delayInterval : 0;
+        var tasks = new List<Task>(5);
+        QueueTileColorChange(tasks, row, col);
+        QueueTileColorChange(tasks, row, col - 1);
+        QueueTileColorChange(tasks, row + 1, col);
+        QueueTileColorChange(tasks, row - 1, col);
+        QueueTileColorChange(tasks, row, col + 1);
+        return Task.WhenAll(tasks);
     }
 
-    private void ChangeXcrossColors()
+    private Task ChangeXcrossColors()
     {
         delay = 0;
-        delay += puzzleManager.ChangeTileColor(row, col) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row - 1, col - 1) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row - 1, col + 1) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row + 1, col - 1) ? delayInterval : 0;
-        delay += puzzleManager.ChangeTileColor(row + 1, col + 1) ? delayInterval : 0;
+        var tasks = new List<Task>(5);
+        QueueTileColorChange(tasks, row, col);
+        QueueTileColorChange(tasks, row - 1, col - 1);
+        QueueTileColorChange(tasks, row - 1, col + 1);
+        QueueTileColorChange(tasks, row + 1, col - 1);
+        QueueTileColorChange(tasks, row + 1, col + 1);
+        return Task.WhenAll(tasks);
     }
-    
-    public IEnumerator StartRotate(float delayTime = 0f)
+
+    private void QueueTileColorChange(List<Task> tasks, int targetRow, int targetCol)
+    {
+        if (!puzzleManager.CanChangeTileColor(targetRow, targetCol))
+        {
+            return;
+        }
+
+        tasks.Add(puzzleManager.ChangeTileColor(targetRow, targetCol, delay));
+        delay += delayInterval;
+    }
+
+    public async Task StartRotate(float delayTime = 0f)
     {
         isAnimating = true;
-        yield return new WaitForSeconds(delayTime);
+        await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
         transform.DORotate(new Vector3(0, 180, 0), rotationTime).SetRelative(true);
-
-        yield return new WaitForSeconds(rotationTime);
-
+        await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
         isAnimating = false;
     }
 
-    public IEnumerator StartShake(float delayTime = 0f)
+    public async Task StartShake(float delayTime = 0f)
     {
         isAnimating = true;
-        yield return new WaitForSeconds(delayTime);
-        
+        await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
+
         var originalPosition = transform.position;
-        
+
         var shakeSequence = DOTween.Sequence();
         for (var i = 0; i < 4; i++)
         {
@@ -115,10 +135,9 @@ public class PuzzleTile : MonoBehaviour
             shakeSequence.Append(transform.DOMoveX(originalPosition.x - 2f, 0.04f));
         }
         shakeSequence.Append(transform.DOMove(originalPosition, 0.04f));
-        
+
         shakeSequence.Play();
-        yield return new WaitForSeconds(rotationTime);
+        await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
         isAnimating = false;
     }
 }
-    
