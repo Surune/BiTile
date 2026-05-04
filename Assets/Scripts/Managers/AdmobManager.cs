@@ -254,22 +254,20 @@ public class AdmobManager : MonoBehaviour
             });
     }
 
-    public void ShowRewardedAd()
+    public void ShowRewardedAd(Action onReward)
     {
         if (rewardedAd != null && rewardedAd.CanShowAd())
         {
             rewardedAd.Show((Reward _reward) =>
             {
                 Debug.Log("플레이어에게 보상");
-                
-                PuzzleManager.Instance.ShowHint();
+                onReward?.Invoke();
             });
         }
         else
         {
-            PuzzleManager.Instance.ShowHint();
-
             Debug.Log("리워드 광고 준비 안됨");
+            onReward?.Invoke();
         }
     }
 

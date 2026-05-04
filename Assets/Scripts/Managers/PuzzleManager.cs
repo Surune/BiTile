@@ -12,7 +12,7 @@ public class PuzzleManager : MonoBehaviour
     private readonly PuzzleStageRepository stageRepository = new PuzzleStageRepository();
     private PuzzleStageData currentStageData;
 
-    public int currentStage = 1;
+    private int currentStage = 1;
     private int maxClicks = 1;
     private int currentClicks = 0;
 
@@ -350,6 +350,11 @@ public class PuzzleManager : MonoBehaviour
     private void ShowAdForHint()
     {
         GameManager.Instance.UI.ShowPopupUI<UI_ShowAdAskScreen>();
+    }
+
+    public void ShowHintWithRewardedAd()
+    {
+        admobManager.ShowRewardedAd(ShowHint);
     }
 
     public void ShowHint()
