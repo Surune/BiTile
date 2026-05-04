@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skinName: Skin_1
   skinImage: {fileID: 21300000, guid: 5e72cf7010fb04d64ace86c5c8457453, type: 3}
+  unlockStage: 50

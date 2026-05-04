@@ -5,4 +5,5 @@ public class SkinScriptableObject : ScriptableObject
 {
     public string skinName;
     public Sprite skinImage;
+    public int unlockStage;
 }
