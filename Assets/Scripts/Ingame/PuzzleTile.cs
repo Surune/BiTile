@@ -29,7 +29,7 @@ public class PuzzleTile : MonoBehaviour
 
     public async void OnTileClick()
     {
-        if (!isAnimating && puzzleManager.clickable)
+        if (!isAnimating && puzzleManager.IsClickable)
         {
             if (gameObject.GetComponent<Outline>() != null)
             {

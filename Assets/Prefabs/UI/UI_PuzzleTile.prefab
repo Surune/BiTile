@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 463305608130470785}
   - component: {fileID: 6062770369193114757}
   m_Layer: 5
-  m_Name: PuzzleTile
+  m_Name: UI_PuzzleTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

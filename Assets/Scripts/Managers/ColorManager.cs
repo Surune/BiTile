@@ -1,26 +1,19 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ColorManager : MonoBehaviour
+public class ColorManager
 {
-    public static ColorManager Instance;
-    
-    public Image backgroundImage;
-    public Color tileColor;
-    public int index;
-    
-    private void Awake()
+    public Color GetBackgroundColor(int stage)
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        return Colorset.backgroundColors[GetIndex(stage)];
     }
-    
-    public void SetColor(int stage)
+
+    public Color GetTileColor(int stage)
     {
-        index = (stage - 1) / 35;
-        backgroundImage.color = Colorset.backgroundColors[index];
-        tileColor = Colorset.tileColors[index];
+        return Colorset.tileColors[GetIndex(stage)];
+    }
+
+    private int GetIndex(int stage)
+    {
+        return (stage - 1) / 35;
     }
 }
