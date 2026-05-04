@@ -136,12 +136,7 @@ public class PuzzleManager : MonoBehaviour
                 tileObject.transform.localPosition = new Vector3(x, y, 0);
 
                 var tile = tileObject.GetComponent<PuzzleTile>();
-                tile.row = row;
-                tile.col = col;
-                tile.type = type;
-                tile.color = color;
-                tile.imageObject = tile.GetComponent<Image>();
-                tile.puzzleManager = Instance;
+                tile.Init(Instance, row, col, type, color);
                 puzzleTiles[row * width + col] = tile;
 
                 var tileInfoIndex = GetIndexByType(type);

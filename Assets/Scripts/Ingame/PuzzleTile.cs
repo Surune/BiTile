@@ -10,13 +10,22 @@ public class PuzzleTile : MonoBehaviour
     public char type;
     public char color;
     public Image imageObject;
-    public PuzzleManager puzzleManager;
-    [HideInInspector] public bool isAnimating = false;
-    
+
+    [SerializeField] private float rotationTime = 0.4f;
+    private PuzzleManager puzzleManager;
+    private bool isAnimating = false;
     private float delay = 0f;
     private float delayInterval = 0.02f;
-    [SerializeField] private float rotationTime = 0.4f;
 
+    public void Init(PuzzleManager instance, int row, int col, char type, char color)
+    {
+        puzzleManager = instance;
+        this.row = row;
+        this.col = col;
+        this.type = type;
+        this.color = color;
+    }
+    
     public void OnTileClick()
     {
         if (!isAnimating && puzzleManager.clickable)
