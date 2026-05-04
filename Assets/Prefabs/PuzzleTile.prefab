@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 463305608130470785}
   - component: {fileID: 6062770369193114757}
   m_Layer: 5
-  m_Name: Tile
+  m_Name: PuzzleTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,5 @@ MonoBehaviour:
   col: 0
   type: 74
   color: 77
-  imageObject: {fileID: 0}
-  puzzleManager: {fileID: 0}
-  isAnimating: 0
+  imageObject: {fileID: 5596715367239789803}
   rotationTime: 0.4
