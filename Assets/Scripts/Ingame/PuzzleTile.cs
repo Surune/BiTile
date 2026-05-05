@@ -14,7 +14,7 @@ public class PuzzleTile : MonoBehaviour
 
     [SerializeField] private float rotationTime = 0.4f;
     private PuzzleManager puzzleManager;
-    private bool isAnimating = false;
+    private bool isAnimating;
     private float delay = 0f;
     private float delayInterval = 0.02f;
 
@@ -29,35 +29,37 @@ public class PuzzleTile : MonoBehaviour
 
     public async void OnTileClick()
     {
-        if (!isAnimating && puzzleManager.IsClickable)
+        if (isAnimating || !puzzleManager.IsClickable)
         {
-            if (gameObject.GetComponent<Outline>() != null)
-            {
-                Destroy(gameObject.GetComponent<Outline>());
-            }
+            return;
+        }
+        
+        if (gameObject.GetComponent<Outline>() != null)
+        {
+            Destroy(gameObject.GetComponent<Outline>());
+        }
 
-            switch (type)
-            {
-                case '.':
-                    var adjacentTask = ChangeAdjacentColors();
-                    puzzleManager.TileClicked();
-                    await adjacentTask;
-                    break;
-                case '+':
-                    var crossTask = ChangeCrossColors();
-                    puzzleManager.TileClicked();
-                    await crossTask;
-                    break;
-                case '*':
-                    var xcrossTask = ChangeXcrossColors();
-                    puzzleManager.TileClicked();
-                    await xcrossTask;
-                    break;
-                case '!':
-                    await StartShake();
-                    GameManager.Instance.Sound.Play("decline");
-                    break;
-            }
+        switch (type)
+        {
+            case '.':
+                var adjacentTask = ChangeAdjacentColors();
+                puzzleManager.TileClicked();
+                await adjacentTask;
+                break;
+            case '+':
+                var crossTask = ChangeCrossColors();
+                puzzleManager.TileClicked();
+                await crossTask;
+                break;
+            case '*':
+                var xcrossTask = ChangeXcrossColors();
+                puzzleManager.TileClicked();
+                await xcrossTask;
+                break;
+            case '!':
+                await StartShake();
+                GameManager.Instance.Sound.Play("decline");
+                break;
         }
     }
 
