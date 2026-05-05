@@ -18,13 +18,16 @@ public class UI_Main : MonoBehaviour
 
     [SerializeField] private UI_SkinPopup skinPopupPrefab;
     
-    public void Init(int stage, int maxClicks, int currentClicks)
+    private void Awake()
     {
         exitButton.onClick.AddListener(OnExitButton);
         bgmButton.onClick.AddListener(OnBGMButton);
         sfxButton.onClick.AddListener(OnSFXButton);
         skinButton.onClick.AddListener(OnSkinButton);
+    }
 
+    public void Init(int stage, int maxClicks, int currentClicks)
+    {
         background.color = GameManager.Instance.Color.GetBackgroundColor(stage);
         stageText.text = stage.ToString();
         UpdateClicks(maxClicks, currentClicks);
