@@ -16,6 +16,7 @@ public class TableViewScriptableObjectEditor : TableViewEditorBase
 
 public abstract class TableViewEditorBase : Editor
 {
+    private const float IndexColumnWidth = 32f;
     private const float RemoveButtonWidth = 28f;
     private const float ColumnSpacing = 4f;
 
@@ -84,9 +85,12 @@ public abstract class TableViewEditorBase : Editor
         var controlRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
         var columnWidth = GetColumnWidth(controlRect.width, columns.Count);
 
+        var indexRect = new Rect(controlRect.x, controlRect.y, IndexColumnWidth, controlRect.height);
+        EditorGUI.LabelField(indexRect, "#", EditorStyles.miniBoldLabel);
+
         for (var i = 0; i < columns.Count; i++)
         {
-            var x = controlRect.x + i * (columnWidth + ColumnSpacing);
+            var x = controlRect.x + IndexColumnWidth + ColumnSpacing + i * (columnWidth + ColumnSpacing);
             var rect = new Rect(x, controlRect.y, columnWidth, controlRect.height);
             EditorGUI.LabelField(rect, columns[i].displayName, EditorStyles.miniBoldLabel);
         }
@@ -98,6 +102,7 @@ public abstract class TableViewEditorBase : Editor
         {
             using (new EditorGUILayout.HorizontalScope())
             {
+                GUILayout.Label(index.ToString(), GUILayout.Width(IndexColumnWidth));
                 EditorGUILayout.PropertyField(rowProperty, GUIContent.none, true);
 
                 if (GUILayout.Button("-", GUILayout.Width(RemoveButtonWidth)))
@@ -113,10 +118,13 @@ public abstract class TableViewEditorBase : Editor
         var controlRect = EditorGUILayout.GetControlRect(false, rowHeight);
         var columnWidth = GetColumnWidth(controlRect.width, columns.Count);
 
+        var indexRect = new Rect(controlRect.x, controlRect.y, IndexColumnWidth, EditorGUIUtility.singleLineHeight);
+        EditorGUI.LabelField(indexRect, index.ToString(), EditorStyles.miniLabel);
+
         for (var i = 0; i < columns.Count; i++)
         {
             var columnProperty = rowProperty.FindPropertyRelative(columns[i].name);
-            var x = controlRect.x + i * (columnWidth + ColumnSpacing);
+            var x = controlRect.x + IndexColumnWidth + ColumnSpacing + i * (columnWidth + ColumnSpacing);
             var rect = new Rect(x, controlRect.y, columnWidth, controlRect.height);
             EditorGUI.PropertyField(rect, columnProperty, GUIContent.none, true);
         }
@@ -147,7 +155,7 @@ public abstract class TableViewEditorBase : Editor
 
     private static float GetColumnWidth(float totalWidth, int columnCount)
     {
-        var widthWithoutButton = totalWidth - RemoveButtonWidth - ColumnSpacing;
+        var widthWithoutButton = totalWidth - IndexColumnWidth - RemoveButtonWidth - (ColumnSpacing * 2f);
         var totalSpacing = ColumnSpacing * (columnCount - 1);
         return (widthWithoutButton - totalSpacing) / columnCount;
     }
