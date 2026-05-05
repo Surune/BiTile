@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    static GameManager s_instance;
-    public static GameManager Instance { get { Init(); return s_instance; } }
+    public static GameManager Instance { get { Init(); return instance; } }
+    static GameManager instance;
 
     #region  Core
 
@@ -24,20 +24,23 @@ public class GameManager : MonoBehaviour
 
     private static void Init()
     {
-        if (s_instance != null)
+        if (instance != null)
         {
             return;
         }
         
-        var go = GameObject.Find("@Managers");
-        if (go == null)
+        var go = GameObject.Find("@GameManager");
+        if (go != null)
         {
-            go = new GameObject { name = "@Managers" };
-            go.AddComponent<GameManager>();
+            return;
         }
+        
+        go = new GameObject("@GameManager");
         DontDestroyOnLoad(go);
-        s_instance = go.GetComponent<GameManager>();
-
-        s_instance._sound.Init();
+            
+        instance = go.AddComponent<GameManager>();
+            
+        instance._color.Init();
+        instance._sound.Init();
     }
 }
