@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class SoundManager
 {
-    private AudioSource[] audioSources = new AudioSource[(int)Definitions.Sound.MaxCount];
-    private Dictionary<string,AudioClip> _audioClips = new Dictionary<string,AudioClip>();
+    private readonly AudioSource[] audioSources = new AudioSource[(int)Definitions.Sound.MaxCount];
+    private SoundDictionary soundDictionary;
     private bool bgmOn;
     private bool sfxOn;
 
@@ -19,6 +18,7 @@ public class SoundManager
         
         root = new GameObject { name = "@Sound" };
         UnityEngine.Object.DontDestroyOnLoad(root);
+        soundDictionary = Utils.Load<SoundDictionary>("SoundDictionary");
              
         var soundNames = Enum.GetNames(typeof(Definitions.Sound));
         for (var i = 0; i < soundNames.Length - 1; i++)
@@ -37,47 +37,28 @@ public class SoundManager
         audioSources[(int)Definitions.Sound.Effect].mute = sfxOn;
     }
 
-    public void Play(string path, Definitions.Sound type=Definitions.Sound.Effect, float pitch = 1.0f)
+    public void PlayBGM(Definitions.SoundType soundType)
     {
-        if (!path.Contains("Sounds/"))
+        var audioClip = soundDictionary.GetClip(soundType);
+        
+        var audioSource = audioSources[(int)Definitions.Sound.Bgm];
+        if (audioSource.isPlaying)
         {
-            path = $"Sounds/{path}";
+            audioSource.Stop();
         }
         
-        if (type == Definitions.Sound.Bgm)
-        {
-            var audioClip = GameManager.Instance.Resource.Load<AudioClip>(path);
-            if (audioClip == null )
-            {
-                Debug.Log($"AudioClip Missing ! {path}");
-                return;
-            }
+        audioSource.volume = 0.7f;
+        audioSource.clip = audioClip; 
+        audioSource.Play();
+    }
 
-            var audioSource = audioSources[(int)Definitions.Sound.Bgm];
-            if (audioSource.isPlaying)
-            {
-                audioSource.Stop();
-            }
-            
-            audioSource.volume = 0.7f;
-            audioSource.pitch = pitch;
-            audioSource.clip = audioClip; 
-            audioSource.Play();
-        }
-        else
-        {
-            var audioClip = GameManager.Instance.Resource.Load<AudioClip>(path);
-            if (audioClip == null)
-            {
-                Debug.Log($"AudioClip Missing ! {path}");
-                return;
-            }
-
-            var audioSource = audioSources[(int)Definitions.Sound.Effect];
-            audioSource.volume = 0.3f;
-            audioSource.pitch = pitch;
-            audioSource.PlayOneShot(audioClip);
-        }
+    public void PlaySFX(Definitions.SoundType soundType)
+    {
+        var audioClip = soundDictionary.GetClip(soundType);
+        
+        var audioSource = audioSources[(int)Definitions.Sound.Effect];
+        audioSource.volume = 0.3f;
+        audioSource.PlayOneShot(audioClip);
     }
 
     public void ToggleBGMMute()

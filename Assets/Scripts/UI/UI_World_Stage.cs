@@ -18,7 +18,7 @@ public class UI_World_Stage : MonoBehaviour
         if (cur <= cleared)
         {
             GetComponentInChildren<Image>().overrideSprite = clearedSprite;
-            GetComponentInChildren<TextMeshProUGUI>().color = Color.black;
+            GetComponentInChildren<TMP_Text>().color = Color.black;
             button.onClick.AddListener(Accept);
         }
         else
@@ -35,6 +35,6 @@ public class UI_World_Stage : MonoBehaviour
 
     private void Deny()
     {
-        GameManager.Instance.Sound.Play("decline");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
     }
 }
