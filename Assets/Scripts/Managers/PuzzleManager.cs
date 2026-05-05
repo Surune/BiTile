@@ -8,7 +8,6 @@ public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager Instance;
 
-    private AdmobManager admobManager;
     private readonly PuzzleStageRepository stageRepository = new PuzzleStageRepository();
     private PuzzleStageData currentStageData;
 
@@ -24,7 +23,6 @@ public class PuzzleManager : MonoBehaviour
     private Button resetButton;
 
     private int retryCount = 0;
-    private int retryAdNum = 10;
 
     private int width;
     private int height;
@@ -62,8 +60,6 @@ public class PuzzleManager : MonoBehaviour
 
     private void StartGame(int stage)
     {
-        admobManager = FindObjectOfType<AdmobManager>();
-
         currentStage = stage;
         currentSkinIndex = PlayerPrefs.GetInt("TILE_SKIN", 0);
         
@@ -73,7 +69,7 @@ public class PuzzleManager : MonoBehaviour
         nextButton.gameObject.SetActive(false);
         nextButton.onClick.AddListener(LoadNextStage);
         
-        hintButton.onClick.AddListener(ShowAdForHint);
+        hintButton.onClick.AddListener(ShowHint);
 
         resetButton.interactable = false;
         resetButton.onClick.AddListener(Retry);
@@ -151,7 +147,7 @@ public class PuzzleManager : MonoBehaviour
             }
         }
 
-        hintButton.interactable = retryCount > retryAdNum;
+        hintButton.interactable = retryCount > 0;
 
         var scale = 0.8f * Screen.width / 900;
         transform.localScale = new Vector3(scale, scale, 1);
@@ -326,11 +322,6 @@ public class PuzzleManager : MonoBehaviour
         }
         
         retryCount++;
-        if (retryCount % retryAdNum == 0)
-        {
-            admobManager.ShowInterstitialAd();
-        }
-
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Reset);
         currentClicks = 0;
         LoadStage();
@@ -353,11 +344,6 @@ public class PuzzleManager : MonoBehaviour
         resetButton.interactable = true;
 
         isClickable = true;
-    }
-
-    private void ShowAdForHint()
-    {
-        admobManager.ShowRewardedAd(ShowHint);
     }
 
     private void ShowHint()
