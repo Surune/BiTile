@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
