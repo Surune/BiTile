@@ -4,9 +4,9 @@ public class ColorManager
 {
     private ColorPreset colorPreset;
 
-    public void Init()
+    public void Init(ColorPreset preset)
     {
-        colorPreset = Utils.Load<ColorPreset>("ColorPreset");
+        colorPreset = preset;
     }
 
     public Color GetBackgroundColor(int stage)

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get { Init(); return instance; } }
-    static GameManager instance;
+    public static GameManager Instance => instance;
+    private static GameManager instance;
 
     #region  Core
 
@@ -11,36 +11,27 @@ public class GameManager : MonoBehaviour
     public SoundManager Sound => _sound;
     public StageSelectionState StageSelection => _stageSelection;
     
+    [SerializeField] private ColorPreset colorPreset;
+    [SerializeField] private SoundDictionary soundDictionary;
+
     private ColorManager _color = new ColorManager();
     private SoundManager _sound = new SoundManager();
     private StageSelectionState _stageSelection = new StageSelectionState();
-    
+
     #endregion
-    
+
     private void Awake()
     {
-        Init();
-    }
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    private static void Init()
-    {
-        if (instance != null)
-        {
-            return;
-        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
         
-        var go = GameObject.Find("@GameManager");
-        if (go != null)
-        {
-            return;
-        }
-        
-        go = new GameObject("@GameManager");
-        DontDestroyOnLoad(go);
-            
-        instance = go.AddComponent<GameManager>();
-            
-        instance._color.Init();
-        instance._sound.Init();
+        _color.Init(colorPreset);
+        _sound.Init(soundDictionary);
     }
 }

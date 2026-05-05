@@ -8,7 +8,7 @@ public class SoundManager
     private bool bgmOn;
     private bool sfxOn;
 
-    public void Init()
+    public void Init(SoundDictionary dictionary)
     {
         var root = GameObject.Find("@Sound");
         if (root != null)
@@ -18,7 +18,7 @@ public class SoundManager
         
         root = new GameObject { name = "@Sound" };
         UnityEngine.Object.DontDestroyOnLoad(root);
-        soundDictionary = Utils.Load<SoundDictionary>("SoundDictionary");
+        soundDictionary = dictionary;
              
         var soundNames = Enum.GetNames(typeof(Definitions.Sound));
         for (var i = 0; i < soundNames.Length - 1; i++)
