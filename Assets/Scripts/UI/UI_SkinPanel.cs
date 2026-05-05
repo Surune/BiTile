@@ -27,6 +27,6 @@ public class UI_SkinPanel : MonoBehaviour
     {
         PlayerPrefs.SetInt("TILE_SKIN", index);
         PlayerPrefs.Save();
-        GameManager.Instance.Sound.Play("flip4");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip4);
     }
 }

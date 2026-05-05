@@ -12,7 +12,7 @@ public class UI_LobbyScreen : MonoBehaviour
         startSceneButton.onClick.AddListener(OnWorldSelect);
         privacyPolicyButton.onClick.AddListener(OnPrivacyPolicy);
 
-        GameManager.Instance.Sound.Play("Music", Definitions.Sound.Bgm);
+        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
     }
 
     private void OnWorldSelect()

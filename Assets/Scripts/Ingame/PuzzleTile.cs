@@ -58,7 +58,7 @@ public class PuzzleTile : MonoBehaviour
                 break;
             case '!':
                 await StartShake();
-                GameManager.Instance.Sound.Play("decline");
+                GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
                 break;
         }
     }

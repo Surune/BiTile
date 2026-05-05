@@ -80,7 +80,7 @@ public class PuzzleManager : MonoBehaviour
 
         LoadStage();
 
-        GameManager.Instance.Sound.Play("music", Definitions.Sound.Bgm);
+        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Music);
     }
 
     private void LoadStage()
@@ -286,7 +286,7 @@ public class PuzzleManager : MonoBehaviour
         resetButton.interactable = true;
         hintButton.interactable = false;
         currentClicks++;
-        GameManager.Instance.Sound.Play("flip2");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
         ui.UpdateClicks(maxClicks, currentClicks);
 
         if (CheckStageClear())
@@ -303,7 +303,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void SetNextButtonActive()
     {
-        GameManager.Instance.Sound.Play("stageclear");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
         
         nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
@@ -331,7 +331,7 @@ public class PuzzleManager : MonoBehaviour
             admobManager.ShowInterstitialAd();
         }
 
-        GameManager.Instance.Sound.Play("undo1");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Reset);
         currentClicks = 0;
         LoadStage();
         retryButton.gameObject.SetActive(false);

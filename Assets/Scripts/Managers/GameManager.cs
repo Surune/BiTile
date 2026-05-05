@@ -8,12 +8,10 @@ public class GameManager : MonoBehaviour
     #region  Core
 
     public ColorManager Color => _color;
-    public ResourceManager Resource => _resource;
     public SoundManager Sound => _sound;
     public StageSelectionState StageSelection => _stageSelection;
     
     private ColorManager _color = new ColorManager();
-    private ResourceManager _resource = new ResourceManager();
     private SoundManager _sound = new SoundManager();
     private StageSelectionState _stageSelection = new StageSelectionState();
     

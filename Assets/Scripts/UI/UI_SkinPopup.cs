@@ -22,7 +22,7 @@ public class UI_SkinPopup : MonoBehaviour
         }
         
         closeButton.onClick.AddListener(ClosePopupOnClick);
-        GameManager.Instance.Sound.Play("select");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
     }
     
     private void ApplyCurrentSkinToTiles()
@@ -33,7 +33,7 @@ public class UI_SkinPopup : MonoBehaviour
     private void ClosePopupOnClick()
     {
         ApplyCurrentSkinToTiles();
-        GameManager.Instance.Sound.Play("undo2");
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Undo);
         Destroy(gameObject);
     }
 }
