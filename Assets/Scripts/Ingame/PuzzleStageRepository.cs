@@ -1,18 +1,19 @@
-using UnityEngine;
+using System.Collections.Generic;
 
 public class PuzzleStageRepository
 {
-    private string[] levelInfoRows;
+    private static Dictionary<int, Dictionary<string, object>> levelInfoByStage;
 
     public PuzzleStageData Load(int stage)
     {
-        levelInfoRows ??= Resources.Load<TextAsset>("level_info").text.Split('\n');
+        levelInfoByStage ??= LoadLevelInfo();
 
-        var values = levelInfoRows[stage].Split(',');
-        var width = int.Parse(values[2]);
-        var height = int.Parse(values[3]);
-        var type = values[4];
-        var color = values[5];
+        var stageRow = levelInfoByStage[stage];
+        var width = (int)stageRow["ROW"];
+        var height = (int)stageRow["COLUMN"];
+        var type = stageRow["TYPE"].ToString();
+        var color = stageRow["COLOR"].ToString();
+        var hintValues = stageRow["HINT"].ToString().Trim('(', ')').Split(", ");
         var tiles = new TileInfo[width, height];
 
         for (var row = 0; row < width; row++)
@@ -28,12 +29,25 @@ public class PuzzleStageRepository
 
         PuzzleStageData stageData;
         stageData.StageNumber = stage;
-        stageData.MaxClicks = int.Parse(values[1]);
+        stageData.MaxClicks = (int)stageRow["LIMIT"];
         stageData.Width = width;
         stageData.Height = height;
         stageData.Tiles = tiles;
-        stageData.HintRow = int.Parse(values[6][2].ToString());
-        stageData.HintColumn = int.Parse(values[7][1].ToString());
+        stageData.HintRow = int.Parse(hintValues[0]);
+        stageData.HintColumn = int.Parse(hintValues[1]);
         return stageData;
+    }
+
+    private static Dictionary<int, Dictionary<string, object>> LoadLevelInfo()
+    {
+        var rows = CSVReader.Read("level_info");
+        var levelInfo = new Dictionary<int, Dictionary<string, object>>(rows.Count);
+
+        foreach (var row in rows)
+        {
+            levelInfo[(int)row["STAGE"]] = row;
+        }
+
+        return levelInfo;
     }
 }
