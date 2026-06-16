@@ -13,15 +13,15 @@ public class PuzzleTile : MonoBehaviour
     public char color;
 
     [SerializeField] private float rotationTime = 0.4f;
-    [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Color blackColor;
     [SerializeField] private Color whiteColor;
     private PuzzleManager puzzleManager;
+    private MeshRenderer meshRenderer;
     private bool isAnimating;
     private float delay = 0f;
     private float delayInterval = 0.02f;
 
-    public void Init(PuzzleManager instance, int row, int col, char type, char color, Color tileColor)
+    public void Init(PuzzleManager instance, int row, int col, char type, char color, GameObject tile, Color tileColor)
     {
         puzzleManager = instance;
         this.row = row;
@@ -29,6 +29,9 @@ public class PuzzleTile : MonoBehaviour
         this.type = type;
         this.color = color;
         blackColor = tileColor;
+        
+        var tileObject = Instantiate(tile, transform);
+        meshRenderer = tileObject.GetComponentInChildren<MeshRenderer>(); 
         RefreshColor();
     }
     
