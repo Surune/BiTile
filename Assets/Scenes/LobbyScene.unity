@@ -379,6 +379,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_LobbyScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 9086628800889368030, guid: 7a0c7d46a7a0f974d8d9c84816e234c5, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086628800889368030, guid: 7a0c7d46a7a0f974d8d9c84816e234c5, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
