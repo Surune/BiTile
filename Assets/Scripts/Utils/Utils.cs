@@ -27,4 +27,9 @@ public static class Utils
         }
         return component;
     }
+    
+    public static int ToMilliseconds(this float seconds)
+    {
+        return Mathf.RoundToInt(seconds * 1000f);
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
@@ -11,19 +12,18 @@ public class PuzzleManager : MonoBehaviour
     private readonly PuzzleStageRepository stageRepository = new PuzzleStageRepository();
     private PuzzleStageData currentStageData;
 
-    [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private PuzzleTile tilePrefab;
     [SerializeField] private UI_Main ui;
-    [SerializeField] private RectTransform board;
+    [SerializeField] private Transform board;
     [SerializeField] private float tileSpacing = 125f;
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
     
-    private Button retryButton;
-    private Button nextButton;
-    private Button hintButton;
-    private Button resetButton;
-
-    private int retryCount = 0;
-
+    [Header("Buttons")]
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button hintButton;
+    [SerializeField] private Button resetButton;
+    
     private int width;
     private int height;
 
@@ -46,16 +46,7 @@ public class PuzzleManager : MonoBehaviour
             Instance = this;
         }
 
-        BindSceneObjects();
         StartGame(GameManager.Instance.StageSelection.LoadStageNum);
-    }
-
-    private void BindSceneObjects()
-    {
-        retryButton = GameObject.Find("UI_Retry").GetComponent<Button>();
-        nextButton = GameObject.Find("UI_Next").GetComponent<Button>();
-        hintButton = GameObject.Find("HintButton").GetComponent<Button>();
-        resetButton = GameObject.Find("ResetButton").GetComponent<Button>();
     }
 
     private void StartGame(int stage)
@@ -118,60 +109,21 @@ public class PuzzleManager : MonoBehaviour
 
                 var x = GetDistanceFromCenter(row, width) * tileSpacing;
                 var y = -GetDistanceFromCenter(col, height) * tileSpacing;
+                var pos = new Vector3(x, 0, y);
 
-                var tileObject = Instantiate(tilePrefab, board);
-                tileObject.transform.localPosition = new Vector3(x, y, 0);
-
-                var tile = tileObject.GetComponent<PuzzleTile>();
+                var tile = Instantiate(tilePrefab, pos, Quaternion.identity, board);
                 tile.Init(Instance, row, col, type, color);
                 puzzleTiles[row * width + col] = tile;
-
-                var tileInfoIndex = GetIndexByType(type);
-                var tileInfo = tileInfoObjects[tileInfoIndex];
-
-                if (tileInfoIndex == 0 && color == 'W')
-                {
-                    tile.imageObject.sprite = tileInfo.GetWhiteSkinSprite(currentSkinIndex);
-                }
-                else
-                {
-                    tile.imageObject.sprite = tileInfo.whiteSprite;
-                }
-
-                tile.imageObject.color = color switch
-                {
-                    'B' => tileColor,
-                    'W' => Color.white,
-                    _ => tile.imageObject.color
-                };
             }
         }
 
-        hintButton.interactable = retryCount > 0;
-
-        var scale = 0.8f * Screen.width / 900;
-        transform.localScale = new Vector3(scale, scale, 1);
-    }
-
-    private static int ToMilliseconds(float seconds)
-    {
-        return Mathf.RoundToInt(seconds * 1000f);
-    }
-
-    private async Task DelayedColorChange(Image img, Color color, float delay)
-    {
-        await Task.Delay(ToMilliseconds(delay + 0.1f));
-        img.color = color;
-    }
-
-    private async Task DelayedSpriteChange(Image img, Sprite sprite, float delay)
-    {
-        await Task.Delay(ToMilliseconds(delay + 0.1f));
-        img.sprite = sprite;
+        hintButton.interactable = true;
     }
 
     public void ChangeTileSkin(int skinIndex)
     {
+        throw new NotImplementedException();
+        /*
         currentSkinIndex = skinIndex;
         foreach (var tile in puzzleTiles)
         {
@@ -180,6 +132,7 @@ public class PuzzleManager : MonoBehaviour
                 tile.imageObject.sprite = tileInfoObjects[0].GetWhiteSkinSprite(skinIndex);
             }
         }
+        */
     }
 
     public bool CanChangeTileColor(int row, int col)
@@ -187,7 +140,7 @@ public class PuzzleManager : MonoBehaviour
         return row >= 0 && row < width && col >= 0 && col < height;
     }
 
-    public async Task ChangeTileColor(int row, int col, float delay = 0f)
+    public async Task ChangeTileColor(int row, int col, float delay)
     {
         if (!CanChangeTileColor(row, col))
         {
@@ -214,16 +167,16 @@ public class PuzzleManager : MonoBehaviour
                 {
                     await Task.WhenAll(
                         rotateTask,
-                        DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay),
-                        DelayedColorChange(tile.imageObject, tileColor, delay)
+                        //DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay),
+                        tile.RefreshColorWithDelay(delay)
                     );
                 }
                 else if (tile.color == 'W')
                 {
                     await Task.WhenAll(
                         rotateTask,
-                        DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay),
-                        DelayedColorChange(tile.imageObject, Color.white, delay)
+                        //DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay),
+                        tile.RefreshColorWithDelay(delay)
                     );
                 }
                 else
@@ -237,14 +190,14 @@ public class PuzzleManager : MonoBehaviour
                 {
                     await Task.WhenAll(
                         rotateTask,
-                        DelayedColorChange(tile.imageObject, tileColor, delay)
+                        tile.RefreshColorWithDelay(delay)
                     );
                 }
                 else if (tile.color == 'W')
                 {
                     await Task.WhenAll(
                         rotateTask,
-                        DelayedColorChange(tile.imageObject, Color.white, delay)
+                        tile.RefreshColorWithDelay(delay)
                     );
                 }
                 else
@@ -321,7 +274,6 @@ public class PuzzleManager : MonoBehaviour
             return;
         }
         
-        retryCount++;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Reset);
         currentClicks = 0;
         LoadStage();
@@ -338,7 +290,6 @@ public class PuzzleManager : MonoBehaviour
         }
 
         currentClicks = 0;
-        retryCount = 0;
         LoadStage();
         nextButton.gameObject.SetActive(false);
         resetButton.interactable = true;
@@ -348,8 +299,11 @@ public class PuzzleManager : MonoBehaviour
 
     private void ShowHint()
     {
+        throw new NotImplementedException();
+        /*
         var outline = puzzleTiles[currentStageData.HintRow * width + currentStageData.HintColumn].gameObject.GetOrAddComponent<Outline>();
         outline.effectColor = Color.red;
         outline.effectDistance = new Vector2(7f, 7f);
+        */
     }
 }

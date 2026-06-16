@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class UI_Main : MonoBehaviour
 {
-    [SerializeField] private Image background;
-    
     [SerializeField] private Button exitButton;
     [SerializeField] private Button bgmButton;
     [SerializeField] private Button sfxButton;
@@ -28,7 +26,6 @@ public class UI_Main : MonoBehaviour
 
     public void Init(int stage, int maxClicks, int currentClicks)
     {
-        background.color = GameManager.Instance.Color.GetBackgroundColor(stage);
         stageText.text = stage.ToString();
         UpdateClicks(maxClicks, currentClicks);
     }

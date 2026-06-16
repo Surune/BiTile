@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
@@ -10,9 +11,11 @@ public class PuzzleTile : MonoBehaviour
     public int col;
     public char type;
     public char color;
-    public Image imageObject;
 
     [SerializeField] private float rotationTime = 0.4f;
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Color blackColor;
+    [SerializeField] private Color whiteColor;
     private PuzzleManager puzzleManager;
     private bool isAnimating;
     private float delay = 0f;
@@ -25,6 +28,12 @@ public class PuzzleTile : MonoBehaviour
         this.col = col;
         this.type = type;
         this.color = color;
+        RefreshColor();
+    }
+    
+    private void OnMouseDown()
+    {
+        OnTileClick();
     }
 
     public async void OnTileClick()
@@ -103,6 +112,27 @@ public class PuzzleTile : MonoBehaviour
         return Task.WhenAll(tasks);
     }
 
+    public async Task RefreshColorWithDelay(float delay)
+    {
+        await Task.Delay((delay + 0.1f).ToMilliseconds());
+        RefreshColor();
+    }
+
+    private void RefreshColor()
+    {
+        switch (color)
+        {
+            case 'B':
+                meshRenderer.material.color = blackColor;
+                break;
+            case 'W':
+                meshRenderer.material.color = whiteColor;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(color));
+        }
+    }
+
     private void QueueTileColorChange(List<Task> tasks, int targetRow, int targetCol)
     {
         if (!puzzleManager.CanChangeTileColor(targetRow, targetCol))
@@ -118,7 +148,7 @@ public class PuzzleTile : MonoBehaviour
     {
         isAnimating = true;
         await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
-        transform.DORotate(new Vector3(0, 180, 0), rotationTime).SetRelative(true);
+        transform.DORotate(Vector3.forward * 180, rotationTime).SetRelative(true);
         await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
         isAnimating = false;
     }
