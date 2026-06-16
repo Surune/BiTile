@@ -21,13 +21,14 @@ public class PuzzleTile : MonoBehaviour
     private float delay = 0f;
     private float delayInterval = 0.02f;
 
-    public void Init(PuzzleManager instance, int row, int col, char type, char color)
+    public void Init(PuzzleManager instance, int row, int col, char type, char color, Color tileColor)
     {
         puzzleManager = instance;
         this.row = row;
         this.col = col;
         this.type = type;
         this.color = color;
+        blackColor = tileColor;
         RefreshColor();
     }
     

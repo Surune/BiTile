@@ -15,6 +15,7 @@ public class PuzzleManager : MonoBehaviour
 
     [SerializeField] private PuzzleTile tilePrefab;
     [SerializeField] private UI_Main ui;
+    [SerializeField] private Camera camera;
     [SerializeField] private Transform board;
     [SerializeField] private float tileSpacing = 125f;
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
@@ -86,6 +87,7 @@ public class PuzzleManager : MonoBehaviour
         width = currentStageData.Width;
         height = currentStageData.Height;
         tileColor = GameManager.Instance.Color.GetTileColor(currentStage);
+        camera.backgroundColor = GameManager.Instance.Color.GetBackgroundColor(currentStage);
         
         ui.Init(currentStage, maxClicks, currentClicks);
 
@@ -118,7 +120,7 @@ public class PuzzleManager : MonoBehaviour
                 var pos = new Vector3(x, 0, y);
 
                 var tile = Instantiate(tilePrefab, pos, Quaternion.identity, board);
-                tile.Init(Instance, row, col, type, color);
+                tile.Init(Instance, row, col, type, color, tileColor);
                 puzzleTiles[row * width + col] = tile;
             }
         }

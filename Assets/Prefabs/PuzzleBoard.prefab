@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6062770369193114757, guid: a7f00f5ac18bd88448a656db47cc6811, type: 3}
   ui: {fileID: 0}
+  camera: {fileID: 2086544075240022072}
   board: {fileID: 8718706236146295350}
   tileSpacing: 1.1
   tileInfoObjects:
@@ -56,6 +57,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: af3d93964c8b24e97a78c507ecca2691, type: 2}
   - {fileID: 11400000, guid: aaeb399fc42f74bdd9dbe0cd39b698f3, type: 2}
   - {fileID: 11400000, guid: 30da1547f8e3a41d9bddcc65aa7aaf8d, type: 2}
+  retryButton: {fileID: 0}
+  nextButton: {fileID: 0}
+  hintButton: {fileID: 0}
+  resetButton: {fileID: 0}
 --- !u!1 &1343736430625962919
 GameObject:
   m_ObjectHideFlags: 0
