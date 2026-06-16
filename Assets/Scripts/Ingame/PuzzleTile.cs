@@ -51,16 +51,19 @@ public class PuzzleTile : MonoBehaviour
         switch (type)
         {
             case '.':
+                puzzleManager.RecordUndoState();
                 var adjacentTask = ChangeAdjacentColors();
                 puzzleManager.TileClicked();
                 await adjacentTask;
                 break;
             case '+':
+                puzzleManager.RecordUndoState();
                 var crossTask = ChangeCrossColors();
                 puzzleManager.TileClicked();
                 await crossTask;
                 break;
             case '*':
+                puzzleManager.RecordUndoState();
                 var xcrossTask = ChangeXcrossColors();
                 puzzleManager.TileClicked();
                 await xcrossTask;
@@ -133,6 +136,18 @@ public class PuzzleTile : MonoBehaviour
         }
     }
 
+    public void SetColor(char value)
+    {
+        color = value;
+        RefreshColor();
+    }
+
+    public async Task SetColorWithDelay(char value, float delayTime)
+    {
+        await Task.Delay((delayTime + 0.1f).ToMilliseconds());
+        SetColor(value);
+    }
+
     private void QueueTileColorChange(List<Task> tasks, int targetRow, int targetCol)
     {
         if (!puzzleManager.CanChangeTileColor(targetRow, targetCol))
@@ -149,6 +164,15 @@ public class PuzzleTile : MonoBehaviour
         isAnimating = true;
         await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
         transform.DORotate(Vector3.forward * 180, rotationTime).SetRelative(true);
+        await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
+        isAnimating = false;
+    }
+
+    public async Task StartUndoRotate(float delayTime = 0f)
+    {
+        isAnimating = true;
+        await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
+        transform.DORotate(Vector3.back * 180, rotationTime).SetRelative(true);
         await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
         isAnimating = false;
     }

@@ -9,12 +9,15 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Button bgmButton;
     [SerializeField] private Button sfxButton;
     [SerializeField] private Button skinButton;
+    [SerializeField] private Button undoButton;
     
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private TMP_Text maxClicksText;
     [SerializeField] private TMP_Text currentClicksText;
 
     [SerializeField] private UI_SkinPopup skinPopupPrefab;
+
+    public Button UndoButton => undoButton;
     
     private void Awake()
     {

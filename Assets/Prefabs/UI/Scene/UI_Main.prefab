@@ -2411,6 +2411,7 @@ MonoBehaviour:
   bgmButton: {fileID: 3664622175158517561}
   sfxButton: {fileID: 5565728512903127402}
   skinButton: {fileID: 1416336647765672842}
+  undoButton: {fileID: 5995871048020341015}
   stageText: {fileID: 2588857926754915173}
   maxClicksText: {fileID: 2175280586236841354}
   currentClicksText: {fileID: 3860490392147154142}

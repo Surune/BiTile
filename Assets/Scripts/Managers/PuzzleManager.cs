@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
@@ -29,6 +30,7 @@ public class PuzzleManager : MonoBehaviour
 
     private PuzzleTile[] puzzleTiles;
     private TileInfo[,] stageInfo;
+    private readonly Stack<char[]> undoHistory = new Stack<char[]>();
 
     public bool IsClickable => isClickable;
     private bool isClickable = true;
@@ -65,6 +67,9 @@ public class PuzzleManager : MonoBehaviour
         resetButton.interactable = false;
         resetButton.onClick.AddListener(Retry);
 
+        ui.UndoButton.interactable = false;
+        ui.UndoButton.onClick.AddListener(Undo);
+
         LoadStage();
 
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Music);
@@ -76,6 +81,7 @@ public class PuzzleManager : MonoBehaviour
         currentStage = currentStageData.StageNumber;
         maxClicks = currentStageData.MaxClicks;
         currentClicks = 0;
+        undoHistory.Clear();
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
         height = currentStageData.Height;
@@ -118,6 +124,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         hintButton.interactable = true;
+        ui.UndoButton.interactable = false;
     }
 
     public void ChangeTileSkin(int skinIndex)
@@ -225,6 +232,53 @@ public class PuzzleManager : MonoBehaviour
         return puzzleTiles.All(tile => tile.color == 'W');
     }
 
+    public void RecordUndoState()
+    {
+        undoHistory.Push(CaptureTileColors());
+        ui.UndoButton.interactable = true;
+    }
+
+    private char[] CaptureTileColors()
+    {
+        var colors = new char[width * height];
+        for (var row = 0; row < width; row++)
+        {
+            for (var col = 0; col < height; col++)
+            {
+                colors[row * width + col] = puzzleTiles[row * width + col].color;
+            }
+        }
+
+        return colors;
+    }
+
+    private async Task RestoreTileColors(char[] colors)
+    {
+        var tasks = new List<Task>();
+        var delay = 0f;
+        const float delayInterval = 0.02f;
+
+        for (var row = 0; row < width; row++)
+        {
+            for (var col = 0; col < height; col++)
+            {
+                var color = colors[row * width + col];
+                var tile = puzzleTiles[row * width + col];
+                if (tile.color != color)
+                {
+                    var tileDelay = delay;
+                    tasks.Add(tile.StartUndoRotate(tileDelay));
+                    tasks.Add(tile.SetColorWithDelay(color, tileDelay));
+                    delay += delayInterval;
+                }
+
+                stageInfo[row, col].Color = color;
+            }
+        }
+
+        await Task.WhenAll(tasks);
+    }
+
     public void TileClicked()
     {
         if (!isClickable)
@@ -276,8 +330,34 @@ public class PuzzleManager : MonoBehaviour
         
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Reset);
         currentClicks = 0;
+        undoHistory.Clear();
         LoadStage();
         retryButton.gameObject.SetActive(false);
+        isClickable = true;
+    }
+
+    public async void Undo()
+    {
+        if (currentClicks <= 0 || undoHistory.Count <= 0)
+        {
+            return;
+        }
+
+        CancelInvoke(nameof(SetNextButtonActive));
+        CancelInvoke(nameof(SetRetryButtonActive));
+
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Undo);
+        isClickable = false;
+        ui.UndoButton.interactable = false;
+        currentClicks--;
+        await RestoreTileColors(undoHistory.Pop());
+        ui.UpdateClicks(maxClicks, currentClicks);
+
+        retryButton.gameObject.SetActive(false);
+        nextButton.gameObject.SetActive(false);
+        resetButton.interactable = currentClicks > 0;
+        hintButton.interactable = currentClicks == 0;
+        ui.UndoButton.interactable = undoHistory.Count > 0;
         isClickable = true;
     }
 
@@ -290,6 +370,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         currentClicks = 0;
+        undoHistory.Clear();
         LoadStage();
         nextButton.gameObject.SetActive(false);
         resetButton.interactable = true;
