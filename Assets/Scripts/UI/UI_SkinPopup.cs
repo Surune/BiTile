@@ -12,8 +12,7 @@ public class UI_SkinPopup : MonoBehaviour
 
     private void Awake()
     {
-        currentSkinIndex = PlayerPrefs.GetInt("TILE_SKIN", 0);
-        PlayerPrefs.SetInt("HAVE_SKIN_0", 1);
+        currentSkinIndex = SaveManager.TileSkinIndex;
 
         for (var i = 0 ; i < availableSkins.Length; i++)
         {

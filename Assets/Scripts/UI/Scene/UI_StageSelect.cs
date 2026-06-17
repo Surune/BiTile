@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class UI_StageSelect : MonoBehaviour
 {
-    private const string StagePlayerPrefsKey = "STAGE";
     private const int FirstStage = 1;
     private const int LastStage = 200;
 
@@ -18,7 +17,7 @@ public class UI_StageSelect : MonoBehaviour
         RefreshStages();
 
 #if UNITY_EDITOR
-        editorLastUnlockedStageText = PlayerPrefs.GetInt(StagePlayerPrefsKey, FirstStage).ToString();
+        editorLastUnlockedStageText = SaveManager.LastUnlockedStage.ToString();
 #endif
     }
 
@@ -29,7 +28,7 @@ public class UI_StageSelect : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var clearedStage = PlayerPrefs.GetInt(StagePlayerPrefsKey, FirstStage);
+        var clearedStage = SaveManager.LastUnlockedStage;
         for (var i = FirstStage; i <= LastStage; i++)
         {
             var stage = Instantiate(stagePrefab, stageContainer).GetComponent<UI_World_Stage>();
@@ -42,7 +41,7 @@ public class UI_StageSelect : MonoBehaviour
     {
         GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(260f));
         GUILayout.Label("Stage Selection Unlock");
-        GUILayout.Label($"Current Last Unlocked: {PlayerPrefs.GetInt(StagePlayerPrefsKey, FirstStage)}");
+        GUILayout.Label($"Current Last Unlocked: {SaveManager.LastUnlockedStage}");
         editorLastUnlockedStageText = GUILayout.TextField(editorLastUnlockedStageText, GUILayout.Width(120f));
 
         GUILayout.BeginHorizontal();
@@ -64,8 +63,7 @@ public class UI_StageSelect : MonoBehaviour
     {
         var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, LastStage);
         editorLastUnlockedStageText = lastUnlockedStage.ToString();
-        PlayerPrefs.SetInt(StagePlayerPrefsKey, lastUnlockedStage);
-        PlayerPrefs.Save();
+        SaveManager.LastUnlockedStage = lastUnlockedStage;
         RefreshStages();
     }
 #endif

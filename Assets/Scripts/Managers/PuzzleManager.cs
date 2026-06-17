@@ -57,7 +57,7 @@ public class PuzzleManager : MonoBehaviour
     private void StartGame(int stage)
     {
         currentStage = stage;
-        currentSkinIndex = PlayerPrefs.GetInt("TILE_SKIN", 0);
+        currentSkinIndex = SaveManager.TileSkinIndex;
         
         retryButton.gameObject.SetActive(false);
         retryButton.onClick.AddListener(Retry);
@@ -372,9 +372,9 @@ public class PuzzleManager : MonoBehaviour
     private void LoadNextStage()
     {
         currentStage++;
-        if (currentStage > PlayerPrefs.GetInt("STAGE", 1))
+        if (currentStage > SaveManager.LastUnlockedStage)
         {
-            PlayerPrefs.SetInt("STAGE", currentStage);
+            SaveManager.LastUnlockedStage = currentStage;
         }
 
         currentClicks = 0;

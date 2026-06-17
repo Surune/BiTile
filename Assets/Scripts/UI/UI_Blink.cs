@@ -4,7 +4,7 @@ using TMPro;
 
 public class UI_Blink : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI textObject;
+    [SerializeField] private TMP_Text textObject;
     [SerializeField] private Color blinkColor = Color.white;
     [SerializeField] private float blinkDuration = 1.0f;
     private Color originalColor;

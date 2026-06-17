@@ -17,7 +17,7 @@ public class UI_SkinPanel : MonoBehaviour
         
         skinImage.sprite = skin.skinImage;
         
-        button.interactable = PlayerPrefs.GetInt($"STAGE", 0) >= skin.unlockStage;
+        button.interactable = SaveManager.LastUnlockedStage >= skin.unlockStage;
         button.onClick.AddListener(SetCurrentSkin);    
         
         unlockText.text = $"STAGE {skin.unlockStage}";
@@ -25,8 +25,7 @@ public class UI_SkinPanel : MonoBehaviour
     
     private void SetCurrentSkin()
     {
-        PlayerPrefs.SetInt("TILE_SKIN", index);
-        PlayerPrefs.Save();
+        SaveManager.TileSkinIndex = index;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip4);
     }
 }

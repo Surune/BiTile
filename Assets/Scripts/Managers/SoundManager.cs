@@ -1,8 +1,11 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class SoundManager
 {
+    private const string BgmMuteKey = "BGM_MUTE";
+    private const string SfxMuteKey = "SFX_MUTE";
+
     private readonly AudioSource[] audioSources = new AudioSource[(int)Definitions.Sound.MaxCount];
     private SoundDictionary soundDictionary;
     private bool bgmOn;
@@ -30,10 +33,10 @@ public class SoundManager
 
         audioSources[(int)Definitions.Sound.Bgm].loop = true;
             
-        bgmOn = PlayerPrefs.GetInt("BGM_MUTE", 0) == 1;
+        bgmOn = PlayerPrefs.GetInt(BgmMuteKey, 0) == 1;
         audioSources[(int)Definitions.Sound.Bgm].mute = bgmOn;
             
-        sfxOn = PlayerPrefs.GetInt("SFX_MUTE", 0) == 1;
+        sfxOn = PlayerPrefs.GetInt(SfxMuteKey, 0) == 1;
         audioSources[(int)Definitions.Sound.Effect].mute = sfxOn;
     }
 
@@ -64,14 +67,16 @@ public class SoundManager
     public void ToggleBGMMute()
     {
         bgmOn = !bgmOn;
-        PlayerPrefs.SetInt("BGM_MUTE", Convert.ToInt32(bgmOn));
+        PlayerPrefs.SetInt(BgmMuteKey, Convert.ToInt32(bgmOn));
+        PlayerPrefs.Save();
         audioSources[(int)Definitions.Sound.Bgm].mute = bgmOn;
     }
     
     public void ToggleSFXMute()
     {
         sfxOn = !sfxOn;
-        PlayerPrefs.SetInt("SFX_MUTE", Convert.ToInt32(sfxOn));
+        PlayerPrefs.SetInt(SfxMuteKey, Convert.ToInt32(sfxOn));
+        PlayerPrefs.Save();
         audioSources[(int)Definitions.Sound.Effect].mute = sfxOn;
     }
 }
