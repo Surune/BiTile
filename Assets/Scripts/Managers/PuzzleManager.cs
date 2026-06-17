@@ -115,8 +115,8 @@ public class PuzzleManager : MonoBehaviour
                 var type = stageInfo[row, col].Type;
                 var color = stageInfo[row, col].Color;
 
-                var x = GetDistanceFromCenter(row, width) * tileSpacing;
-                var y = -GetDistanceFromCenter(col, height) * tileSpacing;
+                var x = GetDistanceFromCenter(col, width) * tileSpacing;
+                var y = -GetDistanceFromCenter(row, height) * tileSpacing;
                 var pos = new Vector3(x, 0, y);
 
                 var tile = Instantiate(tilePrefab, pos, Quaternion.identity, board);
