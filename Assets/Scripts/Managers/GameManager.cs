@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public ColorManager Color => _color;
     public SoundManager Sound => _sound;
     public StageSelectionState StageSelection => _stageSelection;
+    public Localization Localization => _localization;
     
     [SerializeField] private ColorPreset colorPreset;
     [SerializeField] private SoundDictionary soundDictionary;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     private ColorManager _color = new ColorManager();
     private SoundManager _sound = new SoundManager();
     private StageSelectionState _stageSelection = new StageSelectionState();
+    private Localization _localization = new Localization();
 
     #endregion
 
@@ -33,5 +35,6 @@ public class GameManager : MonoBehaviour
         
         _color.Init(colorPreset);
         _sound.Init(soundDictionary);
+        _localization.Init();
     }
 }

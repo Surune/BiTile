@@ -12,8 +12,8 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Button undoButton;
     
     [SerializeField] private TMP_Text stageText;
-    [SerializeField] private TMP_Text maxClicksText;
-    [SerializeField] private TMP_Text currentClicksText;
+    [SerializeField] private TMP_Text clicksText;
+    [SerializeField] private TMP_Text tutorialText;
 
     [SerializeField] private UI_SkinPopup skinPopupPrefab;
 
@@ -27,16 +27,16 @@ public class UI_Main : MonoBehaviour
         skinButton.onClick.AddListener(OnSkinButton);
     }
 
-    public void Init(int stage, int maxClicks, int currentClicks)
+    public void Init(int stage, int maxClicks, int currentClicks, string tutorialLkey)
     {
         stageText.text = stage.ToString();
+        tutorialText.text = GameManager.Instance.Localization.Get(tutorialLkey);
         UpdateClicks(maxClicks, currentClicks);
     }
 
     public void UpdateClicks(int maxClicks, int currentClicks)
     {
-        maxClicksText.text = maxClicks.ToString();
-        currentClicksText.text = currentClicks.ToString();
+        clicksText.text = $"{currentClicks}/{maxClicks}";
     }
 
     private void OnExitButton()

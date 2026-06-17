@@ -30,6 +30,7 @@ public class PuzzleStageRepository
         PuzzleStageData stageData;
         stageData.StageNumber = stage;
         stageData.MaxClicks = (int)stageRow["LIMIT"];
+        stageData.TutorialLkey = stageRow["LKEY"].ToString();
         stageData.Width = width;
         stageData.Height = height;
         stageData.Tiles = tiles;

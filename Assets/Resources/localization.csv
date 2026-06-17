@@ -1,0 +1,7 @@
+LKEY,koKR,enUS
+TUTORIAL_WHITE,모든 타일을 하얀색으로 만들어보세요.
+TUTORIAL_BASE,기본 타일은 자신과 주변 8칸의 타일을 뒤집습니다.
+TUTORIAL_SIZE,더 많은 타일이 나올 수도 있습니다.
+TUTORIAL_PLUS,+ 타일은 자신과 상하좌우 4칸의 타일을 뒤집습니다.
+TUTORIAL_X,X 타일은 자신과 대각선 4칸의 타일을 뒤집습니다.
+TUTORIAL_FIXED,! 타일은 절대 뒤집히지 않습니다.

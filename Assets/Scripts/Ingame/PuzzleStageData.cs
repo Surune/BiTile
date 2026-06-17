@@ -2,6 +2,7 @@ public struct PuzzleStageData
 {
     public int StageNumber;
     public int MaxClicks;
+    public string TutorialLkey;
     public int Width;
     public int Height;
     public TileInfo[,] Tiles;

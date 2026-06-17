@@ -89,7 +89,7 @@ public class PuzzleManager : MonoBehaviour
         tileColor = GameManager.Instance.Color.GetTileColor(currentStage);
         camera.backgroundColor = GameManager.Instance.Color.GetBackgroundColor(currentStage);
         
-        ui.Init(currentStage, maxClicks, currentClicks);
+        ui.Init(currentStage, maxClicks, currentClicks, currentStageData.TutorialLkey);
 
         CreatePuzzle();
     }
