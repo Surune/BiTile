@@ -14,3 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeName: Tile_Fixed
   model: {fileID: 919132149155446097, guid: 77ea49075b9848fab1768fe9b39149c2, type: 3}
+  flipPattern:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0

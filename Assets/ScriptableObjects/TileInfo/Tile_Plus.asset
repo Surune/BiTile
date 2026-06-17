@@ -14,3 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeName: Tile_Plus
   model: {fileID: 919132149155446097, guid: 9c5c275997b84cccae789ebcf335a4c1, type: 3}
+  flipPattern:
+  - 0
+  - 1
+  - 0
+  - 1
+  - 1
+  - 1
+  - 0
+  - 1
+  - 0

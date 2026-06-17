@@ -120,7 +120,7 @@ public class PuzzleManager : MonoBehaviour
                 var pos = new Vector3(x, 0, y);
 
                 var tile = Instantiate(tilePrefab, pos, Quaternion.identity, board);
-                tile.Init(Instance, row, col, type, color, tileInfoObjects[GetIndexByType(type)].model, tileColor);
+                tile.Init(Instance, row, col, type, color, tileInfoObjects[GetIndexByType(type)], tileColor);
                 puzzleTiles[row * width + col] = tile;
             }
         }

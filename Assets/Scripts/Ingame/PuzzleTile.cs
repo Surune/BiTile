@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -15,22 +14,23 @@ public class PuzzleTile : MonoBehaviour
     [SerializeField] private float rotationTime = 0.4f;
     [SerializeField] private Color blackColor;
     [SerializeField] private Color whiteColor;
+    private TileScriptableObject tileInfo;
     private PuzzleManager puzzleManager;
     private MeshRenderer meshRenderer;
     private bool isAnimating;
-    private float delay = 0f;
-    private float delayInterval = 0.02f;
+    private const float DelayInterval = 0.02f;
 
-    public void Init(PuzzleManager instance, int row, int col, char type, char color, GameObject tile, Color tileColor)
+    public void Init(PuzzleManager instance, int row, int col, char type, char color, TileScriptableObject tileInfo, Color tileColor)
     {
         puzzleManager = instance;
+        this.tileInfo = tileInfo;
         this.row = row;
         this.col = col;
         this.type = type;
         this.color = color;
         blackColor = tileColor;
         
-        var tileObject = Instantiate(tile, transform);
+        var tileObject = Instantiate(tileInfo.model, transform);
         meshRenderer = tileObject.GetComponentInChildren<MeshRenderer>(); 
         RefreshColor();
     }
@@ -52,71 +52,17 @@ public class PuzzleTile : MonoBehaviour
             Destroy(gameObject.GetComponent<Outline>());
         }
 
-        switch (type)
+        if (type == '!')
         {
-            case '.':
-                puzzleManager.RecordUndoState();
-                var adjacentTask = ChangeAdjacentColors();
-                puzzleManager.TileClicked();
-                await adjacentTask;
-                break;
-            case '+':
-                puzzleManager.RecordUndoState();
-                var crossTask = ChangeCrossColors();
-                puzzleManager.TileClicked();
-                await crossTask;
-                break;
-            case '*':
-                puzzleManager.RecordUndoState();
-                var xcrossTask = ChangeXcrossColors();
-                puzzleManager.TileClicked();
-                await xcrossTask;
-                break;
-            case '!':
-                await StartShake();
-                GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
-                break;
+            await StartShake();
+            GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
+            return;
         }
-    }
 
-    private Task ChangeAdjacentColors()
-    {
-        delay = 0;
-        var tasks = new List<Task>(9);
-        QueueTileColorChange(tasks, row, col);
-        QueueTileColorChange(tasks, row, col - 1);
-        QueueTileColorChange(tasks, row + 1, col - 1);
-        QueueTileColorChange(tasks, row + 1, col);
-        QueueTileColorChange(tasks, row + 1, col + 1);
-        QueueTileColorChange(tasks, row, col + 1);
-        QueueTileColorChange(tasks, row - 1, col + 1);
-        QueueTileColorChange(tasks, row - 1, col);
-        QueueTileColorChange(tasks, row - 1, col - 1);
-        return Task.WhenAll(tasks);
-    }
-
-    private Task ChangeCrossColors()
-    {
-        delay = 0;
-        var tasks = new List<Task>(5);
-        QueueTileColorChange(tasks, row, col);
-        QueueTileColorChange(tasks, row, col - 1);
-        QueueTileColorChange(tasks, row + 1, col);
-        QueueTileColorChange(tasks, row - 1, col);
-        QueueTileColorChange(tasks, row, col + 1);
-        return Task.WhenAll(tasks);
-    }
-
-    private Task ChangeXcrossColors()
-    {
-        delay = 0;
-        var tasks = new List<Task>(5);
-        QueueTileColorChange(tasks, row, col);
-        QueueTileColorChange(tasks, row - 1, col - 1);
-        QueueTileColorChange(tasks, row - 1, col + 1);
-        QueueTileColorChange(tasks, row + 1, col - 1);
-        QueueTileColorChange(tasks, row + 1, col + 1);
-        return Task.WhenAll(tasks);
+        puzzleManager.RecordUndoState();
+        var changeTask = tileInfo.ChangeTiles(puzzleManager, row, col, DelayInterval);
+        puzzleManager.TileClicked();
+        await changeTask;
     }
 
     public async Task RefreshColorWithDelay(float delay)
@@ -150,17 +96,6 @@ public class PuzzleTile : MonoBehaviour
     {
         await Task.Delay((delayTime + 0.1f).ToMilliseconds());
         SetColor(value);
-    }
-
-    private void QueueTileColorChange(List<Task> tasks, int targetRow, int targetCol)
-    {
-        if (!puzzleManager.CanChangeTileColor(targetRow, targetCol))
-        {
-            return;
-        }
-
-        tasks.Add(puzzleManager.ChangeTileColor(targetRow, targetCol, delay));
-        delay += delayInterval;
     }
 
     public async Task StartRotate(float delayTime = 0f)
