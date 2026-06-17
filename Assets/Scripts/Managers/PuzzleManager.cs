@@ -313,6 +313,7 @@ public class PuzzleManager : MonoBehaviour
         nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
         resetButton.interactable = false;
+        ui.UndoButton.interactable = false;
         nextButton.gameObject.SetActive(true);
     }
 
