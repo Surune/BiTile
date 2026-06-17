@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PuzzleTile : MonoBehaviour
 {
@@ -17,8 +16,10 @@ public class PuzzleTile : MonoBehaviour
     private TileScriptableObject tileInfo;
     private PuzzleManager puzzleManager;
     private MeshRenderer meshRenderer;
+    private bool isHintVisible;
     private bool isAnimating;
     private const float DelayInterval = 0.02f;
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     public void Init(PuzzleManager instance, int row, int col, char type, char color, TileScriptableObject tileInfo, Color tileColor)
     {
@@ -47,10 +48,7 @@ public class PuzzleTile : MonoBehaviour
             return;
         }
         
-        if (gameObject.GetComponent<Outline>() != null)
-        {
-            Destroy(gameObject.GetComponent<Outline>());
-        }
+        HideHint();
 
         if (type == '!')
         {
@@ -133,5 +131,27 @@ public class PuzzleTile : MonoBehaviour
         
         await Task.Delay(rotationTime.ToMilliseconds());
         isAnimating = false;
+    }
+
+    public void ShowHint()
+    {
+        if (isHintVisible)
+        {
+            return;
+        }
+
+        meshRenderer.material.EnableKeyword("_EMISSION");
+        meshRenderer.material.SetColor(EmissionColor, Color.red);
+        isHintVisible = true;
+    }
+
+    public void HideHint()
+    {
+        if (isHintVisible)
+        {
+            meshRenderer.material.SetColor(EmissionColor, Color.black);
+            meshRenderer.material.DisableKeyword("_EMISSION");
+            isHintVisible = false;
+        }
     }
 }

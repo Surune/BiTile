@@ -30,6 +30,8 @@ public class PuzzleManager : MonoBehaviour
     private int height;
 
     private PuzzleTile[] puzzleTiles;
+    private PuzzleTile hintTile;
+    private bool isHintShown;
     private TileInfo[,] stageInfo;
     private readonly Stack<char[]> undoHistory = new Stack<char[]>();
 
@@ -101,6 +103,8 @@ public class PuzzleManager : MonoBehaviour
 
     private void CreatePuzzle()
     {
+        HideHint();
+
         foreach (Transform child in board)
         {
             Destroy(child.gameObject);
@@ -289,6 +293,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         resetButton.interactable = true;
+        HideHint();
         hintButton.interactable = false;
         currentClicks++;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
@@ -383,11 +388,17 @@ public class PuzzleManager : MonoBehaviour
 
     private void ShowHint()
     {
-        throw new NotImplementedException();
-        /*
-        var outline = puzzleTiles[currentStageData.HintRow * width + currentStageData.HintColumn].gameObject.GetOrAddComponent<Outline>();
-        outline.effectColor = Color.red;
-        outline.effectDistance = new Vector2(7f, 7f);
-        */
+        hintTile = puzzleTiles[currentStageData.HintRow * width + currentStageData.HintColumn];
+        hintTile.ShowHint();
+        isHintShown = true;
+    }
+
+    private void HideHint()
+    {
+        if (isHintShown)
+        {
+            hintTile.HideHint();
+            isHintShown = false;
+        }
     }
 }
