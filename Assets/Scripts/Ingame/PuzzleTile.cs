@@ -184,20 +184,19 @@ public class PuzzleTile : MonoBehaviour
     public async Task StartShake(float delayTime = 0f)
     {
         isAnimating = true;
-        await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
+        await Task.Delay(delayTime.ToMilliseconds());
 
-        var originalPosition = transform.position;
-
+        var originalPos = transform.position;
         var shakeSequence = DOTween.Sequence();
         for (var i = 0; i < 4; i++)
         {
-            shakeSequence.Append(transform.DOMoveX(originalPosition.x + 2f, 0.04f));
-            shakeSequence.Append(transform.DOMoveX(originalPosition.x - 2f, 0.04f));
+            shakeSequence.Append(transform.DOMoveX(originalPos.x + 0.05f, 0.04f));
+            shakeSequence.Append(transform.DOMoveX(originalPos.x - 0.05f, 0.04f));
         }
-        shakeSequence.Append(transform.DOMove(originalPosition, 0.04f));
-
+        shakeSequence.Append(transform.DOMove(originalPos, 0.04f));
         shakeSequence.Play();
-        await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
+        
+        await Task.Delay(rotationTime.ToMilliseconds());
         isAnimating = false;
     }
 }
