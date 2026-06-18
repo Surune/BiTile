@@ -282,7 +282,7 @@ public class PuzzleManager : MonoBehaviour
         hintButton.interactable = false;
         currentClicks++;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
-        ui.UpdateClicks(maxClicks, currentClicks);
+        ui.UpdateClicks(currentClicks);
 
         if (CheckStageClear())
         {
@@ -342,8 +342,8 @@ public class PuzzleManager : MonoBehaviour
         isClickable = false;
         ui.UndoButton.interactable = false;
         currentClicks--;
+        ui.UpdateClicks(currentClicks);
         await RestoreTileColors(undoHistory.Pop());
-        ui.UpdateClicks(maxClicks, currentClicks);
 
         retryButton.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);

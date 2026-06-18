@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,12 +13,15 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Button undoButton;
     
     [SerializeField] private TMP_Text stageText;
-    [SerializeField] private TMP_Text clicksText;
     [SerializeField] private TMP_Text tutorialText;
+    [SerializeField] private UI_Counter counterPrefab;
+    [SerializeField] private Transform counterParent;
 
     [SerializeField] private UI_SkinPopup skinPopupPrefab;
 
     public Button UndoButton => undoButton;
+    
+    private readonly List<UI_Counter> counters = new List<UI_Counter>();
     
     private void Awake()
     {
@@ -31,12 +35,43 @@ public class UI_Main : MonoBehaviour
     {
         stageText.text = stage.ToString();
         tutorialText.text = GameManager.Instance.Localization.Get(tutorialLkey);
-        UpdateClicks(maxClicks, currentClicks);
+        SetupCounters(maxClicks);
+        UpdateClicks(currentClicks);
     }
 
-    public void UpdateClicks(int maxClicks, int currentClicks)
+    public void UpdateClicks(int currentClicks)
     {
-        clicksText.text = $"{currentClicks}/{maxClicks}";
+        for (int i = 0; i < counters.Count; i++)
+        {
+            if (i < currentClicks)
+            {
+                counters[i].Use();
+                continue;
+            }
+            
+            counters[i].Unuse();
+        }
+    }
+
+    private void SetupCounters(int maxClicks)
+    {
+        while (counters.Count < maxClicks)
+        {
+            var counter = Instantiate(counterPrefab, counterParent);
+            counters.Add(counter);
+        }
+
+        while (counters.Count > maxClicks)
+        {
+            var lastIndex = counters.Count - 1;
+            Destroy(counters[lastIndex].gameObject);
+            counters.RemoveAt(lastIndex);
+        }
+
+        foreach (var counter in counters)
+        {
+            counter.Unuse();
+        }
     }
 
     private void OnExitButton()
