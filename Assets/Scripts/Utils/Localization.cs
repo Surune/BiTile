@@ -4,7 +4,7 @@ public class Localization
 {
     private const string DefaultLocale = "koKR";
 
-    private Dictionary<string, Dictionary<string, object>> textByKey;
+    private Dictionary<string, Dictionary<string, string>> textByKey;
 
     public void Init()
     {
@@ -16,24 +16,24 @@ public class Localization
         return Get(lkey, DefaultLocale);
     }
 
-    public string Get(string lkey, string locale)
+    private string Get(string lkey, string locale)
     {
         if (lkey == string.Empty)
         {
             return string.Empty;
         }
 
-        return textByKey[lkey][locale].ToString();
+        return textByKey[lkey][locale];
     }
 
-    private Dictionary<string, Dictionary<string, object>> LoadText()
+    private Dictionary<string, Dictionary<string, string>> LoadText()
     {
         var rows = CSVReader.Read("localization");
-        var localization = new Dictionary<string, Dictionary<string, object>>(rows.Count);
+        var localization = new Dictionary<string, Dictionary<string, string>>(rows.Count);
 
         foreach (var row in rows)
         {
-            localization[row["LKEY"].ToString()] = row;
+            localization[row["LKEY"]] = row;
         }
 
         return localization;

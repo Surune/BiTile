@@ -9,18 +9,18 @@ public class ColorManager
         colorPreset = preset;
     }
 
-    public Color GetBackgroundColor(int stage)
+    public Color GetBackgroundColor(int chapter)
     {
-        return colorPreset.GetBackgroundColor(GetIndex(stage));
+        return colorPreset.GetBackgroundColor(GetIndex(chapter));
     }
 
-    public Color GetTileColor(int stage)
+    public Color GetTileColor(int chapter)
     {
-        return colorPreset.GetTileColor(GetIndex(stage));
+        return colorPreset.GetTileColor(GetIndex(chapter));
     }
 
-    private int GetIndex(int stage)
+    private int GetIndex(int chapter)
     {
-        return (stage - 1) / 35;
+        return chapter - 1;
     }
 }

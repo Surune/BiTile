@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
@@ -39,6 +40,7 @@ public class PuzzleManager : MonoBehaviour
     private bool isClickable = true;
     
     private Color tileColor;
+    private int currentChapter = 1;
     private int currentStage = 1;
     private int maxClicks = 1;
     private int currentClicks = 0;
@@ -51,12 +53,13 @@ public class PuzzleManager : MonoBehaviour
             Instance = this;
         }
 
-        StartGame(GameManager.Instance.StageSelection.LoadStageNum);
+        StartGame(GameManager.Instance.StageSelection);
     }
 
-    private void StartGame(int stage)
+    private void StartGame(StageSelectionState stageSelection)
     {
-        currentStage = stage;
+        currentChapter = stageSelection.Chapter;
+        currentStage = stageSelection.Stage;
         currentSkinIndex = SaveManager.TileSkinIndex;
         
         retryButton.gameObject.SetActive(false);
@@ -80,16 +83,23 @@ public class PuzzleManager : MonoBehaviour
 
     private void LoadStage()
     {
-        currentStageData = stageRepository.Load(currentStage);
-        currentStage = currentStageData.StageNumber;
+        CancelInvoke(nameof(SetNextButtonActive));
+        CancelInvoke(nameof(SetRetryButtonActive));
+        retryButton.gameObject.SetActive(false);
+        nextButton.gameObject.SetActive(false);
+        resetButton.interactable = false;
+
+        currentStageData = stageRepository.Load(currentChapter, currentStage);
+        currentChapter = currentStageData.Chapter;
+        currentStage = currentStageData.Stage;
         maxClicks = currentStageData.MaxClicks;
         currentClicks = 0;
         undoHistory.Clear();
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
         height = currentStageData.Height;
-        tileColor = GameManager.Instance.Color.GetTileColor(currentStage);
-        camera.backgroundColor = GameManager.Instance.Color.GetBackgroundColor(currentStage);
+        tileColor = GameManager.Instance.Color.GetTileColor(currentChapter);
+        camera.backgroundColor = GameManager.Instance.Color.GetBackgroundColor(currentChapter);
         
         ui.Init(currentStage, maxClicks, currentClicks, currentStageData.TutorialLkey);
 
@@ -340,7 +350,6 @@ public class PuzzleManager : MonoBehaviour
         currentClicks = 0;
         undoHistory.Clear();
         LoadStage();
-        retryButton.gameObject.SetActive(false);
         isClickable = true;
     }
 
@@ -371,34 +380,42 @@ public class PuzzleManager : MonoBehaviour
 
     private void LoadNextStage()
     {
-        currentStage++;
-        if (currentStage > SaveManager.LastUnlockedStage)
+        var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
+        if (progressStage > PuzzleStageRepository.TotalStageCount)
         {
-            SaveManager.LastUnlockedStage = currentStage;
+            SceneManager.LoadScene(Definitions.StageSelectSceneName);
+            return;
+        }
+
+        currentChapter = PuzzleStageRepository.GetChapter(progressStage);
+        currentStage = PuzzleStageRepository.GetStage(progressStage);
+        if (progressStage > SaveManager.LastUnlockedStage)
+        {
+            SaveManager.LastUnlockedStage = progressStage;
         }
 
         currentClicks = 0;
         undoHistory.Clear();
         LoadStage();
-        nextButton.gameObject.SetActive(false);
-        resetButton.interactable = true;
 
         isClickable = true;
     }
 
     private void ShowHint()
     {
-        hintTile = puzzleTiles[currentStageData.HintRow * width + currentStageData.HintColumn];
+        hintTile = puzzleTiles[currentStageData.HintPosition.x * width + currentStageData.HintPosition.y];
         hintTile.ShowHint();
         isHintShown = true;
     }
 
     private void HideHint()
     {
-        if (isHintShown)
+        if (!isHintShown)
         {
-            hintTile.HideHint();
-            isHintShown = false;
+            return;
         }
+
+        hintTile.HideHint();
+        isHintShown = false;
     }
 }

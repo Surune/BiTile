@@ -8,17 +8,19 @@ public class UI_World_Stage : MonoBehaviour
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private Button button;
     [SerializeField] private Sprite clearedSprite;
-    private int stageNum;
+    private int chapter;
+    private int stage;
 
-    public void SetInfo(int cur, int cleared)
+    public void SetInfo(int chapter, int stage, int progressStage, int cleared)
     {
-        stageNum = cur;
-        stageText.text = stageNum.ToString();
+        this.chapter = chapter;
+        this.stage = stage;
+        stageText.text = $"{chapter}-{stage}";
         
-        if (cur <= cleared)
+        if (progressStage <= cleared)
         {
             GetComponentInChildren<Image>().overrideSprite = clearedSprite;
-            GetComponentInChildren<TMP_Text>().color = Color.black;
+            stageText.color = Color.black;
             button.onClick.AddListener(Accept);
         }
         else
@@ -29,7 +31,7 @@ public class UI_World_Stage : MonoBehaviour
 
     private void Accept()
     {
-        GameManager.Instance.StageSelection.LoadStageNum = stageNum;
+        GameManager.Instance.SelectStage(chapter, stage);
         SceneManager.LoadScene(Definitions.GameSceneName);
     }
 

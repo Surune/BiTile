@@ -8,9 +8,9 @@ public class CSVReader
     private static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     private static char[] TRIM_CHARS = { '\"' };
 
-    public static List<Dictionary<string, object>> Read(string file)
+    public static List<Dictionary<string, string>> Read(string file)
     {
-        var list = new List<Dictionary<string, object>>();
+        var list = new List<Dictionary<string, string>>();
         var data = Resources.Load(file) as TextAsset;
 
         var lines = Regex.Split(data.text, LINE_SPLIT_RE);
@@ -29,38 +29,15 @@ public class CSVReader
                 continue;
             }
 
-            var entry = new Dictionary<string, object>();
+            var entry = new Dictionary<string, string>();
             for (var j = 0; j < header.Length && j < values.Length; j++)
             {
                 var value = values[j];
                 value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
-                object finalvalue = value;
-                if (int.TryParse(value, out var n))
-                {
-                    finalvalue = n;
-                }
-                else if (float.TryParse(value, out var f))
-                {
-                    finalvalue = f;
-                }
-                entry[header[j]] = finalvalue;
+                entry[header[j]] = value;
             }
             list.Add(entry);
         }
         return list;
-    }
-
-    public static Dictionary<string, object> FindRowWithColumnName(List<Dictionary<string, object>> dataList, string columnName, int numValue)
-    {
-        foreach (var row in dataList)
-        {
-            if (row.ContainsKey(columnName) && row[columnName].Equals(numValue))
-            {
-                return row;
-            }
-        }
-
-        Debug.Log("No row with" + columnName + " == " + numValue + " found.");
-        return null;
     }
 }

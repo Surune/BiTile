@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class UI_StageSelect : MonoBehaviour
 {
+    private const int FirstChapter = 1;
     private const int FirstStage = 1;
-    private const int LastStage = 200;
 
+    [SerializeField] private Transform chapterContainer;
+    [SerializeField] private UI_World_Chapter chapterPrefab;
     [SerializeField] private Transform stageContainer;
     [SerializeField] private UI_World_Stage stagePrefab;
+    private int selectedChapter = FirstChapter;
 
 #if UNITY_EDITOR
     private string editorLastUnlockedStageText;
@@ -14,7 +17,9 @@ public class UI_StageSelect : MonoBehaviour
 
     private void Awake()
     {
-        RefreshStages();
+        selectedChapter = GameManager.Instance.StageSelection.Chapter;
+        RefreshChapters();
+        RefreshStages(selectedChapter);
 
 #if UNITY_EDITOR
         editorLastUnlockedStageText = SaveManager.LastUnlockedStage.ToString();
@@ -23,16 +28,49 @@ public class UI_StageSelect : MonoBehaviour
 
     private void RefreshStages()
     {
+        RefreshStages(selectedChapter);
+    }
+
+    public void SelectChapter(int chapter)
+    {
+        selectedChapter = chapter;
+        GameManager.Instance.SelectChapter(chapter);
+        RefreshStages(chapter);
+    }
+
+    private void RefreshChapters()
+    {
+        foreach (Transform child in chapterContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        var clearedStage = SaveManager.LastUnlockedStage;
+        for (var chapter = FirstChapter; chapter <= PuzzleStageRepository.TotalChapterCount; chapter++)
+        {
+            var isUnlocked = PuzzleStageRepository.GetFirstProgressStage(chapter) <= clearedStage;
+            var chapterView = Instantiate(chapterPrefab, chapterContainer);
+            chapterView.SetInfo(this, chapter, isUnlocked);
+        }
+    }
+
+    private void RefreshStages(int chapter)
+    {
         foreach (Transform child in stageContainer)
         {
             Destroy(child.gameObject);
         }
 
         var clearedStage = SaveManager.LastUnlockedStage;
-        for (var i = FirstStage; i <= LastStage; i++)
+        for (var i = FirstStage; i <= PuzzleStageRepository.TotalStageCount; i++)
         {
-            var stage = Instantiate(stagePrefab, stageContainer).GetComponent<UI_World_Stage>();
-            stage.SetInfo(i, clearedStage);
+            if (PuzzleStageRepository.GetChapter(i) != chapter)
+            {
+                continue;
+            }
+
+            var stage = Instantiate(stagePrefab, stageContainer);
+            stage.SetInfo(PuzzleStageRepository.GetChapter(i), PuzzleStageRepository.GetStage(i), i, clearedStage);
         }
     }
 
@@ -61,9 +99,10 @@ public class UI_StageSelect : MonoBehaviour
 
     private void ApplyEditorLastUnlockedStage()
     {
-        var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, LastStage);
+        var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, PuzzleStageRepository.TotalStageCount);
         editorLastUnlockedStageText = lastUnlockedStage.ToString();
         SaveManager.LastUnlockedStage = lastUnlockedStage;
+        RefreshChapters();
         RefreshStages();
     }
 #endif

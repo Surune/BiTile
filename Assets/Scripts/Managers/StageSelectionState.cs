@@ -1,4 +1,5 @@
-public class StageSelectionState
+public struct StageSelectionState
 {
-    public int LoadStageNum;
+    public int Chapter;
+    public int Stage;
 }

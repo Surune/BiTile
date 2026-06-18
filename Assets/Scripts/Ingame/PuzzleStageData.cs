@@ -1,11 +1,13 @@
+using UnityEngine;
+
 public struct PuzzleStageData
 {
-    public int StageNumber;
+    public int Chapter;
+    public int Stage;
     public int MaxClicks;
-    public string TutorialLkey;
     public int Width;
     public int Height;
     public TileInfo[,] Tiles;
-    public int HintRow;
-    public int HintColumn;
+    public Vector2Int HintPosition;
+    public string TutorialLkey;
 }
