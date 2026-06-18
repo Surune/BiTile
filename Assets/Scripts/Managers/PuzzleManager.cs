@@ -19,6 +19,7 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private Transform board;
     [SerializeField] private float tileSpacing = 125f;
+    [SerializeField] private float stageTransitionHalfRotateDuration = 0.25f;
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
     
     [Header("Buttons")]
@@ -39,6 +40,7 @@ public class PuzzleManager : MonoBehaviour
     private bool CanAcceptTileClick => isClickable && !isTileClickInProgress;
     private bool isClickable = true;
     private bool isTileClickInProgress;
+    private bool isStageTransitionInProgress;
     
     private Color tileColor;
     private int currentChapter = 1;
@@ -134,7 +136,8 @@ public class PuzzleManager : MonoBehaviour
                 var y = -GetDistanceFromCenter(row, height) * tileSpacing;
                 var pos = new Vector3(x, 0, y);
 
-                var tile = Instantiate(tilePrefab, pos, Quaternion.identity, board);
+                var tile = Instantiate(tilePrefab, board);
+                tile.transform.SetLocalPositionAndRotation(pos, Quaternion.identity);
                 tile.Init(Instance, row, col, type, color, tileInfoObjects[GetIndexByType(type)], tileColor);
                 puzzleTiles[row * width + col] = tile;
             }
@@ -353,14 +356,28 @@ public class PuzzleManager : MonoBehaviour
         isClickable = true;
     }
 
-    private void LoadNextStage()
+    private async void LoadNextStage()
     {
+        if (isStageTransitionInProgress)
+        {
+            return;
+        }
+
         var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > PuzzleStageRepository.TotalStageCount)
         {
             SceneManager.LoadScene(Definitions.StageSelectSceneName);
             return;
         }
+
+        isStageTransitionInProgress = true;
+        nextButton.gameObject.SetActive(false);
+        resetButton.interactable = false;
+        hintButton.interactable = false;
+        ui.UndoButton.interactable = false;
+
+        isClickable = false;
+        await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
 
         currentChapter = PuzzleStageRepository.GetChapter(progressStage);
         currentStage = PuzzleStageRepository.GetStage(progressStage);
@@ -373,6 +390,11 @@ public class PuzzleManager : MonoBehaviour
         undoHistory.Clear();
         LoadStage();
 
+        board.localRotation = Quaternion.Euler(0f, 0f, -90f);
+        await board.DOLocalRotate(Vector3.zero, stageTransitionHalfRotateDuration).SetEase(Ease.OutQuad).AsyncWaitForCompletion();
+        board.localRotation = Quaternion.identity;
+
+        isStageTransitionInProgress = false;
         isClickable = true;
     }
 
