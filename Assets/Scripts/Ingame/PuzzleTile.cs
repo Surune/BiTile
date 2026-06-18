@@ -43,7 +43,7 @@ public class PuzzleTile : MonoBehaviour
 
     public async void OnTileClick()
     {
-        if (isAnimating || !puzzleManager.IsClickable)
+        if (isAnimating || !puzzleManager.TryBeginTileClick())
         {
             return;
         }
@@ -54,6 +54,7 @@ public class PuzzleTile : MonoBehaviour
         {
             await StartShake();
             GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
+            puzzleManager.CompleteTileClick();
             return;
         }
 
@@ -61,6 +62,7 @@ public class PuzzleTile : MonoBehaviour
         var changeTask = tileInfo.ChangeTiles(puzzleManager, row, col, DelayInterval);
         puzzleManager.TileClicked();
         await changeTask;
+        puzzleManager.CompleteTileClick();
     }
 
     public async Task RefreshColorWithDelay(float delay)
@@ -99,18 +101,18 @@ public class PuzzleTile : MonoBehaviour
     public async Task StartRotate(float delayTime = 0f)
     {
         isAnimating = true;
-        await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
+        await Task.Delay(delayTime.ToMilliseconds());
         transform.DORotate(Vector3.forward * 180, rotationTime).SetRelative(true);
-        await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
+        await Task.Delay(rotationTime.ToMilliseconds());
         isAnimating = false;
     }
 
     public async Task StartUndoRotate(float delayTime = 0f)
     {
         isAnimating = true;
-        await Task.Delay(Mathf.RoundToInt(delayTime * 1000f));
+        await Task.Delay(delayTime.ToMilliseconds());
         transform.DORotate(Vector3.back * 180, rotationTime).SetRelative(true);
-        await Task.Delay(Mathf.RoundToInt(rotationTime * 1000f));
+        await Task.Delay(rotationTime.ToMilliseconds());
         isAnimating = false;
     }
 

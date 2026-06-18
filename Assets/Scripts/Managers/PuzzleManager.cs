@@ -36,8 +36,9 @@ public class PuzzleManager : MonoBehaviour
     private TileInfo[,] stageInfo;
     private readonly Stack<char[]> undoHistory = new Stack<char[]>();
 
-    public bool IsClickable => isClickable;
+    private bool CanAcceptTileClick => isClickable && !isTileClickInProgress;
     private bool isClickable = true;
+    private bool isTileClickInProgress;
     
     private Color tileColor;
     private int currentChapter = 1;
@@ -163,6 +164,22 @@ public class PuzzleManager : MonoBehaviour
         return row >= 0 && row < width && col >= 0 && col < height;
     }
 
+    public bool TryBeginTileClick()
+    {
+        if (!CanAcceptTileClick)
+        {
+            return false;
+        }
+
+        isTileClickInProgress = true;
+        return true;
+    }
+
+    public void CompleteTileClick()
+    {
+        isTileClickInProgress = false;
+    }
+
     public async Task ChangeTileColor(int row, int col, float delay)
     {
         if (!CanChangeTileColor(row, col))
@@ -180,55 +197,13 @@ public class PuzzleManager : MonoBehaviour
         {
             tile.color = 'W';
             await tile.StartShake(delay);
+            return;
         }
-        else
-        {
-            var rotateTask = tile.StartRotate(delay);
-            if (tile.type == '.')
-            {
-                if (tile.color == 'B')
-                {
-                    await Task.WhenAll(
-                        rotateTask,
-                        //DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].whiteSprite, delay),
-                        tile.RefreshColorWithDelay(delay)
-                    );
-                }
-                else if (tile.color == 'W')
-                {
-                    await Task.WhenAll(
-                        rotateTask,
-                        //DelayedSpriteChange(tile.imageObject, tileInfoObjects[GetIndexByType(tile.type)].GetWhiteSkinSprite(currentSkinIndex), delay),
-                        tile.RefreshColorWithDelay(delay)
-                    );
-                }
-                else
-                {
-                    await rotateTask;
-                }
-            }
-            else
-            {
-                if (tile.color == 'B')
-                {
-                    await Task.WhenAll(
-                        rotateTask,
-                        tile.RefreshColorWithDelay(delay)
-                    );
-                }
-                else if (tile.color == 'W')
-                {
-                    await Task.WhenAll(
-                        rotateTask,
-                        tile.RefreshColorWithDelay(delay)
-                    );
-                }
-                else
-                {
-                    await rotateTask;
-                }
-            }
-        }
+
+        await Task.WhenAll(
+            tile.StartRotate(delay),
+            tile.RefreshColorWithDelay(delay)
+        );
     }
 
     private int GetIndexByType(char type)
@@ -312,12 +287,12 @@ public class PuzzleManager : MonoBehaviour
         if (CheckStageClear())
         {
             isClickable = false;
-            Invoke("SetNextButtonActive", 0.45f);
+            Invoke(nameof(SetNextButtonActive), 0.45f);
         }
         else if (currentClicks >= maxClicks)
         {
             isClickable = false;
-            Invoke("SetRetryButtonActive", 0.45f);
+            Invoke(nameof(SetRetryButtonActive), 0.45f);
         }
     }
 
@@ -341,7 +316,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void Retry()
     {
-        if (currentClicks <= 0)
+        if (isTileClickInProgress || currentClicks <= 0)
         {
             return;
         }
@@ -355,7 +330,7 @@ public class PuzzleManager : MonoBehaviour
 
     public async void Undo()
     {
-        if (currentClicks <= 0 || undoHistory.Count <= 0)
+        if (isTileClickInProgress || currentClicks <= 0 || undoHistory.Count <= 0)
         {
             return;
         }
