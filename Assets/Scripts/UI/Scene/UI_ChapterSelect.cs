@@ -3,14 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class UI_ChapterSelect : MonoBehaviour
 {
-    private const int FirstChapter = 1;
-
-    [SerializeField] private Transform chapterContainer;
-    [SerializeField] private UI_World_Chapter chapterPrefab;
+    [SerializeField] private UI_ChapterCarousel chapterCarousel;
 
     private void Awake()
     {
-        RefreshChapters();
+        chapterCarousel.Init(this);
     }
 
     public void SelectChapter(int chapter)
@@ -26,22 +23,6 @@ public class UI_ChapterSelect : MonoBehaviour
         }
 
         LoadStageSelectScene();
-    }
-
-    private void RefreshChapters()
-    {
-        foreach (Transform child in chapterContainer)
-        {
-            Destroy(child.gameObject);
-        }
-
-        var clearedStage = SaveManager.LastUnlockedStage;
-        for (var chapter = FirstChapter; chapter <= PuzzleStageRepository.TotalChapterCount; chapter++)
-        {
-            var isUnlocked = PuzzleStageRepository.GetFirstProgressStage(chapter) <= clearedStage;
-            var chapterView = Instantiate(chapterPrefab, chapterContainer);
-            chapterView.Init(this, chapter, isUnlocked);
-        }
     }
 
     private void LoadStageSelectScene()
