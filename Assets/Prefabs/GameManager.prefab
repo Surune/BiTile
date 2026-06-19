@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8265166740344270072}
   - component: {fileID: 5539179838138197658}
   m_Layer: 0
-  m_Name: '@GameManager'
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1509e3414fd9fe4da2f1d6dce9d8273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorPreset: {fileID: 11400000, guid: 5c1c15db7f5444d6a7a9c67bc48631ba, type: 2}
+  chapterDataList: {fileID: 11400000, guid: 5c1c15db7f5444d6a7a9c67bc48631ba, type: 2}
   soundDictionary: {fileID: 11400000, guid: 8ca4df9ba5754a4683bfe2fceaf9ba77, type: 2}

@@ -101,8 +101,9 @@ public class PuzzleManager : MonoBehaviour
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
         height = currentStageData.Height;
-        tileColor = GameManager.Instance.Color.GetTileColor(currentChapter);
-        camera.backgroundColor = GameManager.Instance.Color.GetBackgroundColor(currentChapter);
+        var chapterData = GameManager.Instance.Chapter.GetData(currentChapter);
+        tileColor = chapterData.TileColor;
+        camera.backgroundColor = chapterData.BackgroundColor;
         
         ui.Init(currentStage, maxClicks, currentClicks, currentStageData.TutorialLkey);
 
@@ -366,7 +367,7 @@ public class PuzzleManager : MonoBehaviour
         var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > PuzzleStageRepository.TotalStageCount)
         {
-            SceneManager.LoadScene(Definitions.StageSelectSceneName);
+            SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
         }
 

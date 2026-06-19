@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112879256778469c8d4aad942a66e981, type: 3}
+  m_Name: ChapterData
+  m_EditorClassIdentifier: 
+  Data:
+  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: 5dc85a0ba9e89234d804ebd87498ebae, type: 3}
+    BackgroundColor: {r: 0.56078434, g: 0.827451, b: 0.2509804, a: 1}
+    TileColor: {r: 1, g: 0.36078432, b: 0.36078432, a: 1}
+  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: 54063289869ac164f92639f633208fc0, type: 3}
+    BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    TileColor: {r: 0, g: 0, b: 0, a: 0}
+  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: f5b51eef246baaf44a6a6d9af3448fb9, type: 3}
+    BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    TileColor: {r: 0, g: 0, b: 0, a: 0}
+  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: c3ae37beb536c7e4bbca05b48cea99a5, type: 3}
+    BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    TileColor: {r: 0, g: 0, b: 0, a: 0}
+  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: c46b1410eeda0874787e93ab7afcf8ae, type: 3}
+    BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    TileColor: {r: 0, g: 0, b: 0, a: 0}
+  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: 7954be61a61c3984dbcb92bb2288ac38, type: 3}
+    BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    TileColor: {r: 0, g: 0, b: 0, a: 0}

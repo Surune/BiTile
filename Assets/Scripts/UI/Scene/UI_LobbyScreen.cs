@@ -17,7 +17,7 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void OnWorldSelect()
     {
-        SceneManager.LoadScene(Definitions.StageSelectSceneName);
+        SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
     }
 
     private void OnPrivacyPolicy()

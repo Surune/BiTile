@@ -5,15 +5,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance => instance;
     private static GameManager instance;
 
-    public ColorManager Color => _color;
+    public ChapterManager Chapter => chapter;
     public SoundManager Sound => _sound;
     public StageSelectionState StageSelection => _stageSelection;
     public Localization Localization => _localization;
     
-    [SerializeField] private ColorPreset colorPreset;
+    [SerializeField] private ChapterDataList chapterDataList;
     [SerializeField] private SoundDictionary soundDictionary;
 
-    private ColorManager _color = new ColorManager();
+    private ChapterManager chapter;
     private SoundManager _sound = new SoundManager();
     private StageSelectionState _stageSelection;
     private Localization _localization = new Localization();
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         stageSelection.Stage = 1;
         _stageSelection = stageSelection;
         
-        _color.Init(colorPreset);
+        chapter = new ChapterManager(chapterDataList);
         _sound.Init(soundDictionary);
         _localization.Init();
     }

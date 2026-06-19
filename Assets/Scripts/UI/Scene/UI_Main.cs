@@ -76,7 +76,7 @@ public class UI_Main : MonoBehaviour
 
     private void OnExitButton()
     {
-        SceneManager.LoadScene(Definitions.StageSelectSceneName);
+        SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
     }
 
     private void OnBGMButton()

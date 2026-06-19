@@ -2,14 +2,11 @@ using UnityEngine;
 
 public class UI_StageSelect : MonoBehaviour
 {
-    private const int FirstChapter = 1;
     private const int FirstStage = 1;
 
-    [SerializeField] private Transform chapterContainer;
-    [SerializeField] private UI_World_Chapter chapterPrefab;
     [SerializeField] private Transform stageContainer;
     [SerializeField] private UI_World_Stage stagePrefab;
-    private int selectedChapter = FirstChapter;
+    private int selectedChapter;
 
 #if UNITY_EDITOR
     private string editorLastUnlockedStageText;
@@ -18,7 +15,6 @@ public class UI_StageSelect : MonoBehaviour
     private void Awake()
     {
         selectedChapter = GameManager.Instance.StageSelection.Chapter;
-        RefreshChapters();
         RefreshStages(selectedChapter);
 
 #if UNITY_EDITOR
@@ -29,29 +25,6 @@ public class UI_StageSelect : MonoBehaviour
     private void RefreshStages()
     {
         RefreshStages(selectedChapter);
-    }
-
-    public void SelectChapter(int chapter)
-    {
-        selectedChapter = chapter;
-        GameManager.Instance.SelectChapter(chapter);
-        RefreshStages(chapter);
-    }
-
-    private void RefreshChapters()
-    {
-        foreach (Transform child in chapterContainer)
-        {
-            Destroy(child.gameObject);
-        }
-
-        var clearedStage = SaveManager.LastUnlockedStage;
-        for (var chapter = FirstChapter; chapter <= PuzzleStageRepository.TotalChapterCount; chapter++)
-        {
-            var isUnlocked = PuzzleStageRepository.GetFirstProgressStage(chapter) <= clearedStage;
-            var chapterView = Instantiate(chapterPrefab, chapterContainer);
-            chapterView.SetInfo(this, chapter, isUnlocked);
-        }
     }
 
     private void RefreshStages(int chapter)
@@ -102,7 +75,6 @@ public class UI_StageSelect : MonoBehaviour
         var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, PuzzleStageRepository.TotalStageCount);
         editorLastUnlockedStageText = lastUnlockedStage.ToString();
         SaveManager.LastUnlockedStage = lastUnlockedStage;
-        RefreshChapters();
         RefreshStages();
     }
 #endif
