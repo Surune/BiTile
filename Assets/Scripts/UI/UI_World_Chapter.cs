@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UI_World_Chapter : MonoBehaviour
 {
@@ -38,6 +39,11 @@ public class UI_World_Chapter : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         chapterCarousel.ClickChapter(chapter, isUnlocked);
     }
 }
