@@ -18,6 +18,7 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private UI_Main ui;
     [SerializeField] private Camera camera;
     [SerializeField] private Transform board;
+    [SerializeField] private ParticleSystem successParticle;
     [SerializeField] private float tileSpacing = 125f;
     [SerializeField] private float stageTransitionHalfRotateDuration = 0.25f;
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
@@ -87,7 +88,9 @@ public class PuzzleManager : MonoBehaviour
     private void LoadStage()
     {
         CancelInvoke(nameof(SetNextButtonActive));
+        CancelInvoke(nameof(PlaySuccessParticle));
         CancelInvoke(nameof(SetRetryButtonActive));
+        StopSuccessParticle();
         retryButton.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
         resetButton.interactable = false;
@@ -292,6 +295,7 @@ public class PuzzleManager : MonoBehaviour
         {
             isClickable = false;
             Invoke(nameof(SetNextButtonActive), 0.45f);
+            Invoke(nameof(PlaySuccessParticle), 0.45f);
         }
         else if (currentClicks >= maxClicks)
         {
@@ -309,6 +313,17 @@ public class PuzzleManager : MonoBehaviour
         resetButton.interactable = false;
         ui.UndoButton.interactable = false;
         nextButton.gameObject.SetActive(true);
+    }
+
+    private void PlaySuccessParticle()
+    {
+        successParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        successParticle.Play();
+    }
+
+    private void StopSuccessParticle()
+    {
+        successParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     private void SetRetryButtonActive()
@@ -340,6 +355,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         CancelInvoke(nameof(SetNextButtonActive));
+        CancelInvoke(nameof(PlaySuccessParticle));
         CancelInvoke(nameof(SetRetryButtonActive));
 
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Undo);
