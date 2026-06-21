@@ -1,12 +1,27 @@
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI_StageSelect : MonoBehaviour
 {
     private const int FirstStage = 1;
+    private const float TransitionDuration = 0.4f;
+
+    public static bool PlayIntroOnAwake { get; set; }
 
     [SerializeField] private Transform stageContainer;
     [SerializeField] private UI_World_Stage stagePrefab;
+    [SerializeField] private Button backButton;
+
     private int selectedChapter;
+    private RectTransform rootRectTransform;
+    private CanvasGroup canvasGroup;
+    private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
+    private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
+    private Sequence transitionSequence;
+    private bool isTransitioning;
 
 #if UNITY_EDITOR
     private string editorLastUnlockedStageText;
@@ -14,12 +29,135 @@ public class UI_StageSelect : MonoBehaviour
 
     private void Awake()
     {
+        rootRectTransform = (RectTransform)transform;
+        canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+
+        CacheTransitionTargets();
+        var shouldPlayIntro = PlayIntroOnAwake;
+        PlayIntroOnAwake = false;
+        if (shouldPlayIntro)
+        {
+            PrepareIntroPosition();
+        }
+
+        if (backButton != null)
+        {
+            backButton.onClick.AddListener(OnBackButton);
+        }
+
         selectedChapter = GameManager.Instance.StageSelection.Chapter;
         RefreshStages(selectedChapter);
 
 #if UNITY_EDITOR
         editorLastUnlockedStageText = SaveManager.LastUnlockedStage.ToString();
 #endif
+    }
+
+    public Tween PlayIntroTransition(float duration)
+    {
+        KillTransitionTweens();
+        canvasGroup.blocksRaycasts = false;
+        transitionSequence = CreateMoveSequence(Vector2.zero, duration);
+        transitionSequence.OnComplete(() => canvasGroup.blocksRaycasts = true);
+        return transitionSequence;
+    }
+
+    public void KillTransitionTweens()
+    {
+        transitionSequence?.Kill();
+        transitionSequence = null;
+
+        for (var i = 0; i < transitionTargets.Count; i++)
+        {
+            if (transitionTargets[i] != null)
+            {
+                DOTween.Kill(transitionTargets[i]);
+            }
+        }
+    }
+
+    private void OnBackButton()
+    {
+        if (isTransitioning)
+        {
+            return;
+        }
+
+        isTransitioning = true;
+        canvasGroup.blocksRaycasts = false;
+
+        transitionSequence = CreateMoveSequence(Vector2.down * GetTransitionOffset(), TransitionDuration);
+
+        var chapterSelect = FindObjectOfType<UI_ChapterSelect>();
+        if (chapterSelect != null)
+        {
+            transitionSequence.Join(chapterSelect.PlayReturnTransition(TransitionDuration));
+        }
+
+        transitionSequence.OnComplete(() =>
+        {
+            transitionSequence = null;
+            SceneManager.UnloadSceneAsync(Definitions.StageSelectSceneName);
+        });
+    }
+
+    private Sequence CreateMoveSequence(Vector2 offset, float duration)
+    {
+        var sequence = DOTween.Sequence().SetTarget(this).SetLink(gameObject);
+        for (var i = 0; i < transitionTargets.Count; i++)
+        {
+            var target = transitionTargets[i];
+            if (target == null)
+            {
+                continue;
+            }
+
+            sequence.Join(target.DOAnchorPos(defaultAnchoredPositions[i] + offset, duration)
+                .SetEase(Ease.InOutCubic)
+                .SetTarget(target)
+                .SetLink(target.gameObject));
+        }
+
+        return sequence;
+    }
+
+    private void PrepareIntroPosition()
+    {
+        canvasGroup.blocksRaycasts = false;
+        var introOffset = Vector2.down * GetTransitionOffset();
+        for (var i = 0; i < transitionTargets.Count; i++)
+        {
+            transitionTargets[i].anchoredPosition = defaultAnchoredPositions[i] + introOffset;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        KillTransitionTweens();
+    }
+
+    private float GetTransitionOffset()
+    {
+        return rootRectTransform.rect.height > 0f ? rootRectTransform.rect.height : Screen.height;
+    }
+
+    private void CacheTransitionTargets()
+    {
+        transitionTargets.Clear();
+        defaultAnchoredPositions.Clear();
+
+        foreach (Transform child in transform)
+        {
+            if (child is RectTransform rectTarget)
+            {
+                transitionTargets.Add(rectTarget);
+                defaultAnchoredPositions.Add(rectTarget.anchoredPosition);
+            }
+        }
     }
 
     private void RefreshStages()
