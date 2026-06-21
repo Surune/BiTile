@@ -13,6 +13,7 @@ public class UI_World_Chapter : MonoBehaviour
     private GameObject numberModel;
     private int chapter;
     private bool isUnlocked;
+    private bool isSelected;
 
     public int Chapter => chapter;
     
@@ -30,11 +31,19 @@ public class UI_World_Chapter : MonoBehaviour
 
     private void Update()
     {
-        groundModel.transform.Rotate(Vector3.up * groundRotateSpeed * Time.deltaTime, Space.Self);
+        if (isSelected)
+        {
+            groundModel.transform.Rotate(Vector3.up * groundRotateSpeed * Time.deltaTime, Space.Self);
+        }
 
         var localPosition = numberModelDefaultLocalPosition;
         localPosition.y += Mathf.Sin(Time.time * numberFloatSpeed) * numberFloatHeight;
         numberModel.transform.localPosition = localPosition;
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        this.isSelected = isSelected;
     }
 
     private void OnMouseDown()

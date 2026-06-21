@@ -122,6 +122,7 @@ public class UI_ChapterCarousel : MonoBehaviour
     private void ApplyCarouselTransform(UI_World_Chapter chapterView, int offset, float t)
     {
         var clampedOffset = Mathf.Clamp(offset, -MaxVisibleOffset, MaxVisibleOffset);
+        chapterView.SetSelected(offset == 0);
         chapterView.gameObject.SetActive(Mathf.Abs(offset) <= MaxVisibleOffset);
 
         var distance = Mathf.Abs(clampedOffset);
