@@ -15,7 +15,7 @@ public class UI_World_Stage : MonoBehaviour
     {
         this.chapter = chapter;
         this.stage = stage;
-        stageText.text = $"{chapter}-{stage}";
+        stageText.text = $"{stage}";
         
         if (progressStage <= cleared)
         {
