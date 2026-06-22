@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -28,6 +29,10 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private Button hintButton;
     [SerializeField] private Button resetButton;
+
+    [Header("Inputs")]
+    [SerializeField] private InputActionReference undo;
+    [SerializeField] private InputActionReference reset;
     
     private int width;
     private int height;
@@ -58,6 +63,40 @@ public class PuzzleManager : MonoBehaviour
         }
 
         StartGame(GameManager.Instance.StageSelection);
+    }
+
+    private void OnEnable()
+    {
+        undo.action.performed += OnUndoAction;
+        undo.action.Enable();
+
+        reset.action.performed += OnResetAction;
+        reset.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        undo.action.performed -= OnUndoAction;
+        undo.action.Disable();
+
+        reset.action.performed -= OnResetAction;
+        reset.action.Disable();
+    }
+
+    private void OnUndoAction(InputAction.CallbackContext context)
+    {
+        if (ui.UndoButton.interactable)
+        {
+            Undo();
+        }
+    }
+
+    private void OnResetAction(InputAction.CallbackContext context)
+    {
+        if (resetButton.interactable || retryButton.gameObject.activeSelf)
+        {
+            Retry();
+        }
     }
 
     private void StartGame(StageSelectionState stageSelection)

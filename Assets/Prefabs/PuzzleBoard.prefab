@@ -64,6 +64,8 @@ MonoBehaviour:
   nextButton: {fileID: 0}
   hintButton: {fileID: 0}
   resetButton: {fileID: 0}
+  undo: {fileID: 2183905184980455353, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
+  reset: {fileID: 6638399153580964215, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
 --- !u!1 &1343736430625962919
 GameObject:
   m_ObjectHideFlags: 0
