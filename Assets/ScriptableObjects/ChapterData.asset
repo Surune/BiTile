@@ -19,8 +19,8 @@ MonoBehaviour:
     TileColor: {r: 0.99215686, g: 0.80784315, b: 0.30588236, a: 1}
   - TileModel: {fileID: 919132149155446097, guid: 3793a1a3bfb534744a80dfe7b753b729, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 54063289869ac164f92639f633208fc0, type: 3}
-    BackgroundColor: {r: 0.43529412, g: 0.25882354, b: 0.13333334, a: 1}
-    TileColor: {r: 0.7882353, g: 0.5372549, b: 0.31764707, a: 1}
+    BackgroundColor: {r: 0.9843138, g: 0.74509805, b: 0.43529415, a: 1}
+    TileColor: {r: 0.42352945, g: 0.24705884, b: 0.12941177, a: 1}
   - TileModel: {fileID: 919132149155446097, guid: 70e09278727c1e04c94b76380e642a37, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: f5b51eef246baaf44a6a6d9af3448fb9, type: 3}
     BackgroundColor: {r: 0.1254902, g: 0.42745098, b: 0.627451, a: 1}
@@ -29,11 +29,15 @@ MonoBehaviour:
     NumberModel: {fileID: 919132149155446097, guid: c3ae37beb536c7e4bbca05b48cea99a5, type: 3}
     BackgroundColor: {r: 0.8862745, g: 0.5176471, b: 0.654902, a: 1}
     TileColor: {r: 0.99215686, g: 0.7529412, b: 0.72156864, a: 1}
-  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+  - TileModel: {fileID: 919132149155446097, guid: 39404329ff3ae054886794db058ac2d9, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: c46b1410eeda0874787e93ab7afcf8ae, type: 3}
-    BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    TileColor: {r: 0, g: 0, b: 0, a: 0}
-  - TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    BackgroundColor: {r: 0.9490196, g: 0.52156866, b: 0.14509805, a: 1}
+    TileColor: {r: 0.9843137, g: 0.74509805, b: 0.43529412, a: 1}
+  - TileModel: {fileID: 919132149155446097, guid: e2104afc3c5506f4291070d03eca1c72, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 7954be61a61c3984dbcb92bb2288ac38, type: 3}
-    BackgroundColor: {r: 0.10980393, g: 0.13333334, b: 0.14901961, a: 0}
-    TileColor: {r: 0, g: 0, b: 0, a: 0}
+    BackgroundColor: {r: 0.3647059, g: 0.2509804, b: 0.21568628, a: 1}
+    TileColor: {r: 0.5058824, g: 0.70980394, b: 0.23921569, a: 1}
+  - TileModel: {fileID: 919132149155446097, guid: 48650b70092878546917b01c5bd05645, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: 9f7e0700320cb254d85e4bf60ff87605, type: 3}
+    BackgroundColor: {r: 0, g: 0.85882354, b: 0.8156863, a: 1}
+    TileColor: {r: 1, g: 0.64750195, b: 0.5424528, a: 1}

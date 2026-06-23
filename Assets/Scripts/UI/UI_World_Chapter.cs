@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class UI_World_Chapter : MonoBehaviour
 {
     [SerializeField] private float groundRotateSpeed = 5f;
+    [SerializeField] private float numberScale = 0.9f;
     [SerializeField] private float numberFloatSpeed = 1f;
     [SerializeField] private float numberFloatHeight = 0.1f;
 
@@ -26,6 +27,7 @@ public class UI_World_Chapter : MonoBehaviour
         var chapterData = GameManager.Instance.Chapter.GetData(chapter);
         groundModel = Instantiate(chapterData.TileModel, transform);
         numberModel = Instantiate(chapterData.NumberModel, transform);
+        numberModel.transform.localScale = new Vector3(numberScale, numberScale, numberScale);
         numberModelDefaultLocalPosition = numberModel.transform.localPosition;
     }
 
