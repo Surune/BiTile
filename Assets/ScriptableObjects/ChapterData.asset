@@ -41,3 +41,7 @@ MonoBehaviour:
     NumberModel: {fileID: 919132149155446097, guid: 9f7e0700320cb254d85e4bf60ff87605, type: 3}
     BackgroundColor: {r: 0, g: 0.85882354, b: 0.8156863, a: 1}
     TileColor: {r: 1, g: 0.64750195, b: 0.5424528, a: 1}
+  - TileModel: {fileID: 919132149155446097, guid: d12a60a38dc771042add8e1e56151da9, type: 3}
+    NumberModel: {fileID: 919132149155446097, guid: 5b84dde9c24417e46be47419f7ab0553, type: 3}
+    BackgroundColor: {r: 0.21568628, g: 0.13725491, b: 0.28235295, a: 1}
+    TileColor: {r: 0.99215686, g: 0.80784315, b: 0.30588236, a: 1}
