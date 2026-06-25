@@ -7,6 +7,8 @@ public class UI_World_Chapter : MonoBehaviour
     [SerializeField] private float numberScale = 0.9f;
     [SerializeField] private float numberFloatSpeed = 1f;
     [SerializeField] private float numberFloatHeight = 0.1f;
+    [SerializeField] private GameObject lockedNumber;
+    [SerializeField] private Color lockedColor;
 
     private Vector3 numberModelDefaultLocalPosition;
     private UI_ChapterCarousel chapterCarousel;
@@ -26,9 +28,15 @@ public class UI_World_Chapter : MonoBehaviour
 
         var chapterData = GameManager.Instance.Chapter.GetData(chapter);
         groundModel = Instantiate(chapterData.TileModel, transform);
-        numberModel = Instantiate(chapterData.NumberModel, transform);
+        numberModel = Instantiate(isUnlocked ? chapterData.NumberModel : lockedNumber, transform);
         numberModel.transform.localScale = new Vector3(numberScale, numberScale, numberScale);
         numberModelDefaultLocalPosition = numberModel.transform.localPosition;
+
+        if (!isUnlocked)
+        {
+            ApplyLockedColor(groundModel);
+            ApplyLockedColor(numberModel);
+        }
     }
 
     private void Update()
@@ -46,6 +54,18 @@ public class UI_World_Chapter : MonoBehaviour
     public void SetSelected(bool isSelected)
     {
         this.isSelected = isSelected;
+    }
+
+    private void ApplyLockedColor(GameObject model)
+    {
+        foreach (var renderer in model.GetComponentsInChildren<Renderer>())
+        {
+            foreach (var material in renderer.materials)
+            {
+                material.mainTexture = null;
+                material.color = lockedColor;
+            }
+        }
     }
 
     private void OnMouseDown()
