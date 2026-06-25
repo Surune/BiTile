@@ -4,11 +4,15 @@ using UnityEngine.UI;
 
 public class UI_LobbyScreen : MonoBehaviour
 {
-    [SerializeField] private Button startSceneButton;
+    [SerializeField] private Button resetButton;
+    [SerializeField] private Button cheatButton;
+    [SerializeField] private Button startButton;
 
     private void Awake()
     {
-        startSceneButton.onClick.AddListener(OnWorldSelect);
+        resetButton.onClick.AddListener(SaveManager.Reset);
+        cheatButton.onClick.AddListener(SaveManager.CompleteAllStages);
+        startButton.onClick.AddListener(OnWorldSelect);
 
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
     }

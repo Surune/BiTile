@@ -38,6 +38,21 @@ public static class SaveManager
         }
     }
 
+    public static void Reset()
+    {
+        data = new SaveData();
+        Save();
+    }
+
+    public static void CompleteAllStages()
+    {
+        data = new SaveData
+        {
+            lastUnlockedStage = PuzzleStageRepository.TotalStageCount
+        };
+        Save();
+    }
+
     private static SaveData Data
     {
         get
