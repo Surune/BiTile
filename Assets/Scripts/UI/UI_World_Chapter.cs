@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class UI_World_Chapter : MonoBehaviour
 {
     [SerializeField] private float groundRotateSpeed = 5f;
+    [SerializeField] private float fastGroundRotateSpeed = 180f;
     [SerializeField] private float numberScale = 0.9f;
     [SerializeField] private float numberFloatSpeed = 1f;
     [SerializeField] private float numberFloatHeight = 0.1f;
@@ -43,7 +44,8 @@ public class UI_World_Chapter : MonoBehaviour
     {
         if (isSelected)
         {
-            groundModel.transform.Rotate(Vector3.up * groundRotateSpeed * Time.deltaTime, Space.Self);
+            var rotateSpeed = Input.GetMouseButton(1) ? fastGroundRotateSpeed : groundRotateSpeed;
+            groundModel.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, Space.Self);
         }
 
         var localPosition = numberModelDefaultLocalPosition;

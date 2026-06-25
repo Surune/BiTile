@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_World_Chapter
   groundRotateSpeed: 5
+  fastGroundRotateSpeed: 180
   numberScale: 0.9
   numberFloatSpeed: 1
   numberFloatHeight: 0.1
