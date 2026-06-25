@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   chapterCarousel: {fileID: 6381529748293862150}
+  backgroundCamera: {fileID: 3760096424211690955}
 --- !u!1 &4449962958252310309
 GameObject:
   m_ObjectHideFlags: 0
