@@ -53,7 +53,7 @@ MonoBehaviour:
   camera: {fileID: 2086544075240022072}
   board: {fileID: 8718706236146295350}
   successParticle: {fileID: 993461926478106388}
-  tileSpacing: 1.1
+  tileSpacing: 1.15
   stageTransitionHalfRotateDuration: 0.25
   tileInfoObjects:
   - {fileID: 11400000, guid: b1ea7f66612234edcb67641bdc702f09, type: 2}
