@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,7 +52,6 @@ public class PuzzleManager : MonoBehaviour
     private int currentStage = 1;
     private int maxClicks = 1;
     private int currentClicks = 0;
-    private int currentSkinIndex;
 
     private void Awake()
     {
@@ -103,7 +101,6 @@ public class PuzzleManager : MonoBehaviour
     {
         currentChapter = stageSelection.Chapter;
         currentStage = stageSelection.Stage;
-        currentSkinIndex = SaveManager.TileSkinIndex;
         
         retryButton.gameObject.SetActive(false);
         retryButton.onClick.AddListener(Retry);
@@ -188,21 +185,6 @@ public class PuzzleManager : MonoBehaviour
 
         hintButton.interactable = true;
         ui.UndoButton.interactable = false;
-    }
-
-    public void ChangeTileSkin(int skinIndex)
-    {
-        throw new NotImplementedException();
-        /*
-        currentSkinIndex = skinIndex;
-        foreach (var tile in puzzleTiles)
-        {
-            if (tile.type == '.' && tile.color == 'W')
-            {
-                tile.imageObject.sprite = tileInfoObjects[0].GetWhiteSkinSprite(skinIndex);
-            }
-        }
-        */
     }
 
     public bool CanChangeTileColor(int row, int col)

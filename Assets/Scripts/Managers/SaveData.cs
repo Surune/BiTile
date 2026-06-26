@@ -4,5 +4,4 @@ using System;
 public class SaveData
 {
     public int lastUnlockedStage = 1;
-    public int tileSkinIndex;
 }

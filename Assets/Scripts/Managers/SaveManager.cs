@@ -28,16 +28,6 @@ public static class SaveManager
         }
     }
 
-    public static int TileSkinIndex
-    {
-        get => Data.tileSkinIndex;
-        set
-        {
-            Data.tileSkinIndex = value;
-            Save();
-        }
-    }
-
     public static void Reset()
     {
         data = new SaveData();

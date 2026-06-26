@@ -9,15 +9,12 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Button exitButton;
     [SerializeField] private Button bgmButton;
     [SerializeField] private Button sfxButton;
-    [SerializeField] private Button skinButton;
     [SerializeField] private Button undoButton;
     
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private TMP_Text tutorialText;
     [SerializeField] private UI_Counter counterPrefab;
     [SerializeField] private Transform counterParent;
-
-    [SerializeField] private UI_SkinPopup skinPopupPrefab;
 
     public Button UndoButton => undoButton;
     
@@ -28,7 +25,6 @@ public class UI_Main : MonoBehaviour
         exitButton.onClick.AddListener(OnExitButton);
         bgmButton.onClick.AddListener(OnBGMButton);
         sfxButton.onClick.AddListener(OnSFXButton);
-        skinButton.onClick.AddListener(OnSkinButton);
     }
 
     public void Init(int stage, int maxClicks, int currentClicks, string tutorialLkey)
@@ -87,10 +83,5 @@ public class UI_Main : MonoBehaviour
     private void OnSFXButton()
     {
         GameManager.Instance.Sound.ToggleSFXMute();
-    }
-    
-    private void OnSkinButton()
-    {
-        Instantiate(skinPopupPrefab, transform);
     }
 }
