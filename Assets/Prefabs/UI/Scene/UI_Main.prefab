@@ -365,7 +365,6 @@ GameObject:
   - component: {fileID: 2378346033997336249}
   - component: {fileID: 3957710253444643799}
   - component: {fileID: 1871801141256898488}
-  - component: {fileID: 5770039059169501602}
   m_Layer: 5
   m_Name: NextText
   m_TagString: Untagged
@@ -389,8 +388,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2.5}
-  m_SizeDelta: {x: -10, y: -5}
+  m_AnchoredPosition: {x: 0, y: 5}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3957710253444643799
 CanvasRenderer:
@@ -420,7 +419,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: NEXT STAGE >
+  m_text: NEXT STAGE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
   m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
@@ -429,8 +428,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4286414205
+  m_fontColor: {r: 0.49019608, g: 0.49019608, b: 0.49019608, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -492,21 +491,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &5770039059169501602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988354857115216553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52faa9432328d431d89bd2631a144c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textObject: {fileID: 1871801141256898488}
-  blinkColor: {r: 0, g: 0, b: 0, a: 0}
-  blinkDuration: 1
 --- !u!1 &2037447104760285164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,7 +1212,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ce66d93c4df76d445aa5936d9afe5d70, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1821,7 +1805,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ce66d93c4df76d445aa5936d9afe5d70, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2275,7 +2259,6 @@ GameObject:
   - component: {fileID: 8264955346947873467}
   - component: {fileID: 4443158007628798678}
   - component: {fileID: 3446613494137457973}
-  - component: {fileID: 3700301995622552216}
   m_Layer: 5
   m_Name: RetryText
   m_TagString: Untagged
@@ -2299,8 +2282,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2.5}
-  m_SizeDelta: {x: -10, y: -5}
+  m_AnchoredPosition: {x: 0, y: 5}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4443158007628798678
 CanvasRenderer:
@@ -2330,7 +2313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TOUCH TO RETRY
+  m_text: RETRY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
   m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
@@ -2402,18 +2385,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3700301995622552216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993218193457618292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52faa9432328d431d89bd2631a144c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textObject: {fileID: 3446613494137457973}
-  blinkColor: {r: 1, g: 1, b: 1, a: 0}
-  blinkDuration: 1
