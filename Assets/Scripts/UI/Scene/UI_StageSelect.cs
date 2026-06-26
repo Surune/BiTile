@@ -11,13 +11,13 @@ public class UI_StageSelect : MonoBehaviour
 
     public static bool PlayIntroOnAwake { get; set; }
 
+    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Transform stageContainer;
     [SerializeField] private UI_World_Stage stagePrefab;
     [SerializeField] private Button backButton;
 
     private int selectedChapter;
     private RectTransform rootRectTransform;
-    private CanvasGroup canvasGroup;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
@@ -30,11 +30,6 @@ public class UI_StageSelect : MonoBehaviour
     private void Awake()
     {
         rootRectTransform = (RectTransform)transform;
-        canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
-        {
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        }
 
         CacheTransitionTargets();
         var shouldPlayIntro = PlayIntroOnAwake;
@@ -44,11 +39,8 @@ public class UI_StageSelect : MonoBehaviour
             PrepareIntroPosition();
         }
 
-        if (backButton != null)
-        {
-            backButton.onClick.AddListener(OnBackButton);
-        }
-
+        backButton.onClick.AddListener(OnBackButton);
+        
         selectedChapter = GameManager.Instance.StageSelection.Chapter;
         RefreshStages(selectedChapter);
 

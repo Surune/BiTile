@@ -108,8 +108,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8324455904871637420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0.75}
-  m_AnchorMax: {x: 0.9, y: 0.9}
+  m_AnchorMin: {x: 0.1, y: 0.9}
+  m_AnchorMax: {x: 0.9, y: 0.95}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 114481e6e5a81dc419e025d4a2df6e9d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b66ae5fc143e0458e86b934de8bd55a1, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 7003515433803813912}
   - component: {fileID: 4492921712357744420}
   - component: {fileID: 6892439752368313159}
+  - component: {fileID: 869185885517938681}
   m_Layer: 5
   m_Name: UI_StageSelect
   m_TagString: Untagged
@@ -440,9 +441,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a0f98846bca7249aa56348008b5cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 869185885517938681}
   stageContainer: {fileID: 4213695720822987277}
   stagePrefab: {fileID: 7908397520550748562, guid: b4d4186678f9bf7468d45428c46a3546, type: 3}
   backButton: {fileID: 7538126115768909260}
+--- !u!225 &869185885517938681
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5267074655390404139}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5605279325603627528
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +492,7 @@ RectTransform:
   m_Father: {fileID: 8324455904871637420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0.1}
-  m_AnchorMax: {x: 0.9, y: 0.7}
+  m_AnchorMax: {x: 0.9, y: 0.8}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
