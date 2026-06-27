@@ -9,11 +9,8 @@ public class UI_LobbyScreen : MonoBehaviour
     private const float TransitionDuration = 0.4f;
 
     [SerializeField] private Button quitButton;
-    [SerializeField] private Button resetButton;
-    [SerializeField] private Button cheatButton;
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
-    [SerializeField] private UI_Option optionPrefab;
 
     private RectTransform rootRectTransform;
     private CanvasGroup canvasGroup;
@@ -21,7 +18,6 @@ public class UI_LobbyScreen : MonoBehaviour
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
     private bool isTransitioning;
-    private UI_Option optionInstance;
 
     private void Awake()
     {
@@ -31,13 +27,8 @@ public class UI_LobbyScreen : MonoBehaviour
         CacheTransitionTargets();
 
         quitButton.onClick.AddListener(Application.Quit);
-        resetButton.onClick.AddListener(SaveManager.Reset);
-        cheatButton.onClick.AddListener(SaveManager.CompleteAllStages);
         startButton.onClick.AddListener(OnWorldSelect);
         optionButton.onClick.AddListener(OnOptionButton);
-
-        optionInstance = Instantiate(optionPrefab, transform);
-        optionInstance.gameObject.SetActive(false);
 
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
     }
@@ -59,12 +50,17 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void OnOptionButton()
     {
-        if (isTransitioning)
+        if (isTransitioning || SceneManager.GetSceneByName(Definitions.OptionSceneName).isLoaded)
         {
             return;
         }
 
-        optionInstance.Open();
+        isTransitioning = true;
+        canvasGroup.blocksRaycasts = false;
+
+        UI_Option.PlayIntroOnAwake = true;
+        var loadOperation = SceneManager.LoadSceneAsync(Definitions.OptionSceneName, LoadSceneMode.Additive);
+        loadOperation.completed += _ => PlayOptionTransition();
     }
 
     private void PlayChapterSelectTransition()
@@ -72,6 +68,18 @@ public class UI_LobbyScreen : MonoBehaviour
         var chapterSelect = FindObjectOfType<UI_ChapterSelect>();
         transitionSequence = CreateMoveSequence(Vector2.up * GetTransitionOffset(), TransitionDuration);
         transitionSequence.Join(chapterSelect.PlayIntroTransition(TransitionDuration));
+        transitionSequence.OnComplete(() =>
+        {
+            transitionSequence = null;
+            isTransitioning = false;
+        });
+    }
+
+    private void PlayOptionTransition()
+    {
+        var option = FindObjectOfType<UI_Option>();
+        transitionSequence = CreateMoveSequence(Vector2.left * GetHorizontalTransitionOffset(), TransitionDuration);
+        transitionSequence.Join(option.PlayIntroTransition(TransitionDuration));
         transitionSequence.OnComplete(() =>
         {
             transitionSequence = null;
@@ -124,6 +132,11 @@ public class UI_LobbyScreen : MonoBehaviour
     private float GetTransitionOffset()
     {
         return rootRectTransform.rect.height > 0f ? rootRectTransform.rect.height : Screen.height;
+    }
+
+    private float GetHorizontalTransitionOffset()
+    {
+        return rootRectTransform.rect.width > 0f ? rootRectTransform.rect.width : Screen.width;
     }
 
     private void OnDestroy()
