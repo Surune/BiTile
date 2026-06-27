@@ -8,9 +8,12 @@ public class UI_LobbyScreen : MonoBehaviour
 {
     private const float TransitionDuration = 0.4f;
 
+    [SerializeField] private Button quitButton;
     [SerializeField] private Button resetButton;
     [SerializeField] private Button cheatButton;
     [SerializeField] private Button startButton;
+    [SerializeField] private Button optionButton;
+    [SerializeField] private UI_Option optionPrefab;
 
     private RectTransform rootRectTransform;
     private CanvasGroup canvasGroup;
@@ -18,6 +21,7 @@ public class UI_LobbyScreen : MonoBehaviour
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
     private bool isTransitioning;
+    private UI_Option optionInstance;
 
     private void Awake()
     {
@@ -26,9 +30,14 @@ public class UI_LobbyScreen : MonoBehaviour
 
         CacheTransitionTargets();
 
+        quitButton.onClick.AddListener(Application.Quit);
         resetButton.onClick.AddListener(SaveManager.Reset);
         cheatButton.onClick.AddListener(SaveManager.CompleteAllStages);
         startButton.onClick.AddListener(OnWorldSelect);
+        optionButton.onClick.AddListener(OnOptionButton);
+
+        optionInstance = Instantiate(optionPrefab, transform);
+        optionInstance.gameObject.SetActive(false);
 
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
     }
@@ -46,6 +55,16 @@ public class UI_LobbyScreen : MonoBehaviour
         UI_ChapterSelect.PlayIntroOnAwake = true;
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => PlayChapterSelectTransition();
+    }
+
+    private void OnOptionButton()
+    {
+        if (isTransitioning)
+        {
+            return;
+        }
+
+        optionInstance.Open();
     }
 
     private void PlayChapterSelectTransition()
