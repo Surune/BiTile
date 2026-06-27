@@ -27,7 +27,7 @@ public class UI_Main : MonoBehaviour
         sfxButton.onClick.AddListener(OnSFXButton);
     }
 
-    public void Init(int stage, int maxClicks, int currentClicks, string tutorialLkey)
+    public void Init(int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey)
     {
         stageText.text = stage.ToString();
         tutorialText.text = GameManager.Instance.Localization.Get(tutorialLkey);

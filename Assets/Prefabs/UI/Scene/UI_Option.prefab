@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 8289604246234948129}
   - component: {fileID: 4964862602419518742}
   - component: {fileID: 8701572953403699500}
+  - component: {fileID: 1636458128144806449}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Complete All
+  m_text: 'Unlock Everything
 
 '
   m_isRightToLeft: 0
@@ -214,6 +215,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1636458128144806449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194496158332824195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 8701572953403699500}
+  lkey: 6
 --- !u!1 &2184294899756691454
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,7 +1140,7 @@ GameObject:
   - component: {fileID: 3964997043007412203}
   - component: {fileID: 8975037633746304088}
   m_Layer: 5
-  m_Name: CompleteButton
+  m_Name: UnlockButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1342,6 +1357,7 @@ GameObject:
   - component: {fileID: 8007288569420865958}
   - component: {fileID: 1748315517662290325}
   - component: {fileID: 623246730517278823}
+  - component: {fileID: 7835800647720482803}
   m_Layer: 5
   m_Name: OptionTitle
   m_TagString: Untagged
@@ -1468,6 +1484,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7835800647720482803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237702850743647781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 623246730517278823}
+  lkey: 3
 --- !u!1 &5462355101240701734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,10 +2006,10 @@ RectTransform:
   - {fileID: 5720092229103634813}
   m_Father: {fileID: 2920249035819478951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.3, y: 0.05}
-  m_AnchorMax: {x: 0.7, y: 0.85}
-  m_AnchoredPosition: {x: -0.5, y: -27}
-  m_SizeDelta: {x: -1, y: -54}
+  m_AnchorMin: {x: 0.25, y: 0.05}
+  m_AnchorMax: {x: 0.75, y: 0.85}
+  m_AnchoredPosition: {x: 0, y: -27}
+  m_SizeDelta: {x: 0, y: -54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5375096223156185107
 MonoBehaviour:
@@ -2064,7 +2094,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 215, y: 80}
-  m_Spacing: {x: 15, y: 15}
+  m_Spacing: {x: 25, y: 15}
   m_Constraint: 1
   m_ConstraintCount: 3
 --- !u!1 &7583518679692003769
@@ -2078,6 +2108,7 @@ GameObject:
   - component: {fileID: 6582795452508269765}
   - component: {fileID: 2772017633608725294}
   - component: {fileID: 6288862958989602915}
+  - component: {fileID: 6894421884891554912}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2132,9 +2163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Reset
-
-'
+  m_text: Reset Progression
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
   m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
@@ -2206,3 +2235,17 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6894421884891554912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7583518679692003769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 6288862958989602915}
+  lkey: 5

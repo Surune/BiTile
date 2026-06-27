@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 200000000000000002}
   - component: {fileID: 200000000000000003}
   - component: {fileID: 200000000000000004}
+  - component: {fileID: 2364404196554733125}
   m_Layer: 5
   m_Name: OptionButton
   m_TagString: Untagged
@@ -182,6 +183,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2364404196554733125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200000000000000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  lkey: 3
 --- !u!1 &3108795511300306730
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +209,7 @@ GameObject:
   - component: {fileID: 5081559433204444847}
   - component: {fileID: 4855379357610591038}
   - component: {fileID: 8878500845261656958}
+  - component: {fileID: 2350699763413552450}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -380,6 +395,19 @@ MonoBehaviour:
   textObject: {fileID: 4855379357610591038}
   blinkColor: {r: 1, g: 1, b: 1, a: 0}
   blinkDuration: 1
+--- !u!114 &2350699763413552450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108795511300306730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  lkey: 1
 --- !u!1 &4785609096639027070
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +483,7 @@ GameObject:
   - component: {fileID: 2842805149289940912}
   - component: {fileID: 5155136018167663451}
   - component: {fileID: 116234292188961917}
+  - component: {fileID: 4226812744209343231}
   m_Layer: 5
   m_Name: CreditButton
   m_TagString: Untagged
@@ -625,6 +654,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4226812744209343231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6088344304466824872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  lkey: 4
 --- !u!1 &6343748043224682220
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,6 +818,7 @@ GameObject:
   - component: {fileID: 1583985336766662308}
   - component: {fileID: 7533130358529042602}
   - component: {fileID: 6085094201335445091}
+  - component: {fileID: 3188591950549224496}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -948,6 +991,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3188591950549224496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423152475461709918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  lkey: 2
 --- !u!1 &7468102453922421947
 GameObject:
   m_ObjectHideFlags: 0

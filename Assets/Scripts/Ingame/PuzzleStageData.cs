@@ -9,5 +9,5 @@ public struct PuzzleStageData
     public int Height;
     public TileInfo[,] Tiles;
     public Vector2Int HintPosition;
-    public string TutorialLkey;
+    public Definitions.LKey TutorialLkey;
 }

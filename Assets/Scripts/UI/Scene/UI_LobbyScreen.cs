@@ -58,7 +58,7 @@ public class UI_LobbyScreen : MonoBehaviour
         isTransitioning = true;
         canvasGroup.blocksRaycasts = false;
 
-        UI_Option.PlayIntroOnAwake = true;
+        UI_Options.PlayIntroOnAwake = true;
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.OptionSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => PlayOptionTransition();
     }
@@ -77,7 +77,7 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void PlayOptionTransition()
     {
-        var option = FindObjectOfType<UI_Option>();
+        var option = FindObjectOfType<UI_Options>();
         transitionSequence = CreateMoveSequence(Vector2.left * GetHorizontalTransitionOffset(), TransitionDuration);
         transitionSequence.Join(option.PlayIntroTransition(TransitionDuration));
         transitionSequence.OnComplete(() =>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,6 +55,8 @@ public class Localization
     private Dictionary<string, Dictionary<string, string>> textByKey;
     private string currentLocale;
 
+    public event Action LocaleChanged;
+
     public void Init()
     {
         textByKey = LoadText();
@@ -67,9 +70,15 @@ public class Localization
         currentLocale = locale;
         PlayerPrefs.SetString(PlayerPrefsLocaleKey, locale);
         PlayerPrefs.Save();
+        LocaleChanged?.Invoke();
     }
 
     public string Get(string lkey)
+    {
+        return Get(lkey, currentLocale);
+    }
+
+    public string Get(Definitions.LKey lkey)
     {
         return Get(lkey, currentLocale);
     }
@@ -82,6 +91,16 @@ public class Localization
         }
 
         return textByKey[lkey][locale];
+    }
+
+    private string Get(Definitions.LKey lkey, string locale)
+    {
+        if (lkey == Definitions.LKey.None)
+        {
+            return string.Empty;
+        }
+
+        return textByKey[lkey.ToString()][locale];
     }
 
     public static string GetSystemLocale()

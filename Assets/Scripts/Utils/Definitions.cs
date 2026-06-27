@@ -27,4 +27,21 @@ public static class Definitions
         Effect,
         MaxCount
     }
+
+    public enum LKey
+    {
+        None,
+        UI_GAMESTART,
+        UI_QUIT,
+        UI_OPTIONS,
+        UI_CREDITS,
+        UI_RESET,
+        UI_UNLOCK,
+        TUTORIAL_WHITE,
+        TUTORIAL_BASE,
+        TUTORIAL_SIZE,
+        TUTORIAL_PLUS,
+        TUTORIAL_X,
+        TUTORIAL_FIXED,
+    }
 }

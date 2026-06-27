@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_Option : MonoBehaviour
+public class UI_Options : MonoBehaviour
 {
     private const float TransitionDuration = 0.4f;
 
