@@ -1,7 +1,11 @@
-LKEY,koKR,enUS
-TUTORIAL_WHITE,모든 타일을 하얀색으로 만들어보세요.
-TUTORIAL_BASE,기본 타일은 자신과 주변 8칸의 타일을 뒤집습니다.
-TUTORIAL_SIZE,더 많은 타일이 나올 수도 있습니다.
-TUTORIAL_PLUS,+ 타일은 자신과 상하좌우 4칸의 타일을 뒤집습니다.
-TUTORIAL_X,X 타일은 자신과 대각선 4칸의 타일을 뒤집습니다.
-TUTORIAL_FIXED,! 타일은 절대 뒤집히지 않습니다.
+LKEY,enUS,koKR,jaJP,zhHans,zhHant,esES,ptBR,ruRU,deDE,frFR,trTR,thTH
+UI_GAMESTART,Game Start,게임 시작,ゲーム開始,开始游戏,開始遊戲,Iniciar juego,Iniciar jogo,Начать игру,Spiel starten,Commencer,Oyunu Baslat,เริ่มเกม
+UI_QUIT,Quit,나가기,終了,退出,離開,Salir,Sair,Выйти,Beenden,Quitter,Cikis,ออก
+UI_OPTION,Options,옵션,オプション,选项,選項,Opciones,Opcoes,Настройки,Optionen,Options,Ayarlar,ตัวเลือก
+UI_CREDIT,Credits,크레딧,クレジット,制作名单,製作名單,Creditos,Creditos,Авторы,Credits,Credits,Emegi Gecenler,เครดิต
+TUTORIAL_WHITE,Turn every tile white.,모든 타일을 하얀색으로 만들어보세요.,すべてのタイルを白にしましょう。,把所有方块变成白色。,把所有方塊變成白色。,Convierte todas las fichas en blancas.,Deixe todas as pecas brancas.,Сделайте все плитки белыми.,Mache alle Felder weiss.,Rends toutes les tuiles blanches.,Tum taslari beyaz yap.,เปลี่ยนไทล์ทั้งหมดให้เป็นสีขาว
+TUTORIAL_BASE,The basic tile flips itself and the 8 surrounding tiles. Turn every tile white.,기본 타일은 자신과 주변 8칸의 타일을 뒤집습니다. 모든 타일을 하얀색으로 만들어보세요.,基本タイルは自分と周囲8マスのタイルを反転します。すべてのタイルを白にしましょう。,普通方块会翻转自身和周围8格的方块。把所有方块变成白色。,普通方塊會翻轉自身和周圍8格的方塊。把所有方塊變成白色。,La ficha basica gira su propia casilla y las 8 cercanas. Convierte todas las fichas en blancas.,A peca basica vira ela mesma e as 8 pecas ao redor. Deixe todas as pecas brancas.,Обычная плитка переворачивает себя и 8 соседних плиток. Сделайте все плитки белыми.,Das Standardfeld dreht sich selbst und die 8 Felder darum. Mache alle Felder weiss.,La tuile de base retourne elle meme et les 8 tuiles autour. Rends toutes les tuiles blanches.,Temel tas kendisini ve cevresindeki 8 tasi cevirir. Tum taslari beyaz yap.,ไทล์พื้นฐานจะพลิกตัวเองและไทล์รอบๆ 8 ช่อง เปลี่ยนไทล์ทั้งหมดให้เป็นสีขาว
+TUTORIAL_SIZE,More tiles may appear.,더 많은 타일이 나올 수도 있습니다.,もっと多くのタイルが出ることもあります。,可能会出现更多方块。,可能會出現更多方塊。,Pueden aparecer mas fichas.,Mais pecas podem aparecer.,Может появиться больше плиток.,Es koennen mehr Felder erscheinen.,Plus de tuiles peuvent apparaitre.,Daha fazla tas cikabilir.,อาจมีไทล์เพิ่มขึ้น
+TUTORIAL_PLUS,+ tiles flip themselves and the 4 orthogonal tiles.,+ 타일은 자신과 상하좌우 4칸의 타일을 뒤집습니다.,+タイルは自分と上下左右4マスのタイルを反転します。,+ 方块会翻转自身和上下左右4格的方块。,+ 方塊會翻轉自身和上下左右4格的方塊。,Las fichas + giran su propia casilla y las 4 ortogonales.,As pecas + viram elas mesmas e as 4 pecas ortogonais.,Плитки + переворачивают себя и 4 плитки по сторонам.,+ Felder drehen sich selbst und die 4 geraden Nachbarn.,Les tuiles + retournent elles memes et les 4 tuiles orthogonales.,+ taslari kendilerini ve 4 duz komsu tasi cevirir.,ไทล์ + จะพลิกตัวเองและไทล์แนวตรง 4 ช่อง
+TUTORIAL_X,X tiles flip themselves and the 4 diagonal tiles.,X 타일은 자신과 대각선 4칸의 타일을 뒤집습니다.,Xタイルは自分と斜め4マスのタイルを反転します。,X 方块会翻转自身和斜向4格的方块。,X 方塊會翻轉自身和斜向4格的方塊。,Las fichas X giran su propia casilla y las 4 diagonales.,As pecas X viram elas mesmas e as 4 pecas diagonais.,Плитки X переворачивают себя и 4 плитки по диагонали.,X Felder drehen sich selbst und die 4 diagonalen Nachbarn.,Les tuiles X retournent elles memes et les 4 tuiles diagonales.,X taslari kendilerini ve 4 capraz komsu tasi cevirir.,ไทล์ X จะพลิกตัวเองและไทล์ทแยง 4 ช่อง
+TUTORIAL_FIXED,! tiles never flip.,! 타일은 절대 뒤집히지 않습니다.,!タイルは絶対に反転しません。,! 方块绝不会翻转。,! 方塊絕不會翻轉。,Las fichas ! nunca giran.,As pecas ! nunca viram.,Плитки ! никогда не переворачиваются.,! Felder drehen sich nie.,Les tuiles ! ne se retournent jamais.,! taslari asla cevrilmez.,ไทล์ ! จะไม่พลิกเด็ดขาด

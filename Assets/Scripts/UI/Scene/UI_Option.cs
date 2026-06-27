@@ -18,6 +18,8 @@ public class UI_Option : MonoBehaviour
     [SerializeField] private TMP_Text bgmValue;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_Text sfxValue;
+    [SerializeField] private Transform languageButtons;
+    [SerializeField] private Button languageButton;
 
     private RectTransform rootRectTransform;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
@@ -43,6 +45,7 @@ public class UI_Option : MonoBehaviour
         completeButton.onClick.AddListener(SaveManager.CompleteAllStages);
         bgmSlider.onValueChanged.AddListener(OnBgmSlider);
         sfxSlider.onValueChanged.AddListener(OnSfxSlider);
+        InitLanguageButtons();
 
         Open();
     }
@@ -89,6 +92,34 @@ public class UI_Option : MonoBehaviour
     private void UpdateSfxValue(float value)
     {
         sfxValue.text = Mathf.RoundToInt(value * 100f).ToString();
+    }
+
+    private void InitLanguageButtons()
+    {
+        for (var i = 0; i < Localization.SupportedLocales.Length; i++)
+        {
+            var button = Instantiate(languageButton, languageButtons);
+            var locale = Localization.SupportedLocales[i];
+            button.GetComponentInChildren<TMP_Text>().text = Localization.SupportedLocaleLabels[i];
+            button.onClick.AddListener(() => OnLanguageButton(locale));
+        }
+
+        RefreshLanguageButtons();
+    }
+
+    private void OnLanguageButton(string locale)
+    {
+        GameManager.Instance.Localization.SetLocale(locale);
+        RefreshLanguageButtons();
+    }
+
+    private void RefreshLanguageButtons()
+    {
+        for (var i = 0; i < Localization.SupportedLocales.Length; i++)
+        {
+            var button = languageButtons.GetChild(i).GetComponent<Button>();
+            button.interactable = Localization.SupportedLocales[i] != GameManager.Instance.Localization.CurrentLocale;
+        }
     }
 
     private void Close()
