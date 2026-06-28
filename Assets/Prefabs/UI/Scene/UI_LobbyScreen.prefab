@@ -144,7 +144,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 17
+  m_fontStyle: 16
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 200000000000000004}
   lkey: 3
 --- !u!1 &3108795511300306730
 GameObject:
@@ -407,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 4855379357610591038}
   lkey: 1
 --- !u!1 &4785609096639027070
 GameObject:
@@ -615,7 +617,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 17
+  m_fontStyle: 16
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -666,6 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 116234292188961917}
   lkey: 4
 --- !u!1 &6343748043224682220
 GameObject:
@@ -952,7 +955,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 17
+  m_fontStyle: 16
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1003,6 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 6085094201335445091}
   lkey: 2
 --- !u!1 &7468102453922421947
 GameObject:

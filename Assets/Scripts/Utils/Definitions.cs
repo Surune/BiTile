@@ -37,6 +37,8 @@ public static class Definitions
         UI_CREDITS,
         UI_RESET,
         UI_UNLOCK,
+        UI_WINDOW,
+        UI_FULLSCREEN,
         TUTORIAL_WHITE,
         TUTORIAL_BASE,
         TUTORIAL_SIZE,

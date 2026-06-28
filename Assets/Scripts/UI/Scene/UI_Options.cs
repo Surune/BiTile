@@ -12,14 +12,20 @@ public class UI_Options : MonoBehaviour
     public static bool PlayIntroOnAwake { get; set; }
 
     [SerializeField] private Button closeButton;
-    [SerializeField] private Button resetButton;
-    [SerializeField] private Button completeButton;
+    [Header("Display")]
+    [SerializeField] private Button windowButton;
+    [SerializeField] private Button fullscreenButton;
+    [Header("Sound")]
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private TMP_Text bgmValue;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_Text sfxValue;
+    [Header("Localization")]
     [SerializeField] private Transform languageButtons;
     [SerializeField] private Button languageButton;
+    [Header("Savefile")]
+    [SerializeField] private Button resetButton;
+    [SerializeField] private Button completeButton;
 
     private RectTransform rootRectTransform;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
@@ -45,6 +51,9 @@ public class UI_Options : MonoBehaviour
         completeButton.onClick.AddListener(SaveManager.CompleteAllStages);
         bgmSlider.onValueChanged.AddListener(OnBgmSlider);
         sfxSlider.onValueChanged.AddListener(OnSfxSlider);
+        windowButton.onClick.AddListener(OnWindowButton);
+        fullscreenButton.onClick.AddListener(OnFullscreenButton);
+        DisplayModeManager.Changed += RefreshDisplayModeButtons;
         InitLanguageButtons();
 
         Open();
@@ -56,6 +65,7 @@ public class UI_Options : MonoBehaviour
         sfxSlider.SetValueWithoutNotify(GameManager.Instance.Sound.SfxVolume);
         UpdateBgmValue(GameManager.Instance.Sound.BgmVolume);
         UpdateSfxValue(GameManager.Instance.Sound.SfxVolume);
+        RefreshDisplayModeButtons();
         gameObject.SetActive(true);
     }
 
@@ -92,6 +102,22 @@ public class UI_Options : MonoBehaviour
     private void UpdateSfxValue(float value)
     {
         sfxValue.text = Mathf.RoundToInt(value * 100f).ToString();
+    }
+
+    private void OnWindowButton()
+    {
+        DisplayModeManager.SetFullScreen(false);
+    }
+
+    private void OnFullscreenButton()
+    {
+        DisplayModeManager.SetFullScreen(true);
+    }
+
+    private void RefreshDisplayModeButtons()
+    {
+        windowButton.interactable = DisplayModeManager.IsFullScreen;
+        fullscreenButton.interactable = !DisplayModeManager.IsFullScreen;
     }
 
     private void InitLanguageButtons()
@@ -187,6 +213,7 @@ public class UI_Options : MonoBehaviour
 
     private void OnDestroy()
     {
+        DisplayModeManager.Changed -= RefreshDisplayModeButtons;
         transitionSequence?.Kill();
     }
 }

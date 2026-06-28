@@ -37,6 +37,16 @@ public class GameManager : MonoBehaviour
         chapter = new ChapterManager(chapterDataList);
         _sound.Init(soundDictionary);
         _localization.Init();
+        DisplayModeManager.Init();
+    }
+
+    private void Update()
+    {
+        if ((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) &&
+            (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+        {
+            DisplayModeManager.ToggleFullScreen();
+        }
     }
 
     public void SelectChapter(int chapter)
