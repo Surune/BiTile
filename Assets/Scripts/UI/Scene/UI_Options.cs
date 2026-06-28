@@ -15,6 +15,9 @@ public class UI_Options : MonoBehaviour
     [Header("Display")]
     [SerializeField] private Button windowButton;
     [SerializeField] private Button fullscreenButton;
+    [SerializeField] private Button resolutionLeftButton;
+    [SerializeField] private Button resolutionRightButton;
+    [SerializeField] private TMP_Text resolutionValue;
     [Header("Sound")]
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private TMP_Text bgmValue;
@@ -53,6 +56,8 @@ public class UI_Options : MonoBehaviour
         sfxSlider.onValueChanged.AddListener(OnSfxSlider);
         windowButton.onClick.AddListener(OnWindowButton);
         fullscreenButton.onClick.AddListener(OnFullscreenButton);
+        resolutionLeftButton.onClick.AddListener(OnResolutionLeftButton);
+        resolutionRightButton.onClick.AddListener(OnResolutionRightButton);
         DisplayModeManager.Changed += RefreshDisplayModeButtons;
         InitLanguageButtons();
 
@@ -114,10 +119,23 @@ public class UI_Options : MonoBehaviour
         DisplayModeManager.SetFullScreen(true);
     }
 
+    private void OnResolutionLeftButton()
+    {
+        DisplayModeManager.SelectPreviousResolution();
+    }
+
+    private void OnResolutionRightButton()
+    {
+        DisplayModeManager.SelectNextResolution();
+    }
+
     private void RefreshDisplayModeButtons()
     {
         windowButton.interactable = DisplayModeManager.IsFullScreen;
         fullscreenButton.interactable = !DisplayModeManager.IsFullScreen;
+        resolutionLeftButton.interactable = DisplayModeManager.CanSelectPreviousResolution;
+        resolutionRightButton.interactable = DisplayModeManager.CanSelectNextResolution;
+        resolutionValue.text = DisplayModeManager.ResolutionLabel;
     }
 
     private void InitLanguageButtons()

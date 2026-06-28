@@ -2438,6 +2438,9 @@ MonoBehaviour:
   closeButton: {fileID: 2920249035819478890}
   windowButton: {fileID: 5372183952180303271}
   fullscreenButton: {fileID: 8418268911292120408}
+  resolutionLeftButton: {fileID: 2710670847779178660}
+  resolutionRightButton: {fileID: 7548297251802395235}
+  resolutionValue: {fileID: 7337870616586689022}
   bgmSlider: {fileID: 266554277856718744}
   bgmValue: {fileID: 6794629650436643609}
   sfxSlider: {fileID: 2920249035819478148}
