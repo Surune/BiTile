@@ -19,6 +19,7 @@ public class UI_Main : MonoBehaviour
     public Button UndoButton => undoButton;
     
     private readonly List<UI_Counter> counters = new List<UI_Counter>();
+    private bool isExiting;
     
     private void Awake()
     {
@@ -72,6 +73,13 @@ public class UI_Main : MonoBehaviour
 
     private void OnExitButton()
     {
+        if (isExiting)
+        {
+            return;
+        }
+
+        isExiting = true;
+        UI_LobbyScreen.OpenStageSelectOnAwake = true;
         SceneManager.LoadScene(Definitions.LobbySceneName);
     }
 

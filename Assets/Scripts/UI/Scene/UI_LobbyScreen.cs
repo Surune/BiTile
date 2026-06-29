@@ -8,6 +8,8 @@ public class UI_LobbyScreen : MonoBehaviour
 {
     private const float TransitionDuration = 0.4f;
 
+    public static bool OpenStageSelectOnAwake { get; set; }
+
     [SerializeField] private Button quitButton;
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
@@ -18,6 +20,7 @@ public class UI_LobbyScreen : MonoBehaviour
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
     private bool isTransitioning;
+    private bool openStageSelectImmediatelyOnAwake;
 
     private void Awake()
     {
@@ -31,6 +34,13 @@ public class UI_LobbyScreen : MonoBehaviour
         optionButton.onClick.AddListener(OnOptionButton);
 
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
+
+        openStageSelectImmediatelyOnAwake = OpenStageSelectOnAwake;
+        OpenStageSelectOnAwake = false;
+        if (openStageSelectImmediatelyOnAwake)
+        {
+            OpenStageSelectImmediately();
+        }
     }
 
     private void OnWorldSelect()
@@ -75,6 +85,31 @@ public class UI_LobbyScreen : MonoBehaviour
         });
     }
 
+    private void OpenStageSelectImmediately()
+    {
+        isTransitioning = true;
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0f;
+        SetTransitionPosition(Vector2.up * GetTransitionOffset());
+        UI_ChapterSelect.PlayIntroOnAwake = false;
+        UI_ChapterSelect.DisableAudioListenerOnAwake = true;
+        var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
+        loadOperation.completed += _ =>
+        {
+            var chapterSelect = FindObjectOfType<UI_ChapterSelect>();
+            chapterSelect.OpenStageSelectImmediately(GameManager.Instance.StageSelection.Chapter);
+            openStageSelectImmediatelyOnAwake = false;
+        };
+    }
+
+    private void SetTransitionPosition(Vector2 offset)
+    {
+        for (var i = 0; i < transitionTargets.Count; i++)
+        {
+            transitionTargets[i].anchoredPosition = defaultAnchoredPositions[i] + offset;
+        }
+    }
+
     private void PlayOptionTransition()
     {
         var option = FindObjectOfType<UI_Options>();
@@ -91,6 +126,7 @@ public class UI_LobbyScreen : MonoBehaviour
     {
         isTransitioning = true;
         canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 1f;
         transitionSequence?.Kill();
         transitionSequence = CreateMoveSequence(Vector2.zero, duration);
         transitionSequence.OnComplete(() =>

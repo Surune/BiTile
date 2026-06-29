@@ -9,6 +9,7 @@ public class UI_ChapterSelect : MonoBehaviour
     private const float ChapterExitDistance = 7f;
 
     public static bool PlayIntroOnAwake { get; set; }
+    public static bool DisableAudioListenerOnAwake { get; set; }
 
     [SerializeField] private UI_ChapterCarousel chapterCarousel;
     [SerializeField] private Camera backgroundCamera;
@@ -31,7 +32,9 @@ public class UI_ChapterSelect : MonoBehaviour
 
         var shouldPlayIntro = PlayIntroOnAwake;
         PlayIntroOnAwake = false;
-        backgroundCamera.GetComponent<AudioListener>().enabled = !shouldPlayIntro;
+        var shouldDisableAudioListener = shouldPlayIntro || DisableAudioListenerOnAwake;
+        DisableAudioListenerOnAwake = false;
+        backgroundCamera.GetComponent<AudioListener>().enabled = !shouldDisableAudioListener;
         if (shouldPlayIntro)
         {
             PrepareIntroPosition();
@@ -60,6 +63,20 @@ public class UI_ChapterSelect : MonoBehaviour
         }
 
         LoadStageSelectScene();
+    }
+
+    public void OpenStageSelectImmediately(int chapter)
+    {
+        isTransitioning = true;
+        GameManager.Instance.SelectChapter(chapter);
+
+        chapterCarousel.transform.localPosition = chapterContentDefaultPosition + Vector3.up * GetChapterExitDistance();
+        backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();
+        backgroundCamera.backgroundColor = GameManager.Instance.Chapter.GetData(chapter).BackgroundColor;
+
+        UI_StageSelect.PlayIntroOnAwake = false;
+        var loadOperation = SceneManager.LoadSceneAsync(Definitions.StageSelectSceneName, LoadSceneMode.Additive);
+        loadOperation.completed += _ => isTransitioning = false;
     }
 
     private void LoadStageSelectScene()
