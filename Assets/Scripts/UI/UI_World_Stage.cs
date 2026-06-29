@@ -7,7 +7,7 @@ public class UI_World_Stage : MonoBehaviour
 {
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private Button button;
-    [SerializeField] private Sprite clearedSprite;
+    [SerializeField] private Color lockedColor;
     private int chapter;
     private int stage;
 
@@ -15,16 +15,16 @@ public class UI_World_Stage : MonoBehaviour
     {
         this.chapter = chapter;
         this.stage = stage;
-        stageText.text = $"{stage}";
+        stageText.text = stage.ToString();
         
         if (progressStage <= cleared)
         {
-            GetComponentInChildren<Image>().overrideSprite = clearedSprite;
-            stageText.color = Color.black;
             button.onClick.AddListener(Accept);
         }
         else
         {
+            GetComponentInChildren<Image>().color = lockedColor;
+            stageText.color = Color.white;
             button.onClick.AddListener(Deny);
         }
     }
