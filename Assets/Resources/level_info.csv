@@ -1,6 +1,6 @@
 CHAPTER,STAGE,LIMIT,ROW,COLUMN,TYPE,COLOR,HINT,LKEY
 1,1,1,3,3,.........,BBBBBBBBB,"(1, 1)",TUTORIAL_BASE
-1,2,2,3,3,.........,BWBBWBBWB,"(1, 0)",
+1,2,2,3,3,.........,BWBBWBBWB,"(1, 0)",TUTORIAL_COUNT
 1,3,3,3,3,.........,WBWWBWWBW,"(1, 0)",
 1,4,3,3,3,.........,WWWBBBWWW,"(0, 1)",
 1,5,3,3,3,.........,BBBWBWWBW,"(1, 1)",
