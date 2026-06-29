@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(-10000)]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance => instance;
