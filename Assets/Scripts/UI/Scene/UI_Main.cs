@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class UI_Main : MonoBehaviour
 {
     [SerializeField] private Button exitButton;
-    [SerializeField] private Button bgmButton;
-    [SerializeField] private Button sfxButton;
     [SerializeField] private Button undoButton;
     
     [SerializeField] private TMP_Text stageText;
@@ -24,8 +22,6 @@ public class UI_Main : MonoBehaviour
     private void Awake()
     {
         exitButton.onClick.AddListener(OnExitButton);
-        bgmButton.onClick.AddListener(OnBGMButton);
-        sfxButton.onClick.AddListener(OnSFXButton);
     }
 
     public void Init(int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey)
@@ -81,15 +77,5 @@ public class UI_Main : MonoBehaviour
         isExiting = true;
         UI_LobbyScreen.OpenStageSelectOnAwake = true;
         SceneManager.LoadScene(Definitions.LobbySceneName);
-    }
-
-    private void OnBGMButton()
-    {
-        GameManager.Instance.Sound.ToggleBGMMute();
-    }
-
-    private void OnSFXButton()
-    {
-        GameManager.Instance.Sound.ToggleSFXMute();
     }
 }

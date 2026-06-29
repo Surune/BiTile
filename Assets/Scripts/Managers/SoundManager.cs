@@ -88,20 +88,4 @@ public class SoundManager
         PlayerPrefs.Save();
         audioSources[(int)Definitions.Sound.Effect].volume = sfxVolume;
     }
-
-    public void ToggleBGMMute()
-    {
-        bgmOn = bgmVolume > 0f;
-        PlayerPrefs.SetInt(BgmMuteKey, Convert.ToInt32(bgmOn));
-        PlayerPrefs.Save();
-        SetBgmVolume(bgmOn ? 0f : DefaultBgmVolume);
-    }
-    
-    public void ToggleSFXMute()
-    {
-        sfxOn = sfxVolume > 0f;
-        PlayerPrefs.SetInt(SfxMuteKey, Convert.ToInt32(sfxOn));
-        PlayerPrefs.Save();
-        SetSfxVolume(sfxOn ? 0f : DefaultSfxVolume);
-    }
 }
