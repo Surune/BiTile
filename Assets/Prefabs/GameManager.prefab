@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1509e3414fd9fe4da2f1d6dce9d8273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toggleFullscreen: {fileID: -7317171520087795823, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   chapterDataList: {fileID: 11400000, guid: 5c1c15db7f5444d6a7a9c67bc48631ba, type: 2}
   soundDictionary: {fileID: 11400000, guid: 8ca4df9ba5754a4683bfe2fceaf9ba77, type: 2}

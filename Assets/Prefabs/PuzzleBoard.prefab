@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 2334471866779927331}
   - component: {fileID: 2086544075240022072}
   - component: {fileID: 118931435407645198}
+  - component: {fileID: 9143972856076412361}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -286,6 +287,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4471783632127212477}
   m_Enabled: 1
+--- !u!114 &9143972856076412361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4471783632127212477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1001 &1591985861697619853
 PrefabInstance:
   m_ObjectHideFlags: 0

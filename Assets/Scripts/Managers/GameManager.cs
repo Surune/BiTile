@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     public StageSelectionState StageSelection => _stageSelection;
     public Localization Localization => _localization;
     
+    [SerializeField] private InputActionReference toggleFullscreen;
     [SerializeField] private ChapterDataList chapterDataList;
     [SerializeField] private SoundDictionary soundDictionary;
 
@@ -42,8 +44,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) &&
-            (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+        if (toggleFullscreen.action.WasPressedThisFrame())
         {
             DisplayModeManager.ToggleFullScreen();
         }

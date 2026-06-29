@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UI_ChapterCarousel : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class UI_ChapterCarousel : MonoBehaviour
     private const float UnselectedChapterScale = 0.25f;
     private const float MaxVisibleOffset = 3f;
 
+    [SerializeField] private InputActionReference scroll;
+    [SerializeField] private InputActionReference moveChapter;
     [SerializeField] private UI_World_Chapter chapterPrefab;
     [SerializeField] private float selectedChapterGap = 4f;
     [SerializeField] private float chapterSpacing = 1.8f;
@@ -26,22 +29,28 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     private void Update()
     {
-        if (Input.mouseScrollDelta.y >= mouseWheelSensitivity)
+        var scrollY = scroll.action.ReadValue<Vector2>().y;
+
+        if (scrollY >= mouseWheelSensitivity)
         {
             MoveCarousel(-1);
         }
-        else if (Input.mouseScrollDelta.y <= -mouseWheelSensitivity)
+        else if (scrollY <= -mouseWheelSensitivity)
         {
             MoveCarousel(1);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        if (moveChapter.action.WasPressedThisFrame())
         {
-            MoveCarousel(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
-            MoveCarousel(1);
+            var moveDirection = moveChapter.action.ReadValue<float>();
+            if (moveDirection < 0f)
+            {
+                MoveCarousel(-1);
+            }
+            else if (moveDirection > 0f)
+            {
+                MoveCarousel(1);
+            }
         }
 
         RefreshCarousel();

@@ -199,6 +199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f16d547ad14868bde2c21e8224f4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scroll: {fileID: -6343742173323501921, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
+  moveChapter: {fileID: -2015591636387412954, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   chapterPrefab: {fileID: 9090446082664621586, guid: 4f652939dc9303944ace8567e145a9fe, type: 3}
   selectedChapterGap: 4
   chapterSpacing: 1.8
@@ -432,6 +434,7 @@ GameObject:
   - component: {fileID: 2050934051001033755}
   - component: {fileID: 3760096424211690955}
   - component: {fileID: 3275043835900961548}
+  - component: {fileID: 8249960401584689249}
   m_Layer: 5
   m_Name: Camera
   m_TagString: Untagged
@@ -513,6 +516,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9168366065109200470}
   m_Enabled: 1
+--- !u!114 &8249960401584689249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168366065109200470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1001 &526386809836517824
 PrefabInstance:
   m_ObjectHideFlags: 0

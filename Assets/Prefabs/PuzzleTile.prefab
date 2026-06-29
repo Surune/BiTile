@@ -50,7 +50,6 @@ MonoBehaviour:
   type: 74
   color: 77
   rotationTime: 0.4
-  meshRenderer: {fileID: 0}
   blackColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   whiteColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &6061397914893384126

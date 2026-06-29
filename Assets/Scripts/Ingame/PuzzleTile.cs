@@ -2,8 +2,9 @@ using System;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PuzzleTile : MonoBehaviour
+public class PuzzleTile : MonoBehaviour, IPointerClickHandler
 {
     public int row;
     public int col;
@@ -36,7 +37,7 @@ public class PuzzleTile : MonoBehaviour
         RefreshColor();
     }
     
-    private void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
         OnTileClick();
     }

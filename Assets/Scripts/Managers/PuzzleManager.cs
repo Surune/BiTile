@@ -47,6 +47,8 @@ public class PuzzleManager : MonoBehaviour
     private bool isTileClickInProgress;
     private bool isStageTransitionInProgress;
     
+    public Camera Camera => camera;
+
     private Color tileColor;
     private int currentChapter = 1;
     private int currentStage = 1;

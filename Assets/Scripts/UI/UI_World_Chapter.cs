@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class UI_World_Chapter : MonoBehaviour
+public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 {
+    [Header("Input")]
+    [SerializeField] private InputActionReference rightClick;
+    [Header("Visual")]
     [SerializeField] private float groundRotateSpeed = 5f;
     [SerializeField] private float fastGroundRotateSpeed = 180f;
     [SerializeField] private float numberScale = 0.9f;
@@ -33,18 +37,19 @@ public class UI_World_Chapter : MonoBehaviour
         numberModel.transform.localScale = new Vector3(numberScale, numberScale, numberScale);
         numberModelDefaultLocalPosition = numberModel.transform.localPosition;
 
-        if (!isUnlocked)
+        if (isUnlocked)
         {
-            ApplyLockedColor(groundModel);
-            ApplyLockedColor(numberModel);
+            return;
         }
+        ApplyLockedColor(groundModel);
+        ApplyLockedColor(numberModel);
     }
 
     private void Update()
     {
         if (isSelected)
         {
-            var rotateSpeed = Input.GetMouseButton(1) ? fastGroundRotateSpeed : groundRotateSpeed;
+            var rotateSpeed = rightClick.action.IsPressed() ? fastGroundRotateSpeed : groundRotateSpeed;
             groundModel.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, Space.Self);
         }
 
@@ -70,13 +75,8 @@ public class UI_World_Chapter : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
-
         chapterCarousel.ClickChapter(chapter, isUnlocked);
     }
 }
