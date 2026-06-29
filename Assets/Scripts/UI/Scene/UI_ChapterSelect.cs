@@ -56,7 +56,7 @@ public class UI_ChapterSelect : MonoBehaviour
         var stageSelectScene = SceneManager.GetSceneByName(Definitions.StageSelectSceneName);
         if (stageSelectScene.isLoaded)
         {
-            FindObjectOfType<UI_StageSelect>()?.KillTransitionTweens();
+            FindFirstObjectByType<UI_StageSelect>().KillTransitionTweens();
             var unloadOperation = SceneManager.UnloadSceneAsync(stageSelectScene);
             unloadOperation.completed += _ => LoadStageSelectScene();
             return;
@@ -101,7 +101,7 @@ public class UI_ChapterSelect : MonoBehaviour
             return;
         }
 
-        var lobbyScreen = FindObjectOfType<UI_LobbyScreen>();
+        var lobbyScreen = FindFirstObjectByType<UI_LobbyScreen>();
         var sequence = DOTween.Sequence();
         sequence.Join(PlayExitTransition(TransitionDuration));
         sequence.Join(lobbyScreen.PlayReturnTransition(TransitionDuration));
@@ -110,13 +110,7 @@ public class UI_ChapterSelect : MonoBehaviour
 
     private void PlayStageSelectTransition()
     {
-        var stageSelect = FindObjectOfType<UI_StageSelect>();
-        if (stageSelect == null)
-        {
-            isTransitioning = false;
-            return;
-        }
-
+        var stageSelect = FindFirstObjectByType<UI_StageSelect>();
         var chapterContent = chapterCarousel.transform;
         chapterContent.DOKill();
         backButtonRectTransform.DOKill();

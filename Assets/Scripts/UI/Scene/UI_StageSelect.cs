@@ -84,11 +84,8 @@ public class UI_StageSelect : MonoBehaviour
 
         transitionSequence = CreateMoveSequence(Vector2.down * GetTransitionOffset(), TransitionDuration);
 
-        var chapterSelect = FindObjectOfType<UI_ChapterSelect>();
-        if (chapterSelect != null)
-        {
-            transitionSequence.Join(chapterSelect.PlayReturnTransition(TransitionDuration));
-        }
+        var chapterSelect = FindFirstObjectByType<UI_ChapterSelect>();
+        transitionSequence.Join(chapterSelect.PlayReturnTransition(TransitionDuration));
 
         transitionSequence.OnComplete(() =>
         {

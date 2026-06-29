@@ -75,7 +75,7 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void PlayChapterSelectTransition()
     {
-        var chapterSelect = FindObjectOfType<UI_ChapterSelect>();
+        var chapterSelect = FindFirstObjectByType<UI_ChapterSelect>();
         transitionSequence = CreateMoveSequence(Vector2.up * GetTransitionOffset(), TransitionDuration);
         transitionSequence.Join(chapterSelect.PlayIntroTransition(TransitionDuration));
         transitionSequence.OnComplete(() =>
@@ -96,7 +96,7 @@ public class UI_LobbyScreen : MonoBehaviour
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ =>
         {
-            var chapterSelect = FindObjectOfType<UI_ChapterSelect>();
+            var chapterSelect = FindFirstObjectByType<UI_ChapterSelect>();
             chapterSelect.OpenStageSelectImmediately(GameManager.Instance.StageSelection.Chapter);
             openStageSelectImmediatelyOnAwake = false;
         };
@@ -112,7 +112,7 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void PlayOptionTransition()
     {
-        var option = FindObjectOfType<UI_Options>();
+        var option = FindFirstObjectByType<UI_Options>();
         transitionSequence = CreateMoveSequence(Vector2.left * GetHorizontalTransitionOffset(), TransitionDuration);
         transitionSequence.Join(option.PlayIntroTransition(TransitionDuration));
         transitionSequence.OnComplete(() =>
