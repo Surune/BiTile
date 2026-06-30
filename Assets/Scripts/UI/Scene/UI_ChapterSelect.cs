@@ -9,7 +9,6 @@ public class UI_ChapterSelect : MonoBehaviour
     private const float ChapterExitDistance = 7f;
 
     public static bool PlayIntroOnAwake { get; set; }
-    public static bool DisableAudioListenerOnAwake { get; set; }
 
     [SerializeField] private UI_ChapterCarousel chapterCarousel;
     [SerializeField] private Camera backgroundCamera;
@@ -32,9 +31,6 @@ public class UI_ChapterSelect : MonoBehaviour
 
         var shouldPlayIntro = PlayIntroOnAwake;
         PlayIntroOnAwake = false;
-        var shouldDisableAudioListener = shouldPlayIntro || DisableAudioListenerOnAwake;
-        DisableAudioListenerOnAwake = false;
-        backgroundCamera.GetComponent<AudioListener>().enabled = !shouldDisableAudioListener;
         if (shouldPlayIntro)
         {
             PrepareIntroPosition();

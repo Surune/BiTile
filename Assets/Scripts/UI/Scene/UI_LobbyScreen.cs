@@ -92,7 +92,6 @@ public class UI_LobbyScreen : MonoBehaviour
         canvasGroup.alpha = 0f;
         SetTransitionPosition(Vector2.up * GetTransitionOffset());
         UI_ChapterSelect.PlayIntroOnAwake = false;
-        UI_ChapterSelect.DisableAudioListenerOnAwake = true;
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ =>
         {
