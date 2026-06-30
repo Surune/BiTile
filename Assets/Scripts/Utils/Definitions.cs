@@ -43,6 +43,8 @@ public static class Definitions
         UI_NEXTSTAGE,
         TUTORIAL_BASE,
         TUTORIAL_COUNT,
+        TUTORIAL_UNDO,
+        TUTORIAL_HINT,
         TUTORIAL_SIZE,
         TUTORIAL_PLUS,
         TUTORIAL_X,
