@@ -52,6 +52,7 @@ MonoBehaviour:
   backgroundCamera: {fileID: 3760096424211690955}
   chapterExitDistance: 7
   backButton: {fileID: 24638700013031466}
+  backAction: {fileID: 1781888165450107641, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
 --- !u!1 &3872805292098469195
 GameObject:
   m_ObjectHideFlags: 0

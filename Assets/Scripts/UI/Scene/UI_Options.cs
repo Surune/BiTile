@@ -2,6 +2,7 @@ using TMPro;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class UI_Options : MonoBehaviour
     public static bool PlayIntroOnAwake { get; set; }
 
     [SerializeField] private Button closeButton;
+    [SerializeField] private InputActionReference backAction;
     [Header("Display")]
     [SerializeField] private Button windowButton;
     [SerializeField] private Button fullscreenButton;
@@ -35,6 +37,7 @@ public class UI_Options : MonoBehaviour
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
     private bool isTransitioning;
+    private InputAction backInputAction;
 
     private void Awake()
     {
@@ -50,6 +53,7 @@ public class UI_Options : MonoBehaviour
         }
 
         closeButton.onClick.AddListener(Close);
+        backInputAction = backAction.action.Clone();
         resetButton.onClick.AddListener(SaveManager.Reset);
         completeButton.onClick.AddListener(SaveManager.CompleteAllStages);
         bgmSlider.onValueChanged.AddListener(OnBgmSlider);
@@ -62,6 +66,24 @@ public class UI_Options : MonoBehaviour
         InitLanguageButtons();
 
         Open();
+    }
+
+    private void OnEnable()
+    {
+        backInputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        backInputAction.Disable();
+    }
+
+    private void Update()
+    {
+        if (backInputAction.WasPressedThisFrame())
+        {
+            Close();
+        }
     }
 
     public void Open()
@@ -233,5 +255,6 @@ public class UI_Options : MonoBehaviour
     {
         DisplayModeManager.Changed -= RefreshDisplayModeButtons;
         transitionSequence?.Kill();
+        backInputAction.Dispose();
     }
 }

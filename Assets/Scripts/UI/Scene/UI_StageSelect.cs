@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class UI_StageSelect : MonoBehaviour
     [SerializeField] private Transform stageContainer;
     [SerializeField] private UI_World_Stage stagePrefab;
     [SerializeField] private Button backButton;
+    [SerializeField] private InputActionReference backAction;
 
     private int selectedChapter;
     private RectTransform rootRectTransform;
@@ -22,6 +24,7 @@ public class UI_StageSelect : MonoBehaviour
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
     private bool isTransitioning;
+    private InputAction backInputAction;
 
 #if UNITY_EDITOR
     private string editorLastUnlockedStageText;
@@ -40,6 +43,7 @@ public class UI_StageSelect : MonoBehaviour
         }
 
         backButton.onClick.AddListener(OnBackButton);
+        backInputAction = backAction.action.Clone();
         
         selectedChapter = GameManager.Instance.StageSelection.Chapter;
         RefreshStages(selectedChapter);
@@ -49,12 +53,34 @@ public class UI_StageSelect : MonoBehaviour
 #endif
     }
 
+    private void OnEnable()
+    {
+        backInputAction.performed += OnBackAction;
+        backInputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        backInputAction.performed -= OnBackAction;
+        backInputAction.Disable();
+    }
+
+    private void OnBackAction(InputAction.CallbackContext context)
+    {
+        OnBackButton();
+    }
+
     public Tween PlayIntroTransition(float duration)
     {
         KillTransitionTweens();
+        isTransitioning = true;
         canvasGroup.blocksRaycasts = false;
         transitionSequence = CreateMoveSequence(Vector2.zero, duration);
-        transitionSequence.OnComplete(() => canvasGroup.blocksRaycasts = true);
+        transitionSequence.OnComplete(() =>
+        {
+            isTransitioning = false;
+            canvasGroup.blocksRaycasts = true;
+        });
         return transitionSequence;
     }
 
@@ -127,6 +153,7 @@ public class UI_StageSelect : MonoBehaviour
     private void OnDestroy()
     {
         KillTransitionTweens();
+        backInputAction.Dispose();
     }
 
     private float GetTransitionOffset()

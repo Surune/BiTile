@@ -2420,6 +2420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeButton: {fileID: 2920249035819478890}
+  backAction: {fileID: 1781888165450107641, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   windowButton: {fileID: 5372183952180303271}
   fullscreenButton: {fileID: 8418268911292120408}
   resolutionLeftButton: {fileID: 2710670847779178660}

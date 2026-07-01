@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class UI_ChapterSelect : MonoBehaviour
@@ -14,12 +15,14 @@ public class UI_ChapterSelect : MonoBehaviour
     [SerializeField] private Camera backgroundCamera;
     [SerializeField] private float chapterExitDistance = ChapterExitDistance;
     [SerializeField] private Button backButton;
+    [SerializeField] private InputActionReference backAction;
 
     private bool isTransitioning;
     private Vector3 chapterContentDefaultPosition;
     private RectTransform backButtonRectTransform;
     private Vector2 backButtonDefaultAnchoredPosition;
     private Color defaultBackgroundColor;
+    private InputAction backInputAction;
 
     private void Awake()
     {
@@ -37,6 +40,34 @@ public class UI_ChapterSelect : MonoBehaviour
         }
 
         backButton.onClick.AddListener(OnBackButton);
+        backInputAction = backAction.action.Clone();
+    }
+
+    private void OnEnable()
+    {
+        backInputAction.performed += OnBackAction;
+        backInputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        backInputAction.performed -= OnBackAction;
+        backInputAction.Disable();
+    }
+
+    private void OnBackAction(InputAction.CallbackContext context)
+    {
+        if (SceneManager.GetSceneByName(Definitions.StageSelectSceneName).isLoaded)
+        {
+            return;
+        }
+
+        OnBackButton();
+    }
+
+    private void OnDestroy()
+    {
+        backInputAction.Dispose();
     }
 
     public void SelectChapter(int chapter)

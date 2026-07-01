@@ -334,6 +334,7 @@ MonoBehaviour:
   stageContainer: {fileID: 4213695720822987277}
   stagePrefab: {fileID: 7908397520550748562, guid: b4d4186678f9bf7468d45428c46a3546, type: 3}
   backButton: {fileID: 7538126115768909260}
+  backAction: {fileID: 1781888165450107641, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
 --- !u!225 &869185885517938681
 CanvasGroup:
   m_ObjectHideFlags: 0
