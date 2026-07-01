@@ -63,7 +63,14 @@ MonoBehaviour:
   retryButton: {fileID: 0}
   nextButton: {fileID: 0}
   hintButton: {fileID: 0}
-  resetButton: {fileID: 0}
+  undoButtonKey:
+    Button: {fileID: 0}
+    KeyImage: {fileID: 0}
+  resetButtonKey:
+    Button: {fileID: 0}
+    KeyImage: {fileID: 0}
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
   undo: {fileID: 2183905184980455353, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   reset: {fileID: 6638399153580964215, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
 --- !u!1 &1343736430625962919

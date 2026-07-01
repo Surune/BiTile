@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,11 +24,14 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private float stageTransitionHalfRotateDuration = 0.25f;
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
     
-    [Header("Buttons")]
+    [Header("UI")]
     [SerializeField] private Button retryButton;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button hintButton;
-    [SerializeField] private Button resetButton;
+    [SerializeField] private ButtonKey undoButtonKey;
+    [SerializeField] private ButtonKey resetButtonKey;
+    [SerializeField] private Color enabledColor;
+    [SerializeField] private Color disabledColor;
 
     [Header("Inputs")]
     [SerializeField] private InputActionReference undo;
@@ -46,8 +50,6 @@ public class PuzzleManager : MonoBehaviour
     private bool isClickable = true;
     private bool isTileClickInProgress;
     private bool isStageTransitionInProgress;
-    
-    public Camera Camera => camera;
 
     private Color tileColor;
     private int currentChapter = 1;
@@ -85,7 +87,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void OnUndoAction(InputAction.CallbackContext context)
     {
-        if (ui.UndoButton.interactable)
+        if (undoButtonKey.Button.interactable)
         {
             Undo();
         }
@@ -93,7 +95,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void OnResetAction(InputAction.CallbackContext context)
     {
-        if (resetButton.interactable || retryButton.gameObject.activeSelf)
+        if (resetButtonKey.Button.interactable)
         {
             Retry();
         }
@@ -112,11 +114,11 @@ public class PuzzleManager : MonoBehaviour
         
         hintButton.onClick.AddListener(ShowHint);
 
-        resetButton.interactable = false;
-        resetButton.onClick.AddListener(Retry);
+        resetButtonKey.Button.onClick.AddListener(Retry);
+        OnOffResetButton(false);
 
-        ui.UndoButton.interactable = false;
-        ui.UndoButton.onClick.AddListener(Undo);
+        undoButtonKey.Button.onClick.AddListener(Undo);
+        OnOffUndoButton(false);
 
         LoadStage();
 
@@ -131,7 +133,7 @@ public class PuzzleManager : MonoBehaviour
         StopSuccessParticle();
         retryButton.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
-        resetButton.interactable = false;
+        OnOffResetButton(false);
 
         currentStageData = stageRepository.Load(currentChapter, currentStage);
         currentChapter = currentStageData.Chapter;
@@ -186,7 +188,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         hintButton.interactable = true;
-        ui.UndoButton.interactable = false;
+        OnOffUndoButton(false);
     }
 
     public bool CanChangeTileColor(int row, int col)
@@ -256,7 +258,19 @@ public class PuzzleManager : MonoBehaviour
     public void RecordUndoState()
     {
         undoHistory.Push(CaptureTileColors());
-        ui.UndoButton.interactable = true;
+        OnOffUndoButton(true);
+    }
+
+    private void OnOffUndoButton(bool isOn)
+    {
+        undoButtonKey.Button.interactable = isOn;
+        undoButtonKey.KeyImage.color = isOn ? enabledColor : disabledColor;
+    }
+
+    private void OnOffResetButton(bool isOn)
+    {
+        resetButtonKey.Button.interactable = isOn;
+        resetButtonKey.KeyImage.color = isOn ? enabledColor : disabledColor;
     }
 
     private char[] CaptureTileColors()
@@ -307,9 +321,8 @@ public class PuzzleManager : MonoBehaviour
             return;
         }
 
-        resetButton.interactable = true;
+        OnOffResetButton(true);
         HideHint();
-        hintButton.interactable = false;
         currentClicks++;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
         ui.UpdateClicks(currentClicks);
@@ -333,9 +346,10 @@ public class PuzzleManager : MonoBehaviour
         
         nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
-        resetButton.interactable = false;
-        ui.UndoButton.interactable = false;
         nextButton.gameObject.SetActive(true);
+        
+        OnOffUndoButton(false);
+        OnOffResetButton(false);
     }
 
     private void PlaySuccessParticle()
@@ -383,16 +397,16 @@ public class PuzzleManager : MonoBehaviour
 
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Undo);
         isClickable = false;
-        ui.UndoButton.interactable = false;
+        OnOffUndoButton(false);
         currentClicks--;
         ui.UpdateClicks(currentClicks);
         await RestoreTileColors(undoHistory.Pop());
 
         retryButton.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
-        resetButton.interactable = currentClicks > 0;
         hintButton.interactable = currentClicks == 0;
-        ui.UndoButton.interactable = undoHistory.Count > 0;
+        OnOffResetButton(currentClicks > 0);
+        OnOffUndoButton(undoHistory.Count > 0);
         isClickable = true;
     }
 
@@ -412,9 +426,9 @@ public class PuzzleManager : MonoBehaviour
 
         isStageTransitionInProgress = true;
         nextButton.gameObject.SetActive(false);
-        resetButton.interactable = false;
         hintButton.interactable = false;
-        ui.UndoButton.interactable = false;
+        OnOffResetButton(false);
+        OnOffUndoButton(false);
 
         isClickable = false;
         await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
@@ -453,6 +467,14 @@ public class PuzzleManager : MonoBehaviour
         }
 
         hintTile.HideHint();
+        hintButton.interactable = false;
         isHintShown = false;
     }
+}
+
+[Serializable]
+public struct ButtonKey
+{
+    public Button Button;
+    public Image KeyImage;
 }

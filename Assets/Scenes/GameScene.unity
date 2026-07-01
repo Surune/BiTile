@@ -119,6 +119,39 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &298054988 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1125225227801781838, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+  m_PrefabInstance: {fileID: 1257632120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &298054989 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1016181501109920556, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+  m_PrefabInstance: {fileID: 1257632120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &298054990 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5995871048020341015, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+  m_PrefabInstance: {fileID: 1257632120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &835063704
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,6 +595,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8418606793043906903, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8454589189941713950, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
       propertyPath: m_Name
       value: UI_Main
@@ -704,6 +741,22 @@ PrefabInstance:
       propertyPath: retryButton
       value: 
       objectReference: {fileID: 1257632125}
+    - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
+      propertyPath: undoButtonKey.Button
+      value: 
+      objectReference: {fileID: 298054990}
+    - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
+      propertyPath: resetButtonKey.Button
+      value: 
+      objectReference: {fileID: 1257632122}
+    - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
+      propertyPath: undoButtonKey.KeyImage
+      value: 
+      objectReference: {fileID: 298054989}
+    - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
+      propertyPath: resetButtonKey.KeyImage
+      value: 
+      objectReference: {fileID: 298054988}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

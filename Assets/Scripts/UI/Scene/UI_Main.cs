@@ -13,8 +13,6 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private TMP_Text tutorialText;
     [SerializeField] private UI_Counter counterPrefab;
     [SerializeField] private Transform counterParent;
-
-    public Button UndoButton => undoButton;
     
     private readonly List<UI_Counter> counters = new List<UI_Counter>();
     private bool isExiting;
