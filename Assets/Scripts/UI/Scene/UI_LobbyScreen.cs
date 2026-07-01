@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ public class UI_LobbyScreen : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
+    [SerializeField] private TMP_Text versionText;
 
     private RectTransform rootRectTransform;
     private CanvasGroup canvasGroup;
@@ -32,6 +34,8 @@ public class UI_LobbyScreen : MonoBehaviour
         quitButton.onClick.AddListener(Application.Quit);
         startButton.onClick.AddListener(OnWorldSelect);
         optionButton.onClick.AddListener(OnOptionButton);
+
+        versionText.text = $"v{Application.version} ({BuildInfo.GitHash})";
 
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
 
