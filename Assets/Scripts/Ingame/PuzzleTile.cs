@@ -14,13 +14,14 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float rotationTime = 0.4f;
     [SerializeField] private Color blackColor;
     [SerializeField] private Color whiteColor;
+    [SerializeField] private GameObject hintModel;
     private TileScriptableObject tileInfo;
     private PuzzleManager puzzleManager;
     private MeshRenderer meshRenderer;
+    private GameObject hintObject;
     private bool isHintVisible;
     private bool isAnimating;
     private const float DelayInterval = 0.02f;
-    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     public void Init(PuzzleManager instance, int row, int col, char type, char color, TileScriptableObject tileInfo, Color tileColor)
     {
@@ -34,6 +35,8 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         
         var tileObject = Instantiate(tileInfo.model, transform);
         meshRenderer = tileObject.GetComponentInChildren<MeshRenderer>(); 
+        hintObject = Instantiate(hintModel, transform);
+        hintObject.SetActive(false);
         RefreshColor();
     }
     
@@ -143,8 +146,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        meshRenderer.material.EnableKeyword("_EMISSION");
-        meshRenderer.material.SetColor(EmissionColor, Color.red);
+        hintObject.SetActive(true);
         isHintVisible = true;
     }
 
@@ -152,8 +154,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
     {
         if (isHintVisible)
         {
-            meshRenderer.material.SetColor(EmissionColor, Color.black);
-            meshRenderer.material.DisableKeyword("_EMISSION");
+            hintObject.SetActive(false);
             isHintVisible = false;
         }
     }
