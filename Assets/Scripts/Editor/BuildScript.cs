@@ -11,10 +11,25 @@ public static class BuildScript
     private const string BuildInfoPath = "Assets/Resources/build_info.txt";
     private const int GitHashLength = 12;
 
-    [MenuItem("Build/Build Player")]
     public static void Build()
     {
-        var buildTarget = GetBuildTarget();
+        Build(GetBuildTarget());
+    }
+
+    [MenuItem("Build/Build Windows")]
+    public static void BuildWindows()
+    {
+        Build(BuildTarget.StandaloneWindows64);
+    }
+
+    [MenuItem("Build/Build macOS")]
+    public static void BuildMacOS()
+    {
+        Build(BuildTarget.StandaloneOSX);
+    }
+
+    private static void Build(BuildTarget buildTarget)
+    {
         var gitHash = GetGitHash();
         var buildPath = GetBuildPath(buildTarget, gitHash);
 
@@ -36,7 +51,7 @@ public static class BuildScript
         }
 
         OpenBuildFolder(buildTarget, report.summary.outputPath);
-        Debug.Log($"Build Succeded: {report.summary.outputPath}");
+        Debug.Log($"Build Succeeded: {report.summary.outputPath}");
     }
 
     private static string ProjectPath => Path.GetFullPath(Path.Combine(UnityEngine.Application.dataPath, ".."));
