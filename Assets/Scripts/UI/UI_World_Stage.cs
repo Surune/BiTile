@@ -25,6 +25,7 @@ public class UI_World_Stage : MonoBehaviour
         {
             GetComponentInChildren<Image>().color = lockedColor;
             stageText.color = Color.white;
+            button.interactable = false;
             button.onClick.AddListener(Deny);
         }
     }

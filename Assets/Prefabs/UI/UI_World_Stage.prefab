@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 2516532692338249076}
   - component: {fileID: 5143289376833115845}
   - component: {fileID: 7908397520550748562}
+  - component: {fileID: 3380542633001959570}
   m_Layer: 5
   m_Name: UI_World_Stage
   m_TagString: Untagged
@@ -319,3 +320,17 @@ MonoBehaviour:
   stageText: {fileID: 2642516712195078049}
   button: {fileID: 5143289376833115845}
   lockedColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
+--- !u!114 &3380542633001959570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922939417470294191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1

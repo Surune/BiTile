@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 5058546707848649941}
   - component: {fileID: 343625580424435550}
   - component: {fileID: 5372183952180303271}
+  - component: {fileID: 3983350212882846409}
   m_Layer: 5
   m_Name: WindowButton
   m_TagString: Untagged
@@ -439,6 +440,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3983350212882846409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287076103811716358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &1924631821097839160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,6 +1318,7 @@ GameObject:
   - component: {fileID: 375890509660581713}
   - component: {fileID: 3964997043007412203}
   - component: {fileID: 8975037633746304088}
+  - component: {fileID: 5824436192730465571}
   m_Layer: 5
   m_Name: UnlockButton
   m_TagString: Untagged
@@ -1382,6 +1398,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5824436192730465571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3214062566666996396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &3465005402345222095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,6 +1534,7 @@ GameObject:
   - component: {fileID: 6629602350416918555}
   - component: {fileID: 8913542856973984367}
   - component: {fileID: 8418268911292120408}
+  - component: {fileID: 8446079008609732973}
   m_Layer: 5
   m_Name: FullscreenButton
   m_TagString: Untagged
@@ -1583,6 +1614,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8446079008609732973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4018577487716572863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &4195821080035586165
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,6 +1639,7 @@ GameObject:
   - component: {fileID: 3596891974758458129}
   - component: {fileID: 5535760239206049580}
   - component: {fileID: 8443840530823706487}
+  - component: {fileID: 1176438566627761866}
   m_Layer: 5
   m_Name: ResetButton
   m_TagString: Untagged
@@ -1673,6 +1719,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1176438566627761866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195821080035586165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &4237702850743647781
 GameObject:
   m_ObjectHideFlags: 0

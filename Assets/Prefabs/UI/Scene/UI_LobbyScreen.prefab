@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 200000000000000003}
   - component: {fileID: 200000000000000004}
   - component: {fileID: 2364404196554733125}
+  - component: {fileID: 2375504358838112699}
   m_Layer: 5
   m_Name: OptionButton
   m_TagString: Untagged
@@ -38,7 +39,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &200000000000000002
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +67,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -197,6 +198,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 200000000000000004}
   lkey: 3
+--- !u!114 &2375504358838112699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200000000000000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonTextHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &643815210653824059
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,6 +363,7 @@ GameObject:
   - component: {fileID: 4855379357610591038}
   - component: {fileID: 8878500845261656958}
   - component: {fileID: 2350699763413552450}
+  - component: {fileID: 7349682387060303105}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -547,6 +563,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 4855379357610591038}
   lkey: 1
+--- !u!114 &7349682387060303105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108795511300306730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonTextHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &4785609096639027070
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +653,7 @@ GameObject:
   - component: {fileID: 5155136018167663451}
   - component: {fileID: 116234292188961917}
   - component: {fileID: 4226812744209343231}
+  - component: {fileID: 3124938825501289916}
   m_Layer: 5
   m_Name: CreditButton
   m_TagString: Untagged
@@ -648,7 +679,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2842805149289940912
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -676,7 +707,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -807,6 +838,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 116234292188961917}
   lkey: 4
+--- !u!114 &3124938825501289916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6088344304466824872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonTextHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &6343748043224682220
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,6 +1004,7 @@ GameObject:
   - component: {fileID: 7533130358529042602}
   - component: {fileID: 6085094201335445091}
   - component: {fileID: 3188591950549224496}
+  - component: {fileID: 47062573303540489}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -984,7 +1030,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1583985336766662308
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1012,7 +1058,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1145,6 +1191,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 6085094201335445091}
   lkey: 2
+--- !u!114 &47062573303540489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423152475461709918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonTextHoverSize
+  HoverSizeScale: 1.1
+  Duration: 0.1
 --- !u!1 &7468102453922421947
 GameObject:
   m_ObjectHideFlags: 0
