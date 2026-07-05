@@ -45,7 +45,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         OnTileClick();
     }
 
-    public async void OnTileClick()
+    private async void OnTileClick()
     {
         if (isAnimating || !puzzleManager.TryBeginTileClick())
         {
@@ -90,7 +90,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void SetColor(char value)
+    private void SetColor(char value)
     {
         color = value;
         RefreshColor();

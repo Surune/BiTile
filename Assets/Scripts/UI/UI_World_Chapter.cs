@@ -6,6 +6,7 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 {
     [Header("Input")]
     [SerializeField] private InputActionReference rightClick;
+    
     [Header("Visual")]
     [SerializeField] private float groundRotateSpeed = 5f;
     [SerializeField] private float fastGroundRotateSpeed = 180f;

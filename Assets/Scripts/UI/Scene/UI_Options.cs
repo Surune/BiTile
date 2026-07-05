@@ -14,20 +14,24 @@ public class UI_Options : MonoBehaviour
 
     [SerializeField] private Button closeButton;
     [SerializeField] private InputActionReference backAction;
+    
     [Header("Display")]
     [SerializeField] private Button windowButton;
     [SerializeField] private Button fullscreenButton;
     [SerializeField] private Button resolutionLeftButton;
     [SerializeField] private Button resolutionRightButton;
     [SerializeField] private TMP_Text resolutionValue;
+    
     [Header("Sound")]
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private TMP_Text bgmValue;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_Text sfxValue;
+    
     [Header("Localization")]
     [SerializeField] private Transform languageButtons;
     [SerializeField] private UI_LanguageButton languageButton;
+    
     [Header("Savefile")]
     [SerializeField] private Button resetButton;
     [SerializeField] private Button completeButton;

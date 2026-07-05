@@ -11,11 +11,6 @@ public static class BuildScript
     private const string BuildInfoPath = "Assets/Resources/build_info.txt";
     private const int GitHashLength = 12;
 
-    public static void Build()
-    {
-        Build(GetBuildTarget());
-    }
-
     [MenuItem("Build/Build Windows")]
     public static void BuildWindows()
     {
@@ -84,18 +79,6 @@ public static class BuildScript
         }
 
         return output.Trim();
-    }
-
-    private static BuildTarget GetBuildTarget()
-    {
-        var args = Environment.GetCommandLineArgs();
-        var buildTargetIndex = Array.IndexOf(args, "-biTileBuildTarget");
-        if (buildTargetIndex >= 0)
-        {
-            return (BuildTarget)Enum.Parse(typeof(BuildTarget), args[buildTargetIndex + 1]);
-        }
-
-        return EditorUserBuildSettings.activeBuildTarget;
     }
 
     private static string GetBuildPath(BuildTarget buildTarget, string gitHash)

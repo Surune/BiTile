@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ChapterData", menuName = "ScriptableObjects/ChapterData", order = 3)]

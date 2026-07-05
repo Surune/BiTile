@@ -7,18 +7,18 @@ public class Localization
     private const string DefaultLocale = "koKR";
     private const string PlayerPrefsLocaleKey = "LanguageLocale";
 
-    public const string Korean = "koKR";
-    public const string Japanese = "jaJP";
-    public const string ChineseSimplified = "zhHans";
-    public const string ChineseTraditional = "zhHant";
-    public const string English = "enUS";
-    public const string Spanish = "esES";
-    public const string PortugueseBrazil = "ptBR";
-    public const string Russian = "ruRU";
-    public const string German = "deDE";
-    public const string French = "frFR";
-    public const string Turkish = "trTR";
-    public const string Thai = "thTH";
+    private const string Korean = "koKR";
+    private const string Japanese = "jaJP";
+    private const string ChineseSimplified = "zhHans";
+    private const string ChineseTraditional = "zhHant";
+    private const string English = "enUS";
+    private const string Spanish = "esES";
+    private const string PortugueseBrazil = "ptBR";
+    private const string Russian = "ruRU";
+    private const string German = "deDE";
+    private const string French = "frFR";
+    private const string Turkish = "trTR";
+    private const string Thai = "thTH";
 
     public static readonly string[] SupportedLocales =
     {
@@ -73,24 +73,9 @@ public class Localization
         LocaleChanged?.Invoke();
     }
 
-    public string Get(string lkey)
-    {
-        return Get(lkey, currentLocale);
-    }
-
     public string Get(Definitions.LKey lkey)
     {
         return Get(lkey, currentLocale);
-    }
-
-    private string Get(string lkey, string locale)
-    {
-        if (lkey == string.Empty)
-        {
-            return string.Empty;
-        }
-
-        return textByKey[lkey][locale];
     }
 
     private string Get(Definitions.LKey lkey, string locale)
@@ -103,7 +88,7 @@ public class Localization
         return textByKey[lkey.ToString()][locale];
     }
 
-    public static string GetSystemLocale()
+    private static string GetSystemLocale()
     {
         return Application.systemLanguage switch
         {

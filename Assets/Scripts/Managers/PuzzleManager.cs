@@ -10,8 +10,6 @@ using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
-    public static PuzzleManager Instance;
-
     private readonly PuzzleStageRepository stageRepository = new PuzzleStageRepository();
     private PuzzleStageData currentStageData;
 
@@ -62,13 +60,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-
         confirmInputAction = confirmAction.action.Clone();
-
         StartGame(GameManager.Instance.StageSelection);
     }
 
@@ -201,7 +193,7 @@ public class PuzzleManager : MonoBehaviour
 
                 var tile = Instantiate(tilePrefab, board);
                 tile.transform.SetLocalPositionAndRotation(pos, Quaternion.identity);
-                tile.Init(Instance, row, col, type, color, tileInfoObjects[GetIndexByType(type)], tileColor);
+                tile.Init(this, row, col, type, color, tileInfoObjects[GetIndexByType(type)], tileColor);
                 puzzleTiles[row * width + col] = tile;
             }
         }

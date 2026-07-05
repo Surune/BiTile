@@ -12,14 +12,11 @@ public class UI_Blink : MonoBehaviour
     private void Awake()
     {
         originalColor = textObject.color;
-
-        // Create a blink sequence
+        
         var blinkSequence = DOTween.Sequence();
-
-        // Change the color back to the original color
         blinkSequence.Append(textObject.DOColor(blinkColor, blinkDuration));
         blinkSequence.Append(textObject.DOColor(originalColor, blinkDuration));
         blinkSequence.Play();
-        blinkSequence.SetLoops(-1); // Loop infinitely
+        blinkSequence.SetLoops(-1);
     }
 }

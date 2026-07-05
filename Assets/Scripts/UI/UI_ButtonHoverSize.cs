@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public sealed class UI_ButtonHoverSize : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_ButtonHoverSize : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private float HoverSizeScale = 1.1f;
     [SerializeField] private float Duration = 0.1f;
