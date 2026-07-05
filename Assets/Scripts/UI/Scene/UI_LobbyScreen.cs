@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class UI_LobbyScreen : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private TMP_Text versionText;
+    [SerializeField] private InputActionReference confirmAction;
 
     private RectTransform rootRectTransform;
     private CanvasGroup canvasGroup;
@@ -23,6 +25,7 @@ public class UI_LobbyScreen : MonoBehaviour
     private Sequence transitionSequence;
     private bool isTransitioning;
     private bool openStageSelectImmediatelyOnAwake;
+    private InputAction confirmInputAction;
 
     private void Awake()
     {
@@ -37,6 +40,8 @@ public class UI_LobbyScreen : MonoBehaviour
 
         versionText.text = $"v{Application.version} ({BuildInfo.GitHash})";
 
+        confirmInputAction = confirmAction.action.Clone();
+
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
 
         openStageSelectImmediatelyOnAwake = OpenStageSelectOnAwake;
@@ -45,6 +50,30 @@ public class UI_LobbyScreen : MonoBehaviour
         {
             OpenStageSelectImmediately();
         }
+    }
+
+    private void OnEnable()
+    {
+        confirmInputAction.performed += OnConfirmAction;
+        confirmInputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        confirmInputAction.performed -= OnConfirmAction;
+        confirmInputAction.Disable();
+    }
+
+    private void OnConfirmAction(InputAction.CallbackContext context)
+    {
+        if (SceneManager.GetSceneByName(Definitions.OptionSceneName).isLoaded ||
+            SceneManager.GetSceneByName(Definitions.ChapterSelectSceneName).isLoaded ||
+            SceneManager.GetSceneByName(Definitions.StageSelectSceneName).isLoaded)
+        {
+            return;
+        }
+
+        OnWorldSelect();
     }
 
     private void OnWorldSelect()
@@ -181,5 +210,6 @@ public class UI_LobbyScreen : MonoBehaviour
     private void OnDestroy()
     {
         transitionSequence?.Kill();
+        confirmInputAction.Dispose();
     }
 }

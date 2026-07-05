@@ -73,6 +73,17 @@ public class UI_ChapterCarousel : MonoBehaviour
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
     }
 
+    public void ConfirmSelectedChapter()
+    {
+        if (PuzzleStageRepository.GetFirstProgressStage(selectedChapter) <= SaveManager.LastUnlockedStage)
+        {
+            chapterSelect.SelectChapter(selectedChapter);
+            return;
+        }
+
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
+    }
+
     private void RefreshChapters()
     {
         foreach (Transform child in transform)

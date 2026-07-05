@@ -1328,3 +1328,4 @@ MonoBehaviour:
   startButton: {fileID: 5081559433204444847}
   optionButton: {fileID: 200000000000000003}
   versionText: {fileID: 6898721493308731839}
+  confirmAction: {fileID: 11400000, guid: e653dfd5aa8c4e4da58f1a4a12bfb48d, type: 2}

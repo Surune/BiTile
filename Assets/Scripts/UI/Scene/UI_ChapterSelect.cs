@@ -16,6 +16,7 @@ public class UI_ChapterSelect : MonoBehaviour
     [SerializeField] private float chapterExitDistance = ChapterExitDistance;
     [SerializeField] private Button backButton;
     [SerializeField] private InputActionReference backAction;
+    [SerializeField] private InputActionReference confirmAction;
 
     private bool isTransitioning;
     private Vector3 chapterContentDefaultPosition;
@@ -23,6 +24,7 @@ public class UI_ChapterSelect : MonoBehaviour
     private Vector2 backButtonDefaultAnchoredPosition;
     private Color defaultBackgroundColor;
     private InputAction backInputAction;
+    private InputAction confirmInputAction;
 
     private void Awake()
     {
@@ -41,18 +43,25 @@ public class UI_ChapterSelect : MonoBehaviour
 
         backButton.onClick.AddListener(OnBackButton);
         backInputAction = backAction.action.Clone();
+        confirmInputAction = confirmAction.action.Clone();
     }
 
     private void OnEnable()
     {
         backInputAction.performed += OnBackAction;
         backInputAction.Enable();
+
+        confirmInputAction.performed += OnConfirmAction;
+        confirmInputAction.Enable();
     }
 
     private void OnDisable()
     {
         backInputAction.performed -= OnBackAction;
         backInputAction.Disable();
+
+        confirmInputAction.performed -= OnConfirmAction;
+        confirmInputAction.Disable();
     }
 
     private void OnBackAction(InputAction.CallbackContext context)
@@ -65,9 +74,20 @@ public class UI_ChapterSelect : MonoBehaviour
         OnBackButton();
     }
 
+    private void OnConfirmAction(InputAction.CallbackContext context)
+    {
+        if (SceneManager.GetSceneByName(Definitions.StageSelectSceneName).isLoaded)
+        {
+            return;
+        }
+
+        chapterCarousel.ConfirmSelectedChapter();
+    }
+
     private void OnDestroy()
     {
         backInputAction.Dispose();
+        confirmInputAction.Dispose();
     }
 
     public void SelectChapter(int chapter)

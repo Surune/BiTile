@@ -53,6 +53,7 @@ MonoBehaviour:
   chapterExitDistance: 7
   backButton: {fileID: 24638700013031466}
   backAction: {fileID: 1781888165450107641, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
+  confirmAction: {fileID: 11400000, guid: e653dfd5aa8c4e4da58f1a4a12bfb48d, type: 2}
 --- !u!1 &3872805292098469195
 GameObject:
   m_ObjectHideFlags: 0

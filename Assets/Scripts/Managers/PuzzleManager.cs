@@ -36,6 +36,9 @@ public class PuzzleManager : MonoBehaviour
     [Header("Inputs")]
     [SerializeField] private InputActionReference undo;
     [SerializeField] private InputActionReference reset;
+    [SerializeField] private InputActionReference confirmAction;
+
+    private InputAction confirmInputAction;
     
     private int width;
     private int height;
@@ -64,6 +67,8 @@ public class PuzzleManager : MonoBehaviour
             Instance = this;
         }
 
+        confirmInputAction = confirmAction.action.Clone();
+
         StartGame(GameManager.Instance.StageSelection);
     }
 
@@ -74,6 +79,9 @@ public class PuzzleManager : MonoBehaviour
 
         reset.action.performed += OnResetAction;
         reset.action.Enable();
+
+        confirmInputAction.performed += OnConfirmAction;
+        confirmInputAction.Enable();
     }
 
     private void OnDisable()
@@ -83,6 +91,9 @@ public class PuzzleManager : MonoBehaviour
 
         reset.action.performed -= OnResetAction;
         reset.action.Disable();
+
+        confirmInputAction.performed -= OnConfirmAction;
+        confirmInputAction.Disable();
     }
 
     private void OnUndoAction(InputAction.CallbackContext context)
@@ -98,6 +109,14 @@ public class PuzzleManager : MonoBehaviour
         if (resetButtonKey.Button.interactable)
         {
             Retry();
+        }
+    }
+
+    private void OnConfirmAction(InputAction.CallbackContext context)
+    {
+        if (nextButton.gameObject.activeInHierarchy)
+        {
+            LoadNextStage();
         }
     }
 
@@ -469,6 +488,11 @@ public class PuzzleManager : MonoBehaviour
         hintTile.HideHint();
         hintButton.interactable = false;
         isHintShown = false;
+    }
+
+    private void OnDestroy()
+    {
+        confirmInputAction.Dispose();
     }
 }
 
