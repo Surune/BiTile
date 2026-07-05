@@ -27,7 +27,7 @@ public class UI_Options : MonoBehaviour
     [SerializeField] private TMP_Text sfxValue;
     [Header("Localization")]
     [SerializeField] private Transform languageButtons;
-    [SerializeField] private Button languageButton;
+    [SerializeField] private UI_LanguageButton languageButton;
     [Header("Savefile")]
     [SerializeField] private Button resetButton;
     [SerializeField] private Button completeButton;
@@ -86,7 +86,7 @@ public class UI_Options : MonoBehaviour
         }
     }
 
-    public void Open()
+    private void Open()
     {
         bgmSlider.SetValueWithoutNotify(GameManager.Instance.Sound.BgmVolume);
         sfxSlider.SetValueWithoutNotify(GameManager.Instance.Sound.SfxVolume);
@@ -162,29 +162,10 @@ public class UI_Options : MonoBehaviour
 
     private void InitLanguageButtons()
     {
-        for (var i = 0; i < Localization.SupportedLocales.Length; i++)
+        for (var index = 0; index < Localization.SupportedLocales.Length; index++)
         {
             var button = Instantiate(languageButton, languageButtons);
-            var locale = Localization.SupportedLocales[i];
-            button.GetComponentInChildren<TMP_Text>().text = Localization.SupportedLocaleLabels[i];
-            button.onClick.AddListener(() => OnLanguageButton(locale));
-        }
-
-        RefreshLanguageButtons();
-    }
-
-    private void OnLanguageButton(string locale)
-    {
-        GameManager.Instance.Localization.SetLocale(locale);
-        RefreshLanguageButtons();
-    }
-
-    private void RefreshLanguageButtons()
-    {
-        for (var i = 0; i < Localization.SupportedLocales.Length; i++)
-        {
-            var button = languageButtons.GetChild(i).GetComponent<Button>();
-            button.interactable = Localization.SupportedLocales[i] != GameManager.Instance.Localization.CurrentLocale;
+            button.Init(index);
         }
     }
 

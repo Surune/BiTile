@@ -6,6 +6,7 @@ public class UI_LocalizedText : MonoBehaviour
 {
     [SerializeField] private TMP_Text text;
     [SerializeField] private Definitions.LKey lkey;
+    private Localization Localization => GameManager.Instance.Localization;
 
     private void OnValidate()
     {
@@ -14,17 +15,17 @@ public class UI_LocalizedText : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.Localization.LocaleChanged += Refresh;
+        Localization.LocaleChanged += Refresh;
         Refresh();
     }
 
     private void OnDestroy()
     {
-        GameManager.Instance.Localization.LocaleChanged -= Refresh;
+        Localization.LocaleChanged -= Refresh;
     }
 
     private void Refresh()
     {
-        text.text = GameManager.Instance.Localization.Get(lkey);
+        text.text = Localization.Get(lkey);
     }
 }
