@@ -404,7 +404,7 @@ MonoBehaviour:
   fineLineStrength: 0.8
   vignetteStrength: 0.8
   flickerStrength: 0.1
-  displayDelay: 0.2
+  displayDelay: 0.5
   powerOnDuration: 0.1
   powerOffDelay: 2
   powerOffCompressDuration: 0.1

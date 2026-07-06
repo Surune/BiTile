@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class UI_LobbyScreen : MonoBehaviour
 {
     private const float TransitionDuration = 0.4f;
+    private const float LoadFadeInDuration = 0.5f;
 
     public static bool OpenStageSelectOnAwake { get; set; }
 
@@ -23,6 +24,8 @@ public class UI_LobbyScreen : MonoBehaviour
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
+    private Tween loadFadeInTween;
+    private Image loadFadeInOverlay;
     private bool isTransitioning;
     private bool openStageSelectImmediatelyOnAwake;
     private InputAction confirmInputAction;
@@ -49,7 +52,10 @@ public class UI_LobbyScreen : MonoBehaviour
         if (openStageSelectImmediatelyOnAwake)
         {
             OpenStageSelectImmediately();
+            return;
         }
+
+        PlayLoadFadeIn();
     }
 
     private void OnEnable()
@@ -134,6 +140,43 @@ public class UI_LobbyScreen : MonoBehaviour
         };
     }
 
+    private void PlayLoadFadeIn()
+    {
+        isTransitioning = true;
+        canvasGroup.blocksRaycasts = false;
+        loadFadeInOverlay = CreateLoadFadeInOverlay();
+        loadFadeInTween = loadFadeInOverlay.DOFade(0f, LoadFadeInDuration)
+            .SetEase(Ease.OutCubic)
+            .SetTarget(this)
+            .SetLink(gameObject)
+            .OnComplete(() =>
+            {
+                Destroy(loadFadeInOverlay.gameObject);
+                loadFadeInTween = null;
+                canvasGroup.blocksRaycasts = true;
+                isTransitioning = false;
+            });
+    }
+
+    private Image CreateLoadFadeInOverlay()
+    {
+        var overlay = new GameObject("Load Fade In Overlay");
+        overlay.layer = gameObject.layer;
+        overlay.transform.SetParent(transform, false);
+
+        var rectTransform = overlay.AddComponent<RectTransform>();
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
+
+        var image = overlay.AddComponent<Image>();
+        image.color = Color.black;
+        image.raycastTarget = true;
+        overlay.transform.SetAsLastSibling();
+        return image;
+    }
+
     private void SetTransitionPosition(Vector2 offset)
     {
         for (var i = 0; i < transitionTargets.Count; i++)
@@ -209,6 +252,7 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void OnDestroy()
     {
+        loadFadeInTween?.Kill();
         transitionSequence?.Kill();
         confirmInputAction.Dispose();
     }
