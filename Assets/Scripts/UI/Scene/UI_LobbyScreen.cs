@@ -13,14 +13,14 @@ public class UI_LobbyScreen : MonoBehaviour
 
     public static bool OpenStageSelectOnAwake { get; set; }
 
+    [SerializeField] private RectTransform canvasRectTransform;
+    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private TMP_Text versionText;
     [SerializeField] private InputActionReference confirmAction;
 
-    private RectTransform rootRectTransform;
-    private CanvasGroup canvasGroup;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
@@ -32,9 +32,6 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private void Awake()
     {
-        rootRectTransform = (RectTransform)transform;
-        canvasGroup = gameObject.AddComponent<CanvasGroup>();
-
         CacheTransitionTargets();
 
         quitButton.onClick.AddListener(Application.Quit);
@@ -242,12 +239,12 @@ public class UI_LobbyScreen : MonoBehaviour
 
     private float GetTransitionOffset()
     {
-        return rootRectTransform.rect.height > 0f ? rootRectTransform.rect.height : Screen.height;
+        return canvasRectTransform.rect.height > 0f ? canvasRectTransform.rect.height : Screen.height;
     }
 
     private float GetHorizontalTransitionOffset()
     {
-        return rootRectTransform.rect.width > 0f ? rootRectTransform.rect.width : Screen.width;
+        return canvasRectTransform.rect.width > 0f ? canvasRectTransform.rect.width : Screen.width;
     }
 
     private void OnDestroy()

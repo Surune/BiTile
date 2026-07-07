@@ -91,7 +91,7 @@ public static class BuildScript
         }
 
         var projectName = PlayerSettings.productName;
-        var folderName = $"{DateTime.Now:yyyyMMdd}_{PlayerSettings.bundleVersion}_{gitHash}";
+        var folderName = $"{projectName}_{DateTime.Now:yyyyMMdd}_{PlayerSettings.bundleVersion}_{gitHash}";
         return buildTarget switch
         {
             BuildTarget.Android => $"Builds/Android/{folderName}/{projectName}.apk",
