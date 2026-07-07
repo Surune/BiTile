@@ -1762,6 +1762,7 @@ GameObject:
   - component: {fileID: 2222543643971184286}
   - component: {fileID: 7700297116447495363}
   - component: {fileID: -7603468278428260285}
+  - component: {fileID: 5960223306312346742}
   m_Layer: 5
   m_Name: UI_Main
   m_TagString: Untagged
@@ -1871,6 +1872,24 @@ MonoBehaviour:
   tutorialText: {fileID: 5974935971901438333}
   counterPrefab: {fileID: 3170999480317043351, guid: f1f05e8ff5f17fe4f88be58e883cdb8d, type: 3}
   counterParent: {fileID: 3321184080649140810}
+  diagonalFlowBackground: {fileID: 5960223306312346742}
+--- !u!114 &5960223306312346742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8454589189941713950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5fdb4a1985e44e3aa80bbfc5c15d135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSize: 0.9
+  tileSpacing: 1.5
+  speed: 0.1
+  alpha: 0.15
+  rotationZ: 25
 --- !u!1 &8818079160861422079
 GameObject:
   m_ObjectHideFlags: 0

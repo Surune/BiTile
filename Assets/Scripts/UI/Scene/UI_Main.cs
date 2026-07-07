@@ -13,6 +13,7 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private TMP_Text tutorialText;
     [SerializeField] private UI_Counter counterPrefab;
     [SerializeField] private Transform counterParent;
+    [SerializeField] private UI_DiagonalFlowBackground diagonalFlowBackground;
     
     private readonly List<UI_Counter> counters = new List<UI_Counter>();
     private bool isExiting;
@@ -22,10 +23,11 @@ public class UI_Main : MonoBehaviour
         exitButton.onClick.AddListener(OnExitButton);
     }
 
-    public void Init(int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey)
+    public void Init(int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey, Sprite[] backgroundSprites)
     {
         stageText.text = stage.ToString();
         tutorialText.text = GameManager.Instance.Localization.Get(tutorialLkey);
+        diagonalFlowBackground.SetSprites(backgroundSprites);
         SetupCounters(maxClicks);
         UpdateClicks(currentClicks);
     }

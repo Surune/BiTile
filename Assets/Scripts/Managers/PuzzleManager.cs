@@ -159,7 +159,7 @@ public class PuzzleManager : MonoBehaviour
         tileColor = chapterData.TileColor;
         camera.backgroundColor = chapterData.BackgroundColor;
         
-        ui.Init(currentStage, maxClicks, currentClicks, currentStageData.TutorialLkey);
+        ui.Init(currentStage, maxClicks, currentClicks, currentStageData.TutorialLkey, chapterData.BackgroundSprites);
 
         CreatePuzzle();
     }

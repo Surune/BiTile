@@ -14,4 +14,5 @@ public struct ChapterData
     public GameObject NumberModel;
     public Color BackgroundColor;
     public Color TileColor;
+    public Sprite[] BackgroundSprites;
 }
