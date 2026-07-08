@@ -183,7 +183,7 @@ public class UI_Options : MonoBehaviour
         if (gameObject.scene.name == Definitions.OptionSceneName)
         {
             isTransitioning = true;
-            var lobbyScreen = FindFirstObjectByType<UI_LobbyScreen>();
+            var lobbyScreen = FindFirstObjectByType<UI_Lobby>();
             transitionSequence?.Kill();
             transitionSequence = DOTween.Sequence().SetTarget(this).SetLink(gameObject);
             transitionSequence.Join(lobbyScreen.PlayReturnTransition(TransitionDuration));

@@ -14,7 +14,7 @@ public class PuzzleManager : MonoBehaviour
     private PuzzleStageData currentStageData;
 
     [SerializeField] private PuzzleTile tilePrefab;
-    [SerializeField] private UI_Main ui;
+    [SerializeField] private UI_MainGame ui;
     [SerializeField] private Camera camera;
     [SerializeField] private Transform board;
     [SerializeField] private ParticleSystem successParticle;

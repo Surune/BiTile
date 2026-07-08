@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_LobbyScreen : MonoBehaviour
+public class UI_Lobby : MonoBehaviour
 {
     private const float TransitionDuration = 0.4f;
     private const float LoadFadeInDuration = 0.5f;

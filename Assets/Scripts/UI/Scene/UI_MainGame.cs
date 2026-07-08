@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_Main : MonoBehaviour
+public class UI_MainGame : MonoBehaviour
 {
     [SerializeField] private Button exitButton;
     [SerializeField] private Button undoButton;
@@ -34,7 +34,7 @@ public class UI_Main : MonoBehaviour
 
     public void UpdateClicks(int currentClicks)
     {
-        for (int i = 0; i < counters.Count; i++)
+        for (var i = 0; i < counters.Count; i++)
         {
             if (i < currentClicks)
             {
@@ -75,7 +75,7 @@ public class UI_Main : MonoBehaviour
         }
 
         isExiting = true;
-        UI_LobbyScreen.OpenStageSelectOnAwake = true;
+        UI_Lobby.OpenStageSelectOnAwake = true;
         SceneManager.LoadScene(Definitions.LobbySceneName);
     }
 }

@@ -148,7 +148,7 @@ public class UI_ChapterSelect : MonoBehaviour
             return;
         }
 
-        var lobbyScreen = FindFirstObjectByType<UI_LobbyScreen>();
+        var lobbyScreen = FindFirstObjectByType<UI_Lobby>();
         var sequence = DOTween.Sequence();
         sequence.Join(PlayExitTransition(TransitionDuration));
         sequence.Join(lobbyScreen.PlayReturnTransition(TransitionDuration));
