@@ -34,15 +34,16 @@ public static class SaveManager
         return Data.starredProgressStages.Contains(progressStage);
     }
 
-    public static void UnlockStar(int progressStage)
+    public static bool UnlockStar(int progressStage)
     {
         if (Data.starredProgressStages.Contains(progressStage))
         {
-            return;
+            return false;
         }
 
         Data.starredProgressStages.Add(progressStage);
         Save();
+        return true;
     }
 
     public static void Reset()

@@ -23,7 +23,7 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
     
     [Header("UI")]
-    [SerializeField] private Button retryButton;
+    [SerializeField] private Transform starNotification;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button hintButton;
     [SerializeField] private ButtonKey undoButtonKey;
@@ -57,6 +57,7 @@ public class PuzzleManager : MonoBehaviour
     private int currentStage = 1;
     private int maxClicks = 1;
     private int currentClicks = 0;
+    private bool acquiredStar;
 
     private void Awake()
     {
@@ -119,8 +120,7 @@ public class PuzzleManager : MonoBehaviour
         currentChapter = stageSelection.Chapter;
         currentStage = stageSelection.Stage;
         
-        retryButton.gameObject.SetActive(false);
-        retryButton.onClick.AddListener(Retry);
+        starNotification.gameObject.SetActive(false);
         
         nextButton.gameObject.SetActive(false);
         nextButton.onClick.AddListener(LoadNextStage);
@@ -142,9 +142,9 @@ public class PuzzleManager : MonoBehaviour
     {
         CancelInvoke(nameof(SetNextButtonActive));
         CancelInvoke(nameof(PlaySuccessParticle));
-        CancelInvoke(nameof(SetRetryButtonActive));
+        CancelInvoke(nameof(SetStarNotificationActive));
         StopSuccessParticle();
-        retryButton.gameObject.SetActive(false);
+        starNotification.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
         OnOffResetButton(false);
 
@@ -153,6 +153,7 @@ public class PuzzleManager : MonoBehaviour
         currentStage = currentStageData.Stage;
         maxClicks = currentStageData.MaxClicks;
         currentClicks = 0;
+        acquiredStar = false;
         undoHistory.Clear();
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
@@ -339,28 +340,28 @@ public class PuzzleManager : MonoBehaviour
         hintButton.interactable = false;
         currentClicks++;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
-        ui.UpdateClicks(currentClicks);
+        ui.UpdateClicks(currentClicks, maxClicks);
 
         if (CheckStageClear())
         {
             isClickable = false;
             OnOffUndoButton(false);
             OnOffResetButton(false);
-            TryUnlockStageStar();
+            acquiredStar = TryUnlockStageStar();
             Invoke(nameof(PlaySuccessParticle), 0.4f);
             Invoke(nameof(SetNextButtonActive), 0.45f);
         }
     }
 
-    private void TryUnlockStageStar()
+    private bool TryUnlockStageStar()
     {
         if (currentClicks > maxClicks)
         {
-            return;
+            return false;
         }
 
         var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage);
-        SaveManager.UnlockStar(progressStage);
+        return SaveManager.UnlockStar(progressStage);
     }
 
     private void SetNextButtonActive()
@@ -370,6 +371,11 @@ public class PuzzleManager : MonoBehaviour
         nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
         nextButton.gameObject.SetActive(true);
+
+        if (acquiredStar)
+        {
+            SetStarNotificationActive();
+        }
         
         OnOffUndoButton(false);
         OnOffResetButton(false);
@@ -386,11 +392,11 @@ public class PuzzleManager : MonoBehaviour
         successParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
-    private void SetRetryButtonActive()
+    private void SetStarNotificationActive()
     {
-        retryButton.transform.rotation = Quaternion.Euler(0, 270, 0);
-        retryButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
-        retryButton.gameObject.SetActive(true);
+        starNotification.rotation = Quaternion.Euler(0, 270, 0);
+        starNotification.DORotate(new Vector3(0, 0, 0), 0.5f);
+        starNotification.gameObject.SetActive(true);
     }
 
     public void Retry()
@@ -416,16 +422,17 @@ public class PuzzleManager : MonoBehaviour
 
         CancelInvoke(nameof(SetNextButtonActive));
         CancelInvoke(nameof(PlaySuccessParticle));
-        CancelInvoke(nameof(SetRetryButtonActive));
+        CancelInvoke(nameof(SetStarNotificationActive));
 
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Undo);
         isClickable = false;
         OnOffUndoButton(false);
         currentClicks--;
-        ui.UpdateClicks(currentClicks);
+        acquiredStar = false;
+        ui.UpdateClicks(currentClicks, maxClicks);
         await RestoreTileColors(undoHistory.Pop());
 
-        retryButton.gameObject.SetActive(false);
+        starNotification.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
         hintButton.interactable = currentClicks == 0;
         OnOffResetButton(currentClicks > 0);
@@ -445,11 +452,14 @@ public class PuzzleManager : MonoBehaviour
         var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > PuzzleStageRepository.TotalStageCount)
         {
+            starNotification.gameObject.SetActive(false);
+            nextButton.gameObject.SetActive(false);
             SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
         }
 
         isStageTransitionInProgress = true;
+        starNotification.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
         hintButton.interactable = false;
         OnOffResetButton(false);

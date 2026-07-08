@@ -49,6 +49,21 @@ public class PuzzleStageRepository
         return stageKeys.IndexOf((chapter, 1)) + 1;
     }
 
+    public static int GetStageCount(int chapter)
+    {
+        levelInfo ??= LoadLevelInfo();
+        var count = 0;
+        for (var i = 0; i < stageKeys.Count; i++)
+        {
+            if (stageKeys[i].Chapter == chapter)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public PuzzleStageData Load(int chapter, int stage)
     {
         levelInfo ??= LoadLevelInfo();

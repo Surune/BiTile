@@ -99,11 +99,28 @@ public class UI_ChapterCarousel : MonoBehaviour
         {
             var isUnlocked = PuzzleStageRepository.GetFirstProgressStage(chapter) <= clearedStage;
             var chapterView = Instantiate(chapterPrefab, transform);
-            chapterView.Init(this, chapter, isUnlocked);
+            var stageCount = PuzzleStageRepository.GetStageCount(chapter);
+            var acquiredStarCount = GetAcquiredStarCount(chapter, stageCount);
+            chapterView.Init(this, chapter, isUnlocked, acquiredStarCount, stageCount);
             chapterViews.Add(chapterView);
         }
 
         RefreshCarouselImmediate();
+    }
+
+    private int GetAcquiredStarCount(int chapter, int stageCount)
+    {
+        var acquiredStarCount = 0;
+        for (var stage = 1; stage <= stageCount; stage++)
+        {
+            var progressStage = PuzzleStageRepository.GetProgressStage(chapter, stage);
+            if (SaveManager.HasStar(progressStage))
+            {
+                acquiredStarCount++;
+            }
+        }
+
+        return acquiredStarCount;
     }
 
     private void MoveCarousel(int direction)

@@ -1,13 +1,17 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 {
+    private const string StarCountFormat = "<sprite index=0> {0}/{1}";
+
     [Header("Input")]
     [SerializeField] private InputActionReference rightClick;
     
     [Header("Visual")]
+    [SerializeField] private TMP_Text starCountText;
     [SerializeField] private float groundRotateSpeed = 5f;
     [SerializeField] private float fastGroundRotateSpeed = 180f;
     [SerializeField] private float numberScale = 0.9f;
@@ -26,7 +30,7 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 
     public int Chapter => chapter;
     
-    public void Init(UI_ChapterCarousel chapterCarousel, int chapter, bool isUnlocked)
+    public void Init(UI_ChapterCarousel chapterCarousel, int chapter, bool isUnlocked, int acquiredStarCount, int stageCount)
     {
         this.chapterCarousel = chapterCarousel;
         this.chapter = chapter;
@@ -37,11 +41,14 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
         numberModel = Instantiate(isUnlocked ? chapterData.NumberModel : lockedNumber, transform);
         numberModel.transform.localScale = new Vector3(numberScale, numberScale, numberScale);
         numberModelDefaultLocalPosition = numberModel.transform.localPosition;
+        starCountText.text = string.Format(StarCountFormat, acquiredStarCount, stageCount);
+        starCountText.transform.SetParent(numberModel.transform);
 
         if (isUnlocked)
         {
             return;
         }
+        starCountText.gameObject.SetActive(false);
         ApplyLockedColor(groundModel);
         ApplyLockedColor(numberModel);
     }

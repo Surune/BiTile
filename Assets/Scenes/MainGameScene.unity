@@ -575,6 +575,38 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225302, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225302, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225302, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225302, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225312, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225312, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225312, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403305447019225312, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7855673700367459813, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
@@ -677,17 +709,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1257632125 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4124115502202334170, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+--- !u!224 &1257632130 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5079651445915849134, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
   m_PrefabInstance: {fileID: 1257632120}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2000768014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8718706236146295350, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
@@ -740,7 +766,11 @@ PrefabInstance:
     - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
       propertyPath: retryButton
       value: 
-      objectReference: {fileID: 1257632125}
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
+      propertyPath: starNotification
+      value: 
+      objectReference: {fileID: 1257632130}
     - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
       propertyPath: undoButtonKey.Button
       value: 

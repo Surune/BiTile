@@ -39,7 +39,7 @@ public static class Definitions
         UI_UNLOCK,
         UI_WINDOW,
         UI_FULLSCREEN,
-        UI_RETRY,
+        UI_STAR,
         UI_NEXTSTAGE,
         TUTORIAL_BASE,
         TUTORIAL_COUNT,
