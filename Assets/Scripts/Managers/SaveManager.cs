@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -54,18 +53,7 @@ public static class SaveManager
 
     public static void CompleteAllStages()
     {
-        var starredProgressStages = new List<int>(PuzzleStageRepository.TotalStageCount);
-        for (var i = 1; i <= PuzzleStageRepository.TotalStageCount; i++)
-        {
-            starredProgressStages.Add(i);
-        }
-
-        data = new SaveData
-        {
-            lastUnlockedStage = PuzzleStageRepository.TotalStageCount,
-            starredProgressStages = starredProgressStages
-        };
-        Save();
+        LastUnlockedStage = PuzzleStageRepository.TotalStageCount;
     }
 
     private static SaveData Data
