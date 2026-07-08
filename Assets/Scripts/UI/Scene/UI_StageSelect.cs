@@ -197,7 +197,10 @@ public class UI_StageSelect : MonoBehaviour
             }
 
             var stage = Instantiate(stagePrefab, stageContainer);
-            stage.SetInfo(PuzzleStageRepository.GetChapter(i), PuzzleStageRepository.GetStage(i), i, clearedStage);
+            var stageChapter = PuzzleStageRepository.GetChapter(i);
+            var stageNumber = PuzzleStageRepository.GetStage(i);
+            var starColor = GameManager.Instance.Chapter.GetData(stageChapter).TileColor;
+            stage.SetInfo(stageChapter, stageNumber, i, clearedStage, SaveManager.HasStar(i), starColor);
         }
     }
 

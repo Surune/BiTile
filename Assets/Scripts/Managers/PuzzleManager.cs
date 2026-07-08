@@ -344,14 +344,23 @@ public class PuzzleManager : MonoBehaviour
         if (CheckStageClear())
         {
             isClickable = false;
+            OnOffUndoButton(false);
+            OnOffResetButton(false);
+            TryUnlockStageStar();
             Invoke(nameof(PlaySuccessParticle), 0.4f);
             Invoke(nameof(SetNextButtonActive), 0.45f);
         }
-        else if (currentClicks >= maxClicks)
+    }
+
+    private void TryUnlockStageStar()
+    {
+        if (currentClicks > maxClicks)
         {
-            isClickable = false;
-            Invoke(nameof(SetRetryButtonActive), 0.45f);
+            return;
         }
+
+        var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage);
+        SaveManager.UnlockStar(progressStage);
     }
 
     private void SetNextButtonActive()

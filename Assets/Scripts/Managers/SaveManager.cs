@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,6 +29,22 @@ public static class SaveManager
         }
     }
 
+    public static bool HasStar(int progressStage)
+    {
+        return Data.starredProgressStages.Contains(progressStage);
+    }
+
+    public static void UnlockStar(int progressStage)
+    {
+        if (Data.starredProgressStages.Contains(progressStage))
+        {
+            return;
+        }
+
+        Data.starredProgressStages.Add(progressStage);
+        Save();
+    }
+
     public static void Reset()
     {
         data = new SaveData();
@@ -36,9 +53,16 @@ public static class SaveManager
 
     public static void CompleteAllStages()
     {
+        var starredProgressStages = new List<int>(PuzzleStageRepository.TotalStageCount);
+        for (var i = 1; i <= PuzzleStageRepository.TotalStageCount; i++)
+        {
+            starredProgressStages.Add(i);
+        }
+
         data = new SaveData
         {
-            lastUnlockedStage = PuzzleStageRepository.TotalStageCount
+            lastUnlockedStage = PuzzleStageRepository.TotalStageCount,
+            starredProgressStages = starredProgressStages
         };
         Save();
     }
