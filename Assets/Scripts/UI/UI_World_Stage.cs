@@ -10,6 +10,8 @@ public class UI_World_Stage : MonoBehaviour
     [SerializeField] private Button button;
     [SerializeField] private Color lockedColor;
     [SerializeField] private Image starImage;
+    [SerializeField] private Image starOutlineImage;
+    
     private int chapter;
     private int stage;
 
@@ -29,6 +31,7 @@ public class UI_World_Stage : MonoBehaviour
         {
             tileImage.color = lockedColor;
             starImage.gameObject.SetActive(false);
+            starOutlineImage.gameObject.SetActive(false);
             stageText.color = Color.white;
             button.interactable = false;
             button.onClick.AddListener(Deny);

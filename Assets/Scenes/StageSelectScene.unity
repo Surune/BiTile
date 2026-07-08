@@ -139,6 +139,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5020212871792603268, guid: f446cf2c849804141b83aa02af3297bc, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 42
+      objectReference: {fileID: 0}
     - target: {fileID: 5267074655390404139, guid: f446cf2c849804141b83aa02af3297bc, type: 3}
       propertyPath: m_Name
       value: UI_StageSelect

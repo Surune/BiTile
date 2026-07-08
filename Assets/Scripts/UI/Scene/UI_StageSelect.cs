@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,7 @@ public class UI_StageSelect : MonoBehaviour
     public static bool PlayIntroOnAwake { get; set; }
 
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private TMP_Text chapterNameText;
     [SerializeField] private Transform stageContainer;
     [SerializeField] private UI_World_Stage stagePrefab;
     [SerializeField] private Button backButton;
@@ -46,6 +48,8 @@ public class UI_StageSelect : MonoBehaviour
         backInputAction = backAction.action.Clone();
         
         selectedChapter = GameManager.Instance.StageSelection.Chapter;
+        GameManager.Instance.Localization.LocaleChanged += RefreshChapterName;
+        RefreshChapterName();
         RefreshStages(selectedChapter);
 
 #if UNITY_EDITOR
@@ -153,6 +157,7 @@ public class UI_StageSelect : MonoBehaviour
     private void OnDestroy()
     {
         KillTransitionTweens();
+        GameManager.Instance.Localization.LocaleChanged -= RefreshChapterName;
         backInputAction.Dispose();
     }
 
@@ -176,11 +181,6 @@ public class UI_StageSelect : MonoBehaviour
         }
     }
 
-    private void RefreshStages()
-    {
-        RefreshStages(selectedChapter);
-    }
-
     private void RefreshStages(int chapter)
     {
         foreach (Transform child in stageContainer)
@@ -202,6 +202,13 @@ public class UI_StageSelect : MonoBehaviour
             var starColor = GameManager.Instance.Chapter.GetData(stageChapter).TileColor;
             stage.SetInfo(stageChapter, stageNumber, i, clearedStage, SaveManager.HasStar(i), starColor);
         }
+    }
+
+    private void RefreshChapterName()
+    {
+        var chapterData = GameManager.Instance.Chapter.GetData(selectedChapter);
+        var chapterName = GameManager.Instance.Localization.Get(chapterData.NameLKey);
+        chapterNameText.text = $"{chapterData.RomanNumber}. {chapterName}";
     }
 
 #if UNITY_EDITOR
@@ -232,7 +239,7 @@ public class UI_StageSelect : MonoBehaviour
         var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, PuzzleStageRepository.TotalStageCount);
         editorLastUnlockedStageText = lastUnlockedStage.ToString();
         SaveManager.LastUnlockedStage = lastUnlockedStage;
-        RefreshStages();
+        RefreshStages(selectedChapter);
     }
 #endif
 }

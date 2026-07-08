@@ -16,3 +16,12 @@ TUTORIAL_HINT,Use a hint if it feels difficult.\nYou can only use it before your
 TUTORIAL_PLUS,+ tiles flip themselves and the 4 orthogonal tiles.,+ 타일은 자신과 상하좌우 4칸의 타일을 뒤집습니다.,+タイルは自分と上下左右4マスのタイルを反転します。,+ 方块会翻转自身和上下左右4格的方块。,+ 方塊會翻轉自身和上下左右4格的方塊。,Las fichas + giran su propia casilla y las 4 ortogonales.,As pecas + viram elas mesmas e as 4 pecas ortogonais.,Плитки + переворачивают себя и 4 плитки по сторонам.,+ Felder drehen sich selbst und die 4 geraden Nachbarn.,Les tuiles + retournent elles memes et les 4 tuiles orthogonales.,+ taslari kendilerini ve 4 duz komsu tasi cevirir.,ไทล์ + จะพลิกตัวเองและไทล์แนวตรง 4 ช่อง
 TUTORIAL_X,X tiles flip themselves and the 4 diagonal tiles.,X 타일은 자신과 대각선 4칸의 타일을 뒤집습니다.,Xタイルは自分と斜め4マスのタイルを反転します。,X 方块会翻转自身和斜向4格的方块。,X 方塊會翻轉自身和斜向4格的方塊。,Las fichas X giran su propia casilla y las 4 diagonales.,As pecas X viram elas mesmas e as 4 pecas diagonais.,Плитки X переворачивают себя и 4 плитки по диагонали.,X Felder drehen sich selbst und die 4 diagonalen Nachbarn.,Les tuiles X retournent elles memes et les 4 tuiles diagonales.,X taslari kendilerini ve 4 capraz komsu tasi cevirir.,ไทล์ X จะพลิกตัวเองและไทล์ทแยง 4 ช่อง
 TUTORIAL_FIXED,! tiles never flip.,! 타일은 절대 뒤집히지 않습니다.,!タイルは絶対に反転しません。,! 方块绝不会翻转。,! 方塊絕不會翻轉。,Las fichas ! nunca giran.,As pecas ! nunca viram.,Плитки ! никогда не переворачиваются.,! Felder drehen sich nie.,Les tuiles ! ne se retournent jamais.,! taslari asla cevrilmez.,ไทล์ ! จะไม่พลิกเด็ดขาด
+CHAPTER_1_NAME,Plains,평원,平原,平原,平原,Llanuras,Planícies,Равнины,Ebenen,Plaines,Ovalar,ที่ราบ
+CHAPTER_2_NAME,Underground,지하,地下,地下,地下,Subsuelo,Subterrâneo,Подземелье,Untergrund,Souterrain,Yer altı,ใต้ดิน
+CHAPTER_3_NAME,Glacier,빙하,氷河,冰川,冰川,Glaciar,Geleira,Ледник,Gletscher,Glacier,Buzul,ธารน้ำแข็ง
+CHAPTER_4_NAME,Cherry Grove,벚나무 숲,桜の林,樱花林,櫻花林,Bosque de cerezos,Bosque de cerejeiras,Вишневая роща,Kirschhain,Bosquet de cerisiers,Kiraz Korusu,ป่าซากุระ
+CHAPTER_5_NAME,Desert Canyon,사막 협곡,砂漠の峡谷,沙漠峡谷,沙漠峽谷,Cañón del desierto,Cânion do deserto,Пустынный каньон,Wüstenschlucht,Canyon du désert,Çöl Kanyonu,หุบผาทะเลทราย
+CHAPTER_6_NAME,Volcano,화산,火山,火山,火山,Volcán,Vulcão,Вулкан,Vulkan,Volcan,Volkan,ภูเขาไฟ
+CHAPTER_7_NAME,Beach,바닷가,ビーチ,海滩,海灘,Playa,Praia,Пляж,Strand,Plage,Plaj,ชายหาด
+CHAPTER_8_NAME,Night Sky,밤하늘,夜空,夜空,夜空,Cielo nocturno,Céu noturno,Ночное небо,Nachthimmel,Ciel nocturne,Gece Gökyüzü,ท้องฟ้ายามค่ำคืน
+,,,,,,,,,,,,

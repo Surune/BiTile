@@ -10,9 +10,12 @@ public class ChapterDataList : ScriptableObject
 [Serializable]
 public struct ChapterData
 {
+    public int Id;
+    public string RomanNumber;
     public GameObject TileModel;
     public GameObject NumberModel;
     public Color BackgroundColor;
     public Color TileColor;
     public Sprite[] BackgroundSprites;
+    public string NameLKey => $"CHAPTER_{Id}_NAME";
 }

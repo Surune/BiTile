@@ -23,9 +23,10 @@ public class UI_MainGame : MonoBehaviour
         exitButton.onClick.AddListener(OnExitButton);
     }
 
-    public void Init(int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey, Sprite[] backgroundSprites)
+    public void Init(int chapter, int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey, Sprite[] backgroundSprites)
     {
-        stageText.text = stage.ToString();
+        var chapterData = GameManager.Instance.Chapter.GetData(chapter);
+        stageText.text = $"{chapterData.RomanNumber} - {stage}";
         tutorialText.text = GameManager.Instance.Localization.Get(tutorialLkey);
         diagonalFlowBackground.SetSprites(backgroundSprites);
         UpdateClicks(currentClicks, maxClicks);

@@ -75,17 +75,17 @@ public class Localization
 
     public string Get(Definitions.LKey lkey)
     {
-        return Get(lkey, currentLocale);
-    }
-
-    private string Get(Definitions.LKey lkey, string locale)
-    {
         if (lkey == Definitions.LKey.None)
         {
             return string.Empty;
         }
 
-        return textByKey[lkey.ToString()][locale];
+        return Get(lkey.ToString());
+    }
+
+    public string Get(string lkey)
+    {
+        return textByKey[lkey][currentLocale];
     }
 
     private static string GetSystemLocale()
