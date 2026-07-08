@@ -78,6 +78,8 @@ public class PuzzleManager : MonoBehaviour
 
     private void OnDisable()
     {
+        StopSuccessParticle();
+
         undo.action.performed -= OnUndoAction;
         undo.action.Disable();
 
@@ -341,8 +343,8 @@ public class PuzzleManager : MonoBehaviour
         if (CheckStageClear())
         {
             isClickable = false;
+            Invoke(nameof(PlaySuccessParticle), 0.4f);
             Invoke(nameof(SetNextButtonActive), 0.45f);
-            Invoke(nameof(PlaySuccessParticle), 0.45f);
         }
         else if (currentClicks >= maxClicks)
         {
@@ -365,13 +367,13 @@ public class PuzzleManager : MonoBehaviour
 
     private void PlaySuccessParticle()
     {
-        successParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        StopSuccessParticle();
         successParticle.Play();
     }
 
     private void StopSuccessParticle()
     {
-        successParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        successParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
     private void SetRetryButtonActive()
@@ -427,6 +429,8 @@ public class PuzzleManager : MonoBehaviour
         {
             return;
         }
+
+        StopSuccessParticle();
 
         var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > PuzzleStageRepository.TotalStageCount)
