@@ -1888,7 +1888,7 @@ MonoBehaviour:
   tileSize: 0.9
   tileSpacing: 1.5
   speed: 0.1
-  alpha: 0.15
+  alpha: 0.35
   rotationZ: 25
 --- !u!1 &8818079160861422079
 GameObject:

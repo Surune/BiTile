@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_DiagonalFlowBackground : MonoBehaviour
@@ -10,10 +9,16 @@ public class UI_DiagonalFlowBackground : MonoBehaviour
     [SerializeField] private float rotationZ = -45f;
 
     private Sprite[] sprites;
-    private readonly List<Transform> tiles = new List<Transform>();
-    private readonly List<SpriteRenderer> renderers = new List<SpriteRenderer>();
     private Camera mainCamera;
     private Transform backgroundTransform;
+    private Mesh mesh;
+    private Material material;
+    private Vector3[] vertices;
+    private Vector2[] uvs;
+    private Color[] colors;
+    private int[] triangles;
+    private int columns;
+    private int tileCount;
     private float lastOrthographicSize;
     private float lastAspect;
     private float backgroundSize;
@@ -25,7 +30,8 @@ public class UI_DiagonalFlowBackground : MonoBehaviour
         sprites = backgroundSprites;
         if (isStarted)
         {
-            RebuildTiles();
+            ApplyMaterialTexture();
+            RebuildMesh();
             LayoutTiles();
         }
     }
@@ -52,11 +58,31 @@ public class UI_DiagonalFlowBackground : MonoBehaviour
     private void CreateBackground()
     {
         var background = new GameObject("Diagonal Flow Background");
-        background.name = "Diagonal Flow Background";
         background.layer = gameObject.layer;
         background.transform.SetParent(mainCamera.transform, false);
-
         backgroundTransform = background.transform;
+
+        mesh = new Mesh();
+        mesh.name = "Diagonal Flow Background Mesh";
+        mesh.MarkDynamic();
+
+        var meshFilter = background.AddComponent<MeshFilter>();
+        meshFilter.sharedMesh = mesh;
+
+        material = new Material(Shader.Find("Sprites/Default"));
+        var color = material.color;
+        color.a = alpha;
+        material.color = color;
+
+        var meshRenderer = background.AddComponent<MeshRenderer>();
+        meshRenderer.sharedMaterial = material;
+
+        ApplyMaterialTexture();
+    }
+
+    private void ApplyMaterialTexture()
+    {
+        material.mainTexture = sprites[0].texture;
     }
 
     private void LayoutBackground()
@@ -71,65 +97,103 @@ public class UI_DiagonalFlowBackground : MonoBehaviour
         backgroundTransform.localPosition = Vector3.forward * (mainCamera.farClipPlane - 0.5f);
         backgroundTransform.localRotation = Quaternion.Euler(0f, 0f, rotationZ);
 
-        RebuildTiles();
+        RebuildMesh();
         LayoutTiles();
     }
 
-    private void RebuildTiles()
+    private void RebuildMesh()
     {
-        for (var i = tiles.Count - 1; i >= 0; i--)
-        {
-            Destroy(tiles[i].gameObject);
-        }
+        columns = Mathf.CeilToInt(backgroundSize / tileSpacing) + 3;
+        tileCount = columns * columns;
 
-        tiles.Clear();
-        renderers.Clear();
+        vertices = new Vector3[tileCount * 4];
+        uvs = new Vector2[tileCount * 4];
+        colors = new Color[tileCount * 4];
+        triangles = new int[tileCount * 6];
 
-        var columns = Mathf.CeilToInt(backgroundSize / tileSpacing) + 3;
-        var count = columns * columns;
-        for (var i = 0; i < count; i++)
-        {
-            tiles.Add(CreateTile());
-        }
-    }
-
-    private Transform CreateTile()
-    {
-        var tile = new GameObject("Flow Tile");
-        tile.name = "Flow Tile";
-        tile.layer = gameObject.layer;
-        tile.transform.SetParent(backgroundTransform, false);
-
-        var spriteRenderer = tile.AddComponent<SpriteRenderer>();
         var color = Color.white;
         color.a = alpha;
-        spriteRenderer.color = color;
-        renderers.Add(spriteRenderer);
-        return tile.transform;
+
+        for (var i = 0; i < tileCount; i++)
+        {
+            var vertexIndex = i * 4;
+            var triangleIndex = i * 6;
+            colors[vertexIndex] = color;
+            colors[vertexIndex + 1] = color;
+            colors[vertexIndex + 2] = color;
+            colors[vertexIndex + 3] = color;
+
+            triangles[triangleIndex] = vertexIndex;
+            triangles[triangleIndex + 1] = vertexIndex + 1;
+            triangles[triangleIndex + 2] = vertexIndex + 2;
+            triangles[triangleIndex + 3] = vertexIndex + 2;
+            triangles[triangleIndex + 4] = vertexIndex + 1;
+            triangles[triangleIndex + 5] = vertexIndex + 3;
+        }
+
+        mesh.Clear();
+        mesh.vertices = vertices;
+        mesh.uv = uvs;
+        mesh.colors = colors;
+        mesh.triangles = triangles;
     }
 
     private void LayoutTiles()
     {
-        var columns = Mathf.CeilToInt(backgroundSize / tileSpacing) + 3;
         var startX = backgroundSize * -0.5f - tileSpacing;
         var startY = backgroundSize * 0.5f + tileSpacing;
 
-        for (var i = 0; i < tiles.Count; i++)
+        for (var i = 0; i < tileCount; i++)
         {
             var column = i % columns;
             var row = i / columns;
             var x = startX + column * tileSpacing - scroll;
             var y = startY - row * tileSpacing - scroll;
-            tiles[i].localPosition = Vector3.right * x + Vector3.up * y;
             var sprite = sprites[(row + column) % sprites.Length];
-            renderers[i].sprite = sprite;
-            tiles[i].localScale = Vector3.one * GetSpriteScale(sprite);
+            SetTile(i, x, y, sprite);
         }
+
+        mesh.vertices = vertices;
+        mesh.uv = uvs;
+        mesh.RecalculateBounds();
     }
 
-    private float GetSpriteScale(Sprite sprite)
+    private void SetTile(int index, float x, float y, Sprite sprite)
     {
-        var spriteSize = Mathf.Max(sprite.bounds.size.x, sprite.bounds.size.y);
-        return tileSize / spriteSize;
+        var vertexIndex = index * 4;
+        var spriteBoundsSize = sprite.bounds.size;
+        var spriteSize = Mathf.Max(spriteBoundsSize.x, spriteBoundsSize.y);
+        var width = tileSize * spriteBoundsSize.x / spriteSize;
+        var height = tileSize * spriteBoundsSize.y / spriteSize;
+        var halfWidth = width * 0.5f;
+        var halfHeight = height * 0.5f;
+
+        vertices[vertexIndex] = Vector3.right * (x - halfWidth) + Vector3.up * (y - halfHeight);
+        vertices[vertexIndex + 1] = Vector3.right * (x + halfWidth) + Vector3.up * (y - halfHeight);
+        vertices[vertexIndex + 2] = Vector3.right * (x - halfWidth) + Vector3.up * (y + halfHeight);
+        vertices[vertexIndex + 3] = Vector3.right * (x + halfWidth) + Vector3.up * (y + halfHeight);
+
+        SetUv(vertexIndex, sprite);
+    }
+
+    private void SetUv(int vertexIndex, Sprite sprite)
+    {
+        var rect = sprite.textureRect;
+        var texture = sprite.texture;
+        var minX = rect.xMin / texture.width;
+        var maxX = rect.xMax / texture.width;
+        var minY = rect.yMin / texture.height;
+        var maxY = rect.yMax / texture.height;
+
+        uvs[vertexIndex] = Vector2.right * minX + Vector2.up * minY;
+        uvs[vertexIndex + 1] = Vector2.right * maxX + Vector2.up * minY;
+        uvs[vertexIndex + 2] = Vector2.right * minX + Vector2.up * maxY;
+        uvs[vertexIndex + 3] = Vector2.right * maxX + Vector2.up * maxY;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(mesh);
+        Destroy(material);
     }
 }
