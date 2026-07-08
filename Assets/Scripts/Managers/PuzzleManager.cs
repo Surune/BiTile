@@ -336,6 +336,7 @@ public class PuzzleManager : MonoBehaviour
 
         OnOffResetButton(true);
         HideHint();
+        hintButton.interactable = false;
         currentClicks++;
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
         ui.UpdateClicks(currentClicks);
@@ -484,7 +485,6 @@ public class PuzzleManager : MonoBehaviour
         }
 
         hintTile.HideHint();
-        hintButton.interactable = false;
         isHintShown = false;
     }
 
