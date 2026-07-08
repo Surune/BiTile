@@ -14,7 +14,7 @@ public static class Definitions
         Flip1 = 4,
         Flip2 = 5,
         Flip3 = 6,
-        Flip4 = 7,
+        Hint = 7,
         Reset = 8,
         Select = 9,
         StageClear = 10,

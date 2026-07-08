@@ -395,7 +395,7 @@ public class PuzzleManager : MonoBehaviour
         isClickable = true;
     }
 
-    public async void Undo()
+    private async void Undo()
     {
         if (isTileClickInProgress || currentClicks <= 0 || undoHistory.Count <= 0)
         {
@@ -467,7 +467,9 @@ public class PuzzleManager : MonoBehaviour
     {
         hintTile = puzzleTiles[currentStageData.HintPosition.x * width + currentStageData.HintPosition.y];
         hintTile.ShowHint();
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Hint);
         isHintShown = true;
+        hintButton.interactable = false;
     }
 
     private void HideHint()
