@@ -85,6 +85,11 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+        {
+            return;
+        }
+
         chapterCarousel.ClickChapter(chapter, isUnlocked);
     }
 }
