@@ -236,6 +236,8 @@ MonoBehaviour:
   numberFloatHeight: 0.1
   lockedNumber: {fileID: 919132149155446097, guid: 5125784333c37d14e9a913abeaa3d7b8, type: 3}
   lockedColor: {r: 0.24313727, g: 0.24313727, b: 0.24313727, a: 1}
+  completedGlowMaterial: {fileID: 2100000, guid: 3f7e7526159749d8970c160fd3ee3105, type: 2}
+  completedGlowFlowSpeed: 0.25
 --- !u!135 &1469135226960159016
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -19,6 +19,8 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float numberFloatHeight = 0.1f;
     [SerializeField] private GameObject lockedNumber;
     [SerializeField] private Color lockedColor;
+    [SerializeField] private Material completedGlowMaterial;
+    [SerializeField] private float completedGlowFlowSpeed = 0.45f;
 
     private Vector3 numberModelDefaultLocalPosition;
     private UI_ChapterCarousel chapterCarousel;
@@ -43,6 +45,11 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
         numberModelDefaultLocalPosition = numberModel.transform.localPosition;
         starCountText.text = string.Format(StarCountFormat, acquiredStarCount, stageCount);
         starCountText.transform.SetParent(numberModel.transform);
+
+        if (isUnlocked && acquiredStarCount == stageCount)
+        {
+            ApplyCompletedGlow();
+        }
 
         if (isUnlocked)
         {
@@ -81,6 +88,11 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
                 material.color = lockedColor;
             }
         }
+    }
+
+    private void ApplyCompletedGlow()
+    {
+        numberModel.AddComponent<UI_CompletedChapterGlow>().Init(completedGlowMaterial, completedGlowFlowSpeed);
     }
 
     public void OnPointerClick(PointerEventData eventData)
