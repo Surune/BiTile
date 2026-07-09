@@ -14,11 +14,11 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float rotationTime = 0.4f;
     [SerializeField] private Color blackColor;
     [SerializeField] private Color whiteColor;
-    [SerializeField] private GameObject hintModel;
+    [SerializeField] private HintTile hintTilePrefab;
     private TileScriptableObject tileInfo;
     private PuzzleManager puzzleManager;
     private MeshRenderer meshRenderer;
-    private GameObject hintObject;
+    private HintTile hintTile;
     private bool isHintVisible;
     private bool isAnimating;
     private const float DelayInterval = 0.02f;
@@ -35,8 +35,8 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         
         var tileObject = Instantiate(tileInfo.model, transform);
         meshRenderer = tileObject.GetComponentInChildren<MeshRenderer>(); 
-        hintObject = Instantiate(hintModel, transform);
-        hintObject.SetActive(false);
+        hintTile = Instantiate(hintTilePrefab, transform);
+        hintTile.Hide();
         RefreshColor();
     }
     
@@ -146,7 +146,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        hintObject.SetActive(true);
+        hintTile.Show();
         isHintVisible = true;
     }
 
@@ -154,7 +154,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
     {
         if (isHintVisible)
         {
-            hintObject.SetActive(false);
+            hintTile.Hide();
             isHintVisible = false;
         }
     }

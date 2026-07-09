@@ -52,7 +52,7 @@ MonoBehaviour:
   rotationTime: 0.4
   blackColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   whiteColor: {r: 1, g: 1, b: 1, a: 1}
-  hintModel: {fileID: 919132149155446097, guid: 5624f38a53af85a41b46a52702421f2f, type: 3}
+  hintTilePrefab: {fileID: 1263272232045805817, guid: faf98fbc0d61ca14286cbfdf6c183592, type: 3}
 --- !u!65 &6061397914893384126
 BoxCollider:
   m_ObjectHideFlags: 0
