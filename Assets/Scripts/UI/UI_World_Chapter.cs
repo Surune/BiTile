@@ -17,8 +17,12 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float numberScale = 0.9f;
     [SerializeField] private float numberFloatSpeed = 1f;
     [SerializeField] private float numberFloatHeight = 0.1f;
+    
+    [Header("Locked")]
     [SerializeField] private GameObject lockedNumber;
     [SerializeField] private Color lockedColor;
+    
+    [Header("Complete")]
     [SerializeField] private Material completedGlowMaterial;
     [SerializeField] private float completedGlowFlowSpeed = 0.45f;
 

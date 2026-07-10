@@ -193,9 +193,8 @@ public abstract class TableViewEditorBase : Editor
         var columns = new List<ColumnInfo>();
         var fields = elementType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-        for (var i = 0; i < fields.Length; i++)
+        foreach (var field in fields)
         {
-            var field = fields[i];
             if (field.IsStatic)
             {
                 continue;

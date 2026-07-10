@@ -28,12 +28,14 @@ public class UI_DiagonalFlowBackground : MonoBehaviour
     public void SetSprites(Sprite[] backgroundSprites)
     {
         sprites = backgroundSprites;
-        if (isStarted)
+        if (!isStarted)
         {
-            ApplyMaterialTexture();
-            RebuildMesh();
-            LayoutTiles();
+            return;
         }
+        
+        ApplyMaterialTexture();
+        RebuildMesh();
+        LayoutTiles();
     }
 
     private void Start()

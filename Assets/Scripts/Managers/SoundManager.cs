@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class SoundManager
 {
-    private const string BgmMuteKey = "BGM_MUTE";
-    private const string SfxMuteKey = "SFX_MUTE";
     private const string BgmVolumeKey = "BGM_VOLUME";
     private const string SfxVolumeKey = "SFX_VOLUME";
     private const float DefaultBgmVolume = 0.5f;
@@ -42,10 +40,10 @@ public class SoundManager
 
         audioSources[(int)Definitions.Sound.Bgm].loop = true;
             
-        bgmVolume = PlayerPrefs.GetFloat(BgmVolumeKey, PlayerPrefs.GetInt(BgmMuteKey, 0) == 1 ? 0f : DefaultBgmVolume);
+        bgmVolume = PlayerPrefs.GetFloat(BgmVolumeKey, DefaultBgmVolume);
         audioSources[(int)Definitions.Sound.Bgm].volume = bgmVolume;
 
-        sfxVolume = PlayerPrefs.GetFloat(SfxVolumeKey, PlayerPrefs.GetInt(SfxMuteKey, 0) == 1 ? 0f : DefaultSfxVolume);
+        sfxVolume = PlayerPrefs.GetFloat(SfxVolumeKey, DefaultSfxVolume);
         audioSources[(int)Definitions.Sound.Effect].volume = sfxVolume;
     }
 
