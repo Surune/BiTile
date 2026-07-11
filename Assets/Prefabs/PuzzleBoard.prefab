@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6090458915654464985}
   - component: {fileID: 8586938331772422315}
+  - component: {fileID: 7724896144061836501}
   m_Layer: 0
   m_Name: PuzzleBoard
   m_TagString: Untagged
@@ -60,6 +61,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: af3d93964c8b24e97a78c507ecca2691, type: 2}
   - {fileID: 11400000, guid: aaeb399fc42f74bdd9dbe0cd39b698f3, type: 2}
   - {fileID: 11400000, guid: 30da1547f8e3a41d9bddcc65aa7aaf8d, type: 2}
+  - {fileID: 11400000, guid: 6a93dbd23aa54e42b4c5325bd802e938, type: 2}
   starNotification: {fileID: 0}
   nextButton: {fileID: 0}
   hintButton: {fileID: 0}
@@ -74,6 +76,19 @@ MonoBehaviour:
   undo: {fileID: 2183905184980455353, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   reset: {fileID: 6638399153580964215, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   confirmAction: {fileID: 11400000, guid: e653dfd5aa8c4e4da58f1a4a12bfb48d, type: 2}
+--- !u!114 &7724896144061836501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56460456816868242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6848ef614684e2398b090590bd877db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleManager: {fileID: 8586938331772422315}
 --- !u!1 &1343736430625962919
 GameObject:
   m_ObjectHideFlags: 0

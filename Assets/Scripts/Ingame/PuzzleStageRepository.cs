@@ -70,6 +70,13 @@ public class PuzzleStageRepository
         return CopyStageData(levelInfo[(chapter, stage)]);
     }
 
+#if UNITY_EDITOR
+    public void Reload()
+    {
+        levelInfo = LoadLevelInfo();
+    }
+#endif
+
     private static Dictionary<(int, int), PuzzleStageData> LoadLevelInfo()
     {
         var rows = CSVReader.Read("level_info");

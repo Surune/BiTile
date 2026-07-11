@@ -167,6 +167,17 @@ public class PuzzleManager : MonoBehaviour
         CreatePuzzle();
     }
 
+#if UNITY_EDITOR
+    public void ReloadLevelInfo()
+    {
+        stageRepository.Reload();
+        LoadStage();
+        isClickable = true;
+        isTileClickInProgress = false;
+        isStageTransitionInProgress = false;
+    }
+#endif
+
     private float GetDistanceFromCenter(int x, int length)
     {
         return x - (length - 1) / 2.0f;
