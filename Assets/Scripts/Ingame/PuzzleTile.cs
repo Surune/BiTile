@@ -63,7 +63,9 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         }
 
         puzzleManager.RecordUndoState();
-        var changeTask = tileInfo.ChangeTiles(puzzleManager, row, col, DelayInterval);
+        var changeTask = type == '='
+            ? puzzleManager.ChangeTeleportTiles(DelayInterval)
+            : tileInfo.ChangeTiles(puzzleManager, row, col, DelayInterval);
         puzzleManager.TileClicked();
         await changeTask;
         puzzleManager.CompleteTileClick();

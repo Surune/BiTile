@@ -263,6 +263,26 @@ public class PuzzleManager : MonoBehaviour
         );
     }
 
+    public Task ChangeTeleportTiles(float delayInterval)
+    {
+        var tasks = new List<Task>();
+        var delay = 0f;
+
+        for (var index = 0; index < puzzleTiles.Length; index++)
+        {
+            var tile = puzzleTiles[index];
+            if (tile.type != '=')
+            {
+                continue;
+            }
+
+            tasks.Add(ChangeTileColor(tile.row, tile.col, delay));
+            delay += delayInterval;
+        }
+
+        return Task.WhenAll(tasks);
+    }
+
     private int GetIndexByType(char type)
     {
         return type switch
@@ -271,6 +291,7 @@ public class PuzzleManager : MonoBehaviour
             '+' => 1,
             '*' => 2,
             '!' => 3,
+            '=' => 4,
             _ => -1
         };
     }
