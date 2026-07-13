@@ -360,7 +360,7 @@ public class PuzzleManager : MonoBehaviour
         await Task.WhenAll(tasks);
     }
 
-    public void TileClicked()
+    public void TileClicked(char type)
     {
         if (!isClickable)
         {
@@ -371,7 +371,14 @@ public class PuzzleManager : MonoBehaviour
         HideHint();
         hintButton.interactable = false;
         currentClicks++;
-        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip2);
+        GameManager.Instance.Sound.PlaySFX(type switch
+        {
+            '.' => Definitions.SoundType.Flip_Base,
+            '+' => Definitions.SoundType.Flip_Plus,
+            '*' => Definitions.SoundType.Flip_X,
+            '=' => Definitions.SoundType.Flip_Link,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        });
         ui.UpdateClicks(currentClicks, maxClicks);
 
         if (CheckStageClear())
