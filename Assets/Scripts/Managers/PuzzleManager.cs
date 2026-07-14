@@ -214,6 +214,11 @@ public class PuzzleManager : MonoBehaviour
 
         hintButton.interactable = true;
         OnOffUndoButton(false);
+
+        if (currentStageData.ShowHint)
+        {
+            ShowHint(false);
+        }
     }
 
     public bool CanChangeTileColor(int row, int col)
@@ -528,9 +533,18 @@ public class PuzzleManager : MonoBehaviour
 
     private void ShowHint()
     {
+        ShowHint(true);
+    }
+
+    private void ShowHint(bool playSfx)
+    {
         hintTile = puzzleTiles[currentStageData.HintPosition.x * width + currentStageData.HintPosition.y];
         hintTile.ShowHint();
-        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Hint);
+        if (playSfx)
+        {
+            GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Hint);
+        }
+
         isHintShown = true;
         hintButton.interactable = false;
     }

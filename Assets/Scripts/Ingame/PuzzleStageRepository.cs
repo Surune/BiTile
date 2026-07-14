@@ -104,6 +104,7 @@ public class PuzzleStageRepository
             stageData.HintPosition = default;
             stageData.HintPosition.x = int.Parse(hintValues[0]);
             stageData.HintPosition.y = int.Parse(hintValues[1]);
+            stageData.ShowHint = bool.Parse(row["SHOW_HINT"]);
             stageData.TutorialLkey = row["LKEY"] == string.Empty
                 ? Definitions.LKey.None
                 : Enum.Parse<Definitions.LKey>(row["LKEY"]);
