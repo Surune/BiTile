@@ -19,6 +19,7 @@ public class Localization
     private const string French = "frFR";
     private const string Turkish = "trTR";
     private const string Thai = "thTH";
+    private const string Italian = "itIT";
 
     public static readonly string[] SupportedLocales =
     {
@@ -33,7 +34,8 @@ public class Localization
         German,
         French,
         Turkish,
-        Thai
+        Thai,
+        Italian
     };
 
     public static readonly string[] SupportedLocaleLabels =
@@ -49,7 +51,8 @@ public class Localization
         "Deutsch",
         "Français",
         "Türkçe",
-        "ภาษาไทย"
+        "ภาษาไทย",
+        "Italiano"
     };
 
     private Dictionary<string, Dictionary<string, string>> textByKey;
@@ -105,6 +108,7 @@ public class Localization
             SystemLanguage.French => French,
             SystemLanguage.Turkish => Turkish,
             SystemLanguage.Thai => Thai,
+            SystemLanguage.Italian => Italian,
             _ => DefaultLocale
         };
     }

@@ -49,5 +49,6 @@ public static class Definitions
         TUTORIAL_PLUS,
         TUTORIAL_X,
         TUTORIAL_FIXED,
+        TUTORIAL_LINK,
     }
 }
