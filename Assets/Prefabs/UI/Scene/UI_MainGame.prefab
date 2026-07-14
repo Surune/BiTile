@@ -1422,6 +1422,7 @@ GameObject:
   - component: {fileID: 3579436661942341870}
   - component: {fileID: 6679084932426359660}
   - component: {fileID: 81696609841286216}
+  - component: {fileID: 6104252239493317405}
   m_Layer: 5
   m_Name: NextButton
   m_TagString: Untagged
@@ -1476,7 +1477,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1531,6 +1532,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6104252239493317405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5996626546641091429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34b7843cdf4f2a8d0d3a2b0f2bc1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_ButtonHoverSize
+  HoverSizeScale: 1.01
+  Duration: 0.1
 --- !u!1 &6192484952767797966
 GameObject:
   m_ObjectHideFlags: 0
@@ -2070,6 +2085,7 @@ GameObject:
   - component: {fileID: 4443158007628798678}
   - component: {fileID: 3446613494137457973}
   - component: {fileID: 2742919136106654651}
+  - component: {fileID: 4306138581813587471}
   m_Layer: 5
   m_Name: StarText
   m_TagString: Untagged
@@ -2210,3 +2226,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 3446613494137457973}
   lkey: 9
+--- !u!114 &4306138581813587471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8993218193457618292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5276a7ad9cb44aeb28bd25971c7ef75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_TextWave
+  text: {fileID: 3446613494137457973}
+  amplitude: 5
+  phaseOffset: 0.5
+  speed: 5

@@ -26,7 +26,8 @@ public class UI_MainGame : MonoBehaviour
     public void Init(int chapter, int stage, int maxClicks, int currentClicks, Definitions.LKey tutorialLkey, Sprite[] backgroundSprites)
     {
         var chapterData = GameManager.Instance.Chapter.GetData(chapter);
-        stageText.text = $"{chapterData.RomanNumber} - {stage}";
+        var chapterName = GameManager.Instance.Localization.Get(chapterData.NameLKey);
+        stageText.text = $"{chapterData.RomanNumber}. {chapterName} - {stage}";
         tutorialText.text = GameManager.Instance.Localization.Get(tutorialLkey);
         diagonalFlowBackground.SetSprites(backgroundSprites);
         UpdateClicks(currentClicks, maxClicks);
