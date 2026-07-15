@@ -58,6 +58,7 @@ public class PuzzleManager : MonoBehaviour
     private int maxClicks = 1;
     private int currentClicks = 0;
     private bool acquiredStar;
+    private bool unlockedNextStage;
     private UI_StarNotification starNotificationAnimation;
 
     private void Awake()
@@ -156,6 +157,7 @@ public class PuzzleManager : MonoBehaviour
         maxClicks = currentStageData.MaxClicks;
         currentClicks = 0;
         acquiredStar = false;
+        unlockedNextStage = false;
         undoHistory.Clear();
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
@@ -394,6 +396,7 @@ public class PuzzleManager : MonoBehaviour
             OnOffUndoButton(false);
             OnOffResetButton(false);
             acquiredStar = TryUnlockStageStar();
+            unlockedNextStage = TryUnlockNextStage();
             Invoke(nameof(PlaySuccessParticle), 0.3f);
             Invoke(nameof(SetNextButtonActive), 0.5f);
             if (acquiredStar)
@@ -414,6 +417,18 @@ public class PuzzleManager : MonoBehaviour
         return SaveManager.UnlockStar(progressStage);
     }
 
+    private bool TryUnlockNextStage()
+    {
+        var nextProgressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
+        if (nextProgressStage > PuzzleStageRepository.TotalStageCount || nextProgressStage <= SaveManager.LastUnlockedStage)
+        {
+            return false;
+        }
+
+        SaveManager.LastUnlockedStage = nextProgressStage;
+        return true;
+    }
+
     private async void SetNextButtonActive()
     {
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
@@ -422,10 +437,9 @@ public class PuzzleManager : MonoBehaviour
         if (nextProgressStage <= PuzzleStageRepository.TotalStageCount)
         {
             var nextChapter = PuzzleStageRepository.GetChapter(nextProgressStage);
-            if (nextChapter != currentChapter && nextProgressStage > SaveManager.LastUnlockedStage)
+            if (nextChapter != currentChapter && unlockedNextStage)
             {
                 CancelInvoke(nameof(SetStarNotificationActive));
-                SaveManager.LastUnlockedStage = nextProgressStage;
                 await ui.PlayChapterUnlock(nextChapter);
                 LoadNextStage();
                 return;
@@ -525,10 +539,6 @@ public class PuzzleManager : MonoBehaviour
         isClickable = false;
 
         var nextChapter = PuzzleStageRepository.GetChapter(progressStage);
-        if (progressStage > SaveManager.LastUnlockedStage)
-        {
-            SaveManager.LastUnlockedStage = progressStage;
-        }
 
         await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
 
