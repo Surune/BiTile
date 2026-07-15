@@ -2056,6 +2056,7 @@ MonoBehaviour:
   counterText: {fileID: 7403305447019225314}
   starExceededColor: {r: 1, g: 1, b: 1, a: 0.2509804}
   diagonalFlowBackground: {fileID: 5960223306312346742}
+  chapterUnlockPrefab: {fileID: 1003, guid: 24e9ee58bca94724b29aa32cf8ca2f20, type: 3}
 --- !u!114 &5960223306312346742
 MonoBehaviour:
   m_ObjectHideFlags: 0

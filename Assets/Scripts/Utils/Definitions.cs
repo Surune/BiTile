@@ -41,6 +41,7 @@ public static class Definitions
         UI_FULLSCREEN,
         UI_STAR,
         UI_NEXTSTAGE,
+        UI_CHAPTER_UNLOCKED,
         TUTORIAL_BASE,
         TUTORIAL_COUNT,
         TUTORIAL_UNDO,

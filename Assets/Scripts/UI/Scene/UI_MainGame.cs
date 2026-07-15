@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,7 @@ public class UI_MainGame : MonoBehaviour
     [SerializeField] private TMP_Text counterText;
     [SerializeField] private Color starExceededColor;
     [SerializeField] private UI_DiagonalFlowBackground diagonalFlowBackground;
+    [SerializeField] private UI_ChapterUnlock chapterUnlockPrefab;
     
     private bool isExiting;
     
@@ -37,6 +39,12 @@ public class UI_MainGame : MonoBehaviour
     {
         counterText.text = string.Format(StarCountFormat, currentClicks, maxClicks);
         counterText.color = currentClicks > maxClicks ? starExceededColor : Color.white;
+    }
+
+    public Task PlayChapterUnlock(int chapter)
+    {
+        var chapterUnlock = Instantiate(chapterUnlockPrefab, transform);
+        return chapterUnlock.Play(chapter);
     }
 
     private void OnExitButton()

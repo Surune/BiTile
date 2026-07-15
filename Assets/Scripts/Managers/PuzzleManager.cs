@@ -408,9 +408,22 @@ public class PuzzleManager : MonoBehaviour
         return SaveManager.UnlockStar(progressStage);
     }
 
-    private void SetNextButtonActive()
+    private async void SetNextButtonActive()
     {
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
+
+        var nextProgressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
+        if (nextProgressStage <= PuzzleStageRepository.TotalStageCount)
+        {
+            var nextChapter = PuzzleStageRepository.GetChapter(nextProgressStage);
+            if (nextChapter != currentChapter && nextProgressStage > SaveManager.LastUnlockedStage)
+            {
+                SaveManager.LastUnlockedStage = nextProgressStage;
+                await ui.PlayChapterUnlock(nextChapter);
+                LoadNextStage();
+                return;
+            }
+        }
         
         nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
@@ -510,14 +523,17 @@ public class PuzzleManager : MonoBehaviour
         OnOffUndoButton(false);
 
         isClickable = false;
-        await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
 
-        currentChapter = PuzzleStageRepository.GetChapter(progressStage);
-        currentStage = PuzzleStageRepository.GetStage(progressStage);
+        var nextChapter = PuzzleStageRepository.GetChapter(progressStage);
         if (progressStage > SaveManager.LastUnlockedStage)
         {
             SaveManager.LastUnlockedStage = progressStage;
         }
+
+        await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
+
+        currentChapter = nextChapter;
+        currentStage = PuzzleStageRepository.GetStage(progressStage);
 
         currentClicks = 0;
         undoHistory.Clear();
