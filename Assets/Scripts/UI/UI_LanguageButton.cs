@@ -24,6 +24,7 @@ public class UI_LanguageButton : MonoBehaviour
 
     private void ChangeLocale()
     {
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         GameManager.Instance.Localization.SetLocale(locale);
         RefreshButton();
     }

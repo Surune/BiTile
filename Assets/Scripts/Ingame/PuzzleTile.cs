@@ -56,8 +56,8 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
 
         if (type == '!')
         {
+            GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip_Fixed);
             await StartShake();
-            GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Decline);
             puzzleManager.CompleteTileClick();
             return;
         }

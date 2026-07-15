@@ -126,7 +126,13 @@ public class UI_ChapterCarousel : MonoBehaviour
     private void MoveCarousel(int direction)
     {
         var nextChapter = Mathf.Clamp(selectedChapter + direction, FirstChapter, PuzzleStageRepository.TotalChapterCount);
+        if (nextChapter == selectedChapter)
+        {
+            return;
+        }
+        
         FocusChapter(nextChapter);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Scroll);
     }
 
     private void FocusChapter(int chapter)
@@ -136,18 +142,18 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     private void RefreshCarouselImmediate()
     {
-        for (var i = 0; i < chapterViews.Count; i++)
+        foreach (var chapter in chapterViews)
         {
-            ApplyCarouselTransform(chapterViews[i], GetLinearOffset(chapterViews[i].Chapter), 1f);
+            ApplyCarouselTransform(chapter, GetLinearOffset(chapter.Chapter), 1f);
         }
     }
 
     private void RefreshCarousel()
     {
         var t = Time.deltaTime * carouselLerpSpeed;
-        for (var i = 0; i < chapterViews.Count; i++)
+        foreach (var chapter in chapterViews)
         {
-            ApplyCarouselTransform(chapterViews[i], GetLinearOffset(chapterViews[i].Chapter), t);
+            ApplyCarouselTransform(chapter, GetLinearOffset(chapter.Chapter), t);
         }
     }
 

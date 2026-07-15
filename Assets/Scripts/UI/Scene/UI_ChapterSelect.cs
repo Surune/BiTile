@@ -98,7 +98,8 @@ public class UI_ChapterSelect : MonoBehaviour
         }
 
         isTransitioning = true;
-        GameManager.Instance.SelectChapter(chapter);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        GameManager.Instance.SetChapter(chapter);
 
         var stageSelectScene = SceneManager.GetSceneByName(Definitions.StageSelectSceneName);
         if (stageSelectScene.isLoaded)
@@ -115,7 +116,7 @@ public class UI_ChapterSelect : MonoBehaviour
     public void OpenStageSelectImmediately(int chapter)
     {
         isTransitioning = true;
-        GameManager.Instance.SelectChapter(chapter);
+        GameManager.Instance.SetChapter(chapter);
 
         chapterCarousel.transform.localPosition = chapterContentDefaultPosition + Vector3.up * GetChapterExitDistance();
         backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();

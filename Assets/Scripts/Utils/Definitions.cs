@@ -8,17 +8,23 @@ public static class Definitions
 
     public enum SoundType
     {
+        None = 0,
         Bgm = 1,
         Music = 2,
         Decline = 3,
-        Flip_Base = 4,
-        Flip_Plus = 5,
-        Flip_X = 6,
-        Flip_Link = 7,
+        Select = 4,
+        Scroll = 5,
         Reset = 8,
         Hint = 9,
         StageClear = 10,
         Undo = 11,
+        Star = 12,
+        // Flip Sounds
+        Flip_Base = 100,
+        Flip_Plus = 101,
+        Flip_X = 102,
+        Flip_Link = 103,
+        Flip_Fixed = 104,
     }
     
     public enum Sound

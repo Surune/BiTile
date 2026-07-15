@@ -206,7 +206,7 @@ MonoBehaviour:
   selectedChapterGap: 4
   chapterSpacing: 1.8
   carouselLerpSpeed: 12
-  mouseWheelSensitivity: 1
+  mouseWheelSensitivity: 0.2
 --- !u!1 &6781249654008660781
 GameObject:
   m_ObjectHideFlags: 0

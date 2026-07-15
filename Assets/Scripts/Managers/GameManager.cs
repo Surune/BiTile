@@ -51,12 +51,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SelectChapter(int chapter)
+    public void SetChapter(int chapter)
     {
         _stageSelection.Chapter = chapter;
     }
 
-    public void SelectStage(int chapter, int stage)
+    public void SetStage(int chapter, int stage)
     {
         _stageSelection.Chapter = chapter;
         _stageSelection.Stage = stage;

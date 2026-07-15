@@ -58,6 +58,7 @@ public class PuzzleManager : MonoBehaviour
     private int maxClicks = 1;
     private int currentClicks = 0;
     private bool acquiredStar;
+    private UI_StarNotification starNotificationAnimation;
 
     private void Awake()
     {
@@ -119,8 +120,9 @@ public class PuzzleManager : MonoBehaviour
     {
         currentChapter = stageSelection.Chapter;
         currentStage = stageSelection.Stage;
-        
-        starNotification.gameObject.SetActive(false);
+
+        starNotificationAnimation = starNotification.GetComponent<UI_StarNotification>();
+        starNotificationAnimation.Hide();
         
         nextButton.gameObject.SetActive(false);
         nextButton.onClick.AddListener(LoadNextStage);
@@ -144,7 +146,7 @@ public class PuzzleManager : MonoBehaviour
         CancelInvoke(nameof(PlaySuccessParticle));
         CancelInvoke(nameof(SetStarNotificationActive));
         StopSuccessParticle();
-        starNotification.gameObject.SetActive(false);
+        starNotificationAnimation.Hide();
         nextButton.gameObject.SetActive(false);
         OnOffResetButton(false);
 
@@ -392,8 +394,12 @@ public class PuzzleManager : MonoBehaviour
             OnOffUndoButton(false);
             OnOffResetButton(false);
             acquiredStar = TryUnlockStageStar();
-            Invoke(nameof(PlaySuccessParticle), 0.4f);
-            Invoke(nameof(SetNextButtonActive), 0.45f);
+            Invoke(nameof(PlaySuccessParticle), 0.3f);
+            Invoke(nameof(SetNextButtonActive), 0.5f);
+            if (acquiredStar)
+            {
+                Invoke(nameof(SetStarNotificationActive), 1.5f);
+            }
         }
     }
 
@@ -418,6 +424,7 @@ public class PuzzleManager : MonoBehaviour
             var nextChapter = PuzzleStageRepository.GetChapter(nextProgressStage);
             if (nextChapter != currentChapter && nextProgressStage > SaveManager.LastUnlockedStage)
             {
+                CancelInvoke(nameof(SetStarNotificationActive));
                 SaveManager.LastUnlockedStage = nextProgressStage;
                 await ui.PlayChapterUnlock(nextChapter);
                 LoadNextStage();
@@ -429,11 +436,6 @@ public class PuzzleManager : MonoBehaviour
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
         nextButton.gameObject.SetActive(true);
 
-        if (acquiredStar)
-        {
-            SetStarNotificationActive();
-        }
-        
         OnOffUndoButton(false);
         OnOffResetButton(false);
     }
@@ -451,9 +453,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void SetStarNotificationActive()
     {
-        starNotification.rotation = Quaternion.Euler(0, 270, 0);
-        starNotification.DORotate(new Vector3(0, 0, 0), 0.5f);
-        starNotification.gameObject.SetActive(true);
+        starNotificationAnimation.Play();
     }
 
     public void Retry()
@@ -489,7 +489,7 @@ public class PuzzleManager : MonoBehaviour
         ui.UpdateClicks(currentClicks, maxClicks);
         await RestoreTileColors(undoHistory.Pop());
 
-        starNotification.gameObject.SetActive(false);
+        starNotificationAnimation.Hide();
         nextButton.gameObject.SetActive(false);
         hintButton.interactable = currentClicks == 0;
         OnOffResetButton(currentClicks > 0);
@@ -509,14 +509,14 @@ public class PuzzleManager : MonoBehaviour
         var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > PuzzleStageRepository.TotalStageCount)
         {
-            starNotification.gameObject.SetActive(false);
+            starNotificationAnimation.Hide();
             nextButton.gameObject.SetActive(false);
             SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
         }
 
         isStageTransitionInProgress = true;
-        starNotification.gameObject.SetActive(false);
+        starNotificationAnimation.Hide();
         nextButton.gameObject.SetActive(false);
         hintButton.interactable = false;
         OnOffResetButton(false);

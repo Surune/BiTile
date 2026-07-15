@@ -40,7 +40,8 @@ public class UI_World_Stage : MonoBehaviour
 
     private void Accept()
     {
-        GameManager.Instance.SelectStage(chapter, stage);
+        GameManager.Instance.SetStage(chapter, stage);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         SceneManager.LoadScene(Definitions.GameSceneName);
     }
 
