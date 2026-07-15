@@ -38,7 +38,7 @@ public class UI_Lobby : MonoBehaviour
         startButton.onClick.AddListener(OnGameStart);
         optionButton.onClick.AddListener(OnOptionButton);
 
-        versionText.text = $"v{Application.version} ({BuildInfo.GitHash})";
+        versionText.text = $"{Application.version}({BuildInfo.GitHash})";
 
         confirmInputAction = confirmAction.action.Clone();
 
