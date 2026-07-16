@@ -34,6 +34,9 @@ public class UI_Options : MonoBehaviour
     
     [Header("Savefile")]
     [SerializeField] private Button resetButton;
+    [SerializeField] private UI_ResetConfirmationPopup resetConfirmationPopupPrefab;
+
+    private UI_ResetConfirmationPopup resetConfirmationPopup;
 
     private RectTransform rootRectTransform;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
@@ -57,7 +60,7 @@ public class UI_Options : MonoBehaviour
 
         closeButton.onClick.AddListener(Close);
         backInputAction = backAction.action.Clone();
-        resetButton.onClick.AddListener(Reset);
+        resetButton.onClick.AddListener(OpenResetConfirmation);
         bgmSlider.onValueChanged.AddListener(OnBgmSlider);
         sfxSlider.onValueChanged.AddListener(OnSfxSlider);
         windowButton.onClick.AddListener(() => SetFullScreen(false));
@@ -66,6 +69,7 @@ public class UI_Options : MonoBehaviour
         resolutionRightButton.onClick.AddListener(OnResolutionRightButton);
         DisplayModeManager.Changed += RefreshDisplayModeButtons;
         InitLanguageButtons();
+        resetConfirmationPopup = Instantiate(resetConfirmationPopupPrefab, transform);
 
         Open();
     }
@@ -84,6 +88,12 @@ public class UI_Options : MonoBehaviour
     {
         if (backInputAction.WasPressedThisFrame())
         {
+            if (resetConfirmationPopup.IsOpen)
+            {
+                CloseResetConfirmation();
+                return;
+            }
+
             Close();
         }
     }
@@ -111,10 +121,21 @@ public class UI_Options : MonoBehaviour
         return transitionSequence;
     }
 
-    private void Reset()
+    private void OpenResetConfirmation()
     {
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        resetConfirmationPopup.Open(ConfirmReset);
+    }
+
+    private void ConfirmReset()
+    {
         SaveManager.Reset();
+        ReturnToGameStartScreen();
+    }
+
+    private void CloseResetConfirmation()
+    {
+        resetConfirmationPopup.Close();
     }
 
     private void OnBgmSlider(float value)
@@ -182,6 +203,11 @@ public class UI_Options : MonoBehaviour
             return;
         }
 
+        ReturnToGameStartScreen();
+    }
+
+    private void ReturnToGameStartScreen()
+    {
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         if (gameObject.scene.name == Definitions.OptionSceneName)
         {

@@ -2249,6 +2249,7 @@ MonoBehaviour:
   languageButtons: {fileID: 8904852844291162652}
   languageButton: {fileID: 3537097822377898505, guid: 6265e978c0c94ce4a8fc3f990dcbbb43, type: 3}
   resetButton: {fileID: 8443840530823706487}
+  resetConfirmationPopupPrefab: {fileID: 1004, guid: df9f428c2be54e0696f926641a3f7757, type: 3}
   completeButton: {fileID: 0}
 --- !u!1 &5857810339026192643
 GameObject:

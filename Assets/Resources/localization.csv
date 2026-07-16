@@ -4,6 +4,9 @@ UI_QUIT,Quit,나가기,終了,退出,離開,Salir,Sair,Выйти,Beenden,Quitte
 UI_OPTIONS,Options,옵션,オプション,选项,選項,Opciones,Opcoes,Настройки,Optionen,Options,Ayarlar,ตัวเลือก,Opzioni
 UI_CREDITS,Credits,크레딧,クレジット,制作名单,製作名單,Creditos,Creditos,Авторы,Credits,Credits,Emegi Gecenler,เครดิต,Crediti
 UI_RESET,Reset Progression,진행상황 초기화,進行状況をリセット,重置进度,重置進度,Restablecer progreso,Redefinir progresso,Сбросить прогресс,Fortschritt zurücksetzen,Réinitialiser la progression,İlerlemeyi Sıfırla,รีเซ็ตความคืบหน้า,Azzera progressi
+UI_RESET_CONFIRMATION,Reset all progression?,모든 진행상황을 초기화할까요?,すべての進行状況をリセットしますか？,要重置所有进度吗？,要重置所有進度嗎？,¿Restablecer todo el progreso?,Redefinir todo o progresso?,Сбросить весь прогресс?,Gesamten Fortschritt zurücksetzen?,Réinitialiser toute la progression ?,Tüm ilerleme sıfırlansın mı?,รีเซ็ตความคืบหน้าทั้งหมดหรือไม่?,Azzerare tutti i progressi?
+UI_CONFIRM,Confirm,확인,確認,确认,確認,Confirmar,Confirmar,Подтвердить,Bestätigen,Confirmer,Onayla,ยืนยัน,Conferma
+UI_CANCEL,Cancel,취소,キャンセル,取消,取消,Cancelar,Cancelar,Отмена,Abbrechen,Annuler,İptal,ยกเลิก,Annulla
 UI_UNLOCK,Unlock All Chapters,모든 챕터 잠금해제,すべてのチャプターを解除,解锁所有章节,解鎖所有章節,Desbloquear todos los capítulos,Desbloquear todos os capítulos,Разблокировать все главы,Alle Kapitel freischalten,Débloquer tous les chapitres,Tüm Bölümlerin Kilidini Aç,ปลดล็อกทุกบท,Sblocca tutti i capitoli
 UI_WINDOW,Window,창모드,ウィンドウ,窗口模式,視窗模式,Ventana,Janela,Окно,Fenster,Fenêtre,Pencere,หน้าต่าง,Finestra
 UI_FULLSCREEN,Fullscreen,전체화면,フルスクリーン,全屏,全螢幕,Pantalla completa,Tela cheia,Полный экран,Vollbild,Plein écran,Tam ekran,เต็มหน้าจอ,Schermo intero

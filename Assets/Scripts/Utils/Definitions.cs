@@ -59,5 +59,8 @@ public static class Definitions
         TUTORIAL_X,
         TUTORIAL_FIXED,
         TUTORIAL_LINK,
+        UI_RESET_CONFIRMATION,
+        UI_CONFIRM,
+        UI_CANCEL,
     }
 }
