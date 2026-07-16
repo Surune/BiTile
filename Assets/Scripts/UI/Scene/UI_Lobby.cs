@@ -99,7 +99,7 @@ public class UI_Lobby : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         UI_ChapterSelect.PlayIntroOnAwake = true;
-        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.GameStart);
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => PlayChapterSelectTransition();
     }
@@ -115,6 +115,7 @@ public class UI_Lobby : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         UI_Options.PlayIntroOnAwake = true;
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.OptionSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => PlayOptionTransition();
     }

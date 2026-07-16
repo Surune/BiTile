@@ -51,11 +51,6 @@ public static class SaveManager
         Save();
     }
 
-    public static void CompleteAllStages()
-    {
-        LastUnlockedStage = PuzzleStageRepository.TotalStageCount;
-    }
-
     private static SaveData Data
     {
         get

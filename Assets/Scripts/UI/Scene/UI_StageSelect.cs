@@ -227,8 +227,7 @@ public class UI_StageSelect : MonoBehaviour
 
         if (GUILayout.Button("Reset"))
         {
-            editorLastUnlockedStageText = FirstStage.ToString();
-            ApplyEditorLastUnlockedStage();
+            SaveManager.Reset();
         }
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();

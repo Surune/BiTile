@@ -23,12 +23,14 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 5c8ad57382ee61a41bc1afc395927e16, type: 3}
   - soundType: 5
     audioClip: {fileID: 8300000, guid: 5f91e9d0536e63a4ea9d16718a7b338a, type: 3}
+  - soundType: 6
+    audioClip: {fileID: 8300000, guid: 31f160e64068ee24d84ede24b4293168, type: 3}
+  - soundType: 7
+    audioClip: {fileID: 8300000, guid: 9c33deb98ee814a69a4f05567e57c349, type: 3}
   - soundType: 8
     audioClip: {fileID: 8300000, guid: 609ac5a2a89664fb9a9a86d8a00ac453, type: 3}
   - soundType: 9
     audioClip: {fileID: 8300000, guid: 48180065ccc5e474eaf8ba89ca50e04e, type: 3}
-  - soundType: 10
-    audioClip: {fileID: 8300000, guid: 9c33deb98ee814a69a4f05567e57c349, type: 3}
   - soundType: 11
     audioClip: {fileID: 8300000, guid: c9781aee8d4714cee9cd7d93a961e241, type: 3}
   - soundType: 12

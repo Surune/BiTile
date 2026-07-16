@@ -34,7 +34,6 @@ public class UI_Options : MonoBehaviour
     
     [Header("Savefile")]
     [SerializeField] private Button resetButton;
-    [SerializeField] private Button completeButton;
 
     private RectTransform rootRectTransform;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
@@ -58,12 +57,11 @@ public class UI_Options : MonoBehaviour
 
         closeButton.onClick.AddListener(Close);
         backInputAction = backAction.action.Clone();
-        resetButton.onClick.AddListener(SaveManager.Reset);
-        completeButton.onClick.AddListener(SaveManager.CompleteAllStages);
+        resetButton.onClick.AddListener(Reset);
         bgmSlider.onValueChanged.AddListener(OnBgmSlider);
         sfxSlider.onValueChanged.AddListener(OnSfxSlider);
-        windowButton.onClick.AddListener(OnWindowButton);
-        fullscreenButton.onClick.AddListener(OnFullscreenButton);
+        windowButton.onClick.AddListener(() => SetFullScreen(false));
+        fullscreenButton.onClick.AddListener(() => SetFullScreen(true));
         resolutionLeftButton.onClick.AddListener(OnResolutionLeftButton);
         resolutionRightButton.onClick.AddListener(OnResolutionRightButton);
         DisplayModeManager.Changed += RefreshDisplayModeButtons;
@@ -113,6 +111,12 @@ public class UI_Options : MonoBehaviour
         return transitionSequence;
     }
 
+    private void Reset()
+    {
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        SaveManager.Reset();
+    }
+
     private void OnBgmSlider(float value)
     {
         GameManager.Instance.Sound.SetBgmVolume(value);
@@ -134,24 +138,22 @@ public class UI_Options : MonoBehaviour
     {
         sfxValue.text = Mathf.RoundToInt(value * 100f).ToString();
     }
-
-    private void OnWindowButton()
+    
+    private void SetFullScreen(bool fullScreen)
     {
-        DisplayModeManager.SetFullScreen(false);
-    }
-
-    private void OnFullscreenButton()
-    {
-        DisplayModeManager.SetFullScreen(true);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        DisplayModeManager.SetFullScreen(fullScreen);
     }
 
     private void OnResolutionLeftButton()
     {
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         DisplayModeManager.SelectPreviousResolution();
     }
 
     private void OnResolutionRightButton()
     {
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         DisplayModeManager.SelectNextResolution();
     }
 
@@ -180,6 +182,7 @@ public class UI_Options : MonoBehaviour
             return;
         }
 
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         if (gameObject.scene.name == Definitions.OptionSceneName)
         {
             isTransitioning = true;

@@ -49,6 +49,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
         intro.Join(previewRect.DOScale(1f, revealDuration).SetEase(Ease.OutBack));
         intro.Join(previewRect.DOLocalRotate(Vector3.zero, revealDuration).SetEase(Ease.OutCubic));
 
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.UnlockChapter);
         await intro.AsyncWaitForCompletion();
         canContinue = true;
         await touchCompletion.Task;
