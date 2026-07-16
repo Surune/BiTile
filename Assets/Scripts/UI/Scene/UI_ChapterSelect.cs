@@ -113,7 +113,7 @@ public class UI_ChapterSelect : MonoBehaviour
         LoadStageSelectScene();
     }
 
-    public void OpenStageSelectImmediately(int chapter)
+    public AsyncOperation OpenStageSelectImmediately(int chapter)
     {
         isTransitioning = true;
         GameManager.Instance.SetChapter(chapter);
@@ -125,6 +125,7 @@ public class UI_ChapterSelect : MonoBehaviour
         UI_StageSelect.PlayIntroOnAwake = false;
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.StageSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => isTransitioning = false;
+        return loadOperation;
     }
 
     private void LoadStageSelectScene()

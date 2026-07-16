@@ -13,7 +13,6 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
     [SerializeField] private CanvasGroup content;
     [SerializeField] private RectTransform previewRect;
     [SerializeField] private RawImage chapterPreview;
-    [SerializeField] private TMP_Text unlockText;
     [SerializeField] private TMP_Text chapterNameText;
     [SerializeField] private Image accent;
     [SerializeField] private Vector3 previewCameraPosition;
@@ -33,9 +32,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
     public async Task Play(int chapter)
     {
         var chapterData = GameManager.Instance.Chapter.GetData(chapter);
-        unlockText.text = GameManager.Instance.Localization.Get("UI_CHAPTER_UNLOCKED");
         chapterNameText.text = $"{chapterData.RomanNumber}. {GameManager.Instance.Localization.Get(chapterData.NameLKey)}";
-        chapterNameText.color = chapterData.TileColor;
         accent.color = chapterData.BackgroundColor;
         modelRoot = CreatePreview(chapterData);
         touchCompletion = new TaskCompletionSource<bool>();
@@ -59,9 +56,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
         isWaitingForTouch = false;
         var outro = DOTween.Sequence();
         outro.Append(content.DOFade(0f, fadeDuration));
-        outro.Join(overlay.DOFade(0f, fadeDuration));
         await outro.AsyncWaitForCompletion();
-        Destroy(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -123,7 +118,6 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
 
     private void OnDestroy()
     {
-        previewRoot.SetActive(false);
         Destroy(previewRoot);
         previewTexture.Release();
         Destroy(previewTexture);

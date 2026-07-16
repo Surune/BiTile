@@ -429,22 +429,9 @@ public class PuzzleManager : MonoBehaviour
         return true;
     }
 
-    private async void SetNextButtonActive()
+    private void SetNextButtonActive()
     {
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
-
-        var nextProgressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
-        if (nextProgressStage <= PuzzleStageRepository.TotalStageCount)
-        {
-            var nextChapter = PuzzleStageRepository.GetChapter(nextProgressStage);
-            if (nextChapter != currentChapter && unlockedNextStage)
-            {
-                CancelInvoke(nameof(SetStarNotificationActive));
-                await ui.PlayChapterUnlock(nextChapter);
-                LoadNextStage();
-                return;
-            }
-        }
         
         nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
         nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
@@ -525,9 +512,13 @@ public class PuzzleManager : MonoBehaviour
         {
             starNotificationAnimation.Hide();
             nextButton.gameObject.SetActive(false);
-            SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
+            GameManager.Instance.SetChapter(currentChapter);
+            UI_Lobby.OpenChapterSelectOnAwake = true;
+            SceneManager.LoadScene(Definitions.LobbySceneName);
             return;
         }
+
+        var nextChapter = PuzzleStageRepository.GetChapter(progressStage);
 
         isStageTransitionInProgress = true;
         starNotificationAnimation.Hide();
@@ -538,7 +529,15 @@ public class PuzzleManager : MonoBehaviour
 
         isClickable = false;
 
-        var nextChapter = PuzzleStageRepository.GetChapter(progressStage);
+        if (nextChapter != currentChapter && unlockedNextStage)
+        {
+            CancelInvoke(nameof(SetStarNotificationActive));
+            await ui.PlayChapterUnlock(nextChapter);
+            GameManager.Instance.SetChapter(nextChapter);
+            UI_Lobby.OpenStageSelectOnAwake = true;
+            SceneManager.LoadScene(Definitions.LobbySceneName);
+            return;
+        }
 
         await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
 

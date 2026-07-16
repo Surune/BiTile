@@ -12,6 +12,7 @@ public class UI_Lobby : MonoBehaviour
     private const float LoadFadeInDuration = 0.5f;
 
     public static bool OpenStageSelectOnAwake { get; set; }
+    public static bool OpenChapterSelectOnAwake { get; set; }
 
     [SerializeField] private RectTransform canvasRectTransform;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -46,9 +47,17 @@ public class UI_Lobby : MonoBehaviour
 
         openStageSelectImmediatelyOnAwake = OpenStageSelectOnAwake;
         OpenStageSelectOnAwake = false;
+        var openChapterSelectImmediatelyOnAwake = OpenChapterSelectOnAwake;
+        OpenChapterSelectOnAwake = false;
         if (openStageSelectImmediatelyOnAwake)
         {
-            OpenStageSelectImmediately();
+            OpenStageSelectWithFade();
+            return;
+        }
+
+        if (openChapterSelectImmediatelyOnAwake)
+        {
+            OpenChapterSelectImmediately();
             return;
         }
 
@@ -122,20 +131,45 @@ public class UI_Lobby : MonoBehaviour
         });
     }
 
-    private void OpenStageSelectImmediately()
+    private void OpenStageSelectWithFade()
     {
         isTransitioning = true;
         canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = 0f;
+        loadFadeInOverlay = CreateLoadFadeInOverlay();
         SetTransitionPosition(Vector2.up * GetTransitionOffset());
         UI_ChapterSelect.PlayIntroOnAwake = false;
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ =>
         {
             var chapterSelect = FindFirstObjectByType<UI_ChapterSelect>();
-            chapterSelect.OpenStageSelectImmediately(GameManager.Instance.StageSelection.Chapter);
-            openStageSelectImmediatelyOnAwake = false;
+            var stageLoadOperation = chapterSelect.OpenStageSelectImmediately(GameManager.Instance.StageSelection.Chapter);
+            stageLoadOperation.completed += _ => PlayStageSelectFadeIn();
         };
+    }
+
+    private void PlayStageSelectFadeIn()
+    {
+        loadFadeInTween = loadFadeInOverlay.DOFade(0f, LoadFadeInDuration)
+            .SetEase(Ease.OutCubic)
+            .SetTarget(this)
+            .SetLink(gameObject)
+            .OnComplete(() =>
+            {
+                Destroy(loadFadeInOverlay.gameObject);
+                loadFadeInTween = null;
+                openStageSelectImmediatelyOnAwake = false;
+                isTransitioning = false;
+            });
+    }
+
+    private void OpenChapterSelectImmediately()
+    {
+        isTransitioning = true;
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0f;
+        SetTransitionPosition(Vector2.up * GetTransitionOffset());
+        UI_ChapterSelect.PlayIntroOnAwake = false;
+        SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
     }
 
     private void PlayLoadFadeIn()
@@ -171,6 +205,13 @@ public class UI_Lobby : MonoBehaviour
         var image = overlay.AddComponent<Image>();
         image.color = Color.black;
         image.raycastTarget = true;
+
+        var canvas = overlay.AddComponent<Canvas>();
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = short.MaxValue;
+        var overlayCanvasGroup = overlay.AddComponent<CanvasGroup>();
+        overlayCanvasGroup.ignoreParentGroups = true;
+        overlay.AddComponent<GraphicRaycaster>();
         overlay.transform.SetAsLastSibling();
         return image;
     }

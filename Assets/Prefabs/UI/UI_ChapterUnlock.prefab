@@ -69,7 +69,6 @@ MonoBehaviour:
   chapterPreview: {fileID: 8003}
   unlockText: {fileID: 6003}
   chapterNameText: {fileID: 7003}
-  continueText: {fileID: 0}
   accent: {fileID: 2108326024460451031}
   previewCameraPosition: {x: 0, y: 5, z: -5}
   previewCameraRotation: {x: 35, y: 0, z: 0}
@@ -214,6 +213,7 @@ GameObject:
   - component: {fileID: 6001}
   - component: {fileID: 6002}
   - component: {fileID: 6003}
+  - component: {fileID: 9103294855499403448}
   m_Layer: 5
   m_Name: UnlockText
   m_TagString: Untagged
@@ -238,7 +238,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 375}
-  m_SizeDelta: {x: 800, y: 80}
+  m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6002
 CanvasRenderer:
@@ -340,6 +340,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9103294855499403448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eca193886df84d43815d8eccc7fbf42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
+  text: {fileID: 6003}
+  lkey: 11
 --- !u!1 &7000
 GameObject:
   m_ObjectHideFlags: 0

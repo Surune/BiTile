@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class UI_ChapterCarousel : MonoBehaviour
 {
     private const int FirstChapter = 1;
-    private const float SelectedChapterScale = 1f;
+    private const float SelectedChapterScale = 0.9f;
     private const float UnselectedChapterScale = 0.25f;
     private const float MaxVisibleOffset = 3f;
 
