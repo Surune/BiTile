@@ -80,7 +80,7 @@ public class UI_ChapterSelect : MonoBehaviour
 
     private void RefreshModeButtons()
     {
-        var hardModeUnlocked = SaveManager.IsHardModeUnlocked();
+        var hardModeUnlocked = false;
         modeButtonsRectTransform.gameObject.SetActive(hardModeUnlocked);
         if (!hardModeUnlocked)
         {
