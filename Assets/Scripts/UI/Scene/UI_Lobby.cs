@@ -8,7 +8,7 @@ public class UI_Lobby : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Button startButton;
-    [SerializeField] private Button creditButton;
+    [SerializeField] private Button feedbackButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private TMP_Text versionText;
@@ -21,6 +21,7 @@ public class UI_Lobby : MonoBehaviour
     {
         quitButton.onClick.AddListener(Application.Quit);
         startButton.onClick.AddListener(OnGameStart);
+        feedbackButton.onClick.AddListener(OnFeedbackButton);
         optionButton.onClick.AddListener(OnOptionButton);
 
         versionText.text = $"{Application.version}({BuildInfo.GitHash})";
@@ -80,6 +81,12 @@ public class UI_Lobby : MonoBehaviour
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.OptionSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => isTransitioning = false;
+    }
+
+    private void OnFeedbackButton()
+    {
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLScI07YpxuBxF0rHo8aqfvajduidiuEyciTyV-e385bsSzfohg/viewform?usp=header");
     }
 
     public void RestoreAfterOptionsClose()
