@@ -8,7 +8,7 @@ public class UI_Lobby : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Button startButton;
-    [SerializeField] private Button creditButton;
+    [SerializeField] private Button wishlistButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private TMP_Text versionText;
@@ -21,6 +21,7 @@ public class UI_Lobby : MonoBehaviour
     {
         quitButton.onClick.AddListener(Application.Quit);
         startButton.onClick.AddListener(OnGameStart);
+        wishlistButton.onClick.AddListener(OnWishlistButton);
         optionButton.onClick.AddListener(OnOptionButton);
 
         versionText.text = $"{Application.version}({BuildInfo.GitHash})";
@@ -80,6 +81,12 @@ public class UI_Lobby : MonoBehaviour
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.OptionSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => isTransitioning = false;
+    }
+
+    private void OnWishlistButton()
+    {
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        SteamManager.OpenStorePage();
     }
 
     public void RestoreAfterOptionsClose()
