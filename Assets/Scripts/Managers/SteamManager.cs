@@ -50,13 +50,12 @@ public class SteamManager : MonoBehaviour {
 		return SteamApps.GetCurrentGameLanguage();
 	}
 
-	public static void UnlockAchievement(string achievementId) {
-		if (!Initialized) {
-			return;
-		}
+	public static void OpenStorePage() {
+		SteamFriends.ActivateGameOverlayToStore(SteamUtils.GetAppID(), EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+	}
 
-		SteamUserStats.SetAchievement(achievementId);
-		SteamUserStats.StoreStats();
+	public static void UnlockAchievement(string achievementId) {
+		return;
 	}
 
 	public static void SetMaxNormalStage(int stage) {
@@ -221,6 +220,9 @@ public class SteamManager : MonoBehaviour {
 
 	public static string GetCurrentGameLanguage() {
 		throw new System.NotSupportedException();
+	}
+
+	public static void OpenStorePage() {
 	}
 
 	public static void UnlockAchievement(string achievementId) {
