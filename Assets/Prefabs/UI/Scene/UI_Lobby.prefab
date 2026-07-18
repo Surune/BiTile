@@ -29,8 +29,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 627089434961080383}
   - {fileID: 6271890650241884751}
+  - {fileID: 627089434961080383}
   - {fileID: 2030952263797629595}
   m_Father: {fileID: 7614264846492501081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 6495521820183678514}
-  lkey: 4
+  lkey: 18
 --- !u!1 &838784826152032692
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 2246837150178326878}
   - component: {fileID: 983439789609084001}
   m_Layer: 5
-  m_Name: CreditsButton
+  m_Name: FeedbackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1501,7 +1501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 3369688984057126942}
   startButton: {fileID: 8417966849597419842}
-  creditButton: {fileID: 2246837150178326878}
+  feedbackButton: {fileID: 2246837150178326878}
   optionButton: {fileID: 8549321694296622085}
   quitButton: {fileID: 6533703527012539516}
   versionText: {fileID: 4682191474513132624}
