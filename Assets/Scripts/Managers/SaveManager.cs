@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class SaveManager
 {
-    private const string SaveFileName = "save.sav";
+    private const string SaveFileName = "save_demo.sav";
     private const string SaveDirectoryName = "SavesDir";
     private const string EncryptionKey = "BiTile.Save.File.v1";
     private static readonly byte[] EncryptionIv =
