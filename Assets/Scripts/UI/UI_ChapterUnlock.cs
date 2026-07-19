@@ -20,6 +20,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float previewCameraSize = 3f;
     [SerializeField] private float fadeDuration = 0.25f;
     [SerializeField] private float revealDuration = 0.55f;
+    [SerializeField] private float modelStartYaw = -30f;
     [SerializeField] private float rotationDuration = 10f;
 
     private GameObject previewRoot;
@@ -35,6 +36,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
         chapterNameText.text = $"{chapterData.RomanNumber}. {GameManager.Instance.Localization.Get(chapterData.NameLKey)}";
         accent.color = chapterData.BackgroundColor;
         modelRoot = CreatePreview(chapterData);
+        modelRoot.localRotation = Quaternion.Euler(0f, modelStartYaw, 0f);
         touchCompletion = new TaskCompletionSource<bool>();
         isWaitingForTouch = true;
 
@@ -80,7 +82,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
 
     private Transform CreatePreview(ChapterData chapterData)
     {
-        previewTexture = new RenderTexture(768, 512, 24, RenderTextureFormat.ARGB32);
+        previewTexture = new RenderTexture(1080, 720, 24, RenderTextureFormat.ARGB32);
         previewTexture.Create();
         chapterPreview.texture = previewTexture;
 
