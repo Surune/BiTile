@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BiTile_PresentsGlow
+  m_Name: BiTile_LogoGlow
   m_Shader: {fileID: 4800000, guid: a89a370245604e11ac267f62d6b9ddf1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BulgeStrength: 0.12
-    - _GlowAlpha: 0.25
+    - _BulgeStrength: 0.1
+    - _GlowAlpha: 0.3
     - _GlowSize: 1
     m_Colors: []
   m_BuildTextureStacks: []

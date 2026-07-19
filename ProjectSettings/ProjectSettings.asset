@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 0
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Vol.0
+  companyName: Angry Moai
   productName: FLIP OVER
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}

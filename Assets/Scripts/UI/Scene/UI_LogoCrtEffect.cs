@@ -4,13 +4,11 @@ using UnityEngine.UI;
 
 public class UI_LogoCrtEffect : MonoBehaviour
 {
-    [SerializeField] private Image voloImage;
-    [SerializeField] private Image presentsImage;
+    [SerializeField] private Image logoImage;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Shader crtShader;
     [SerializeField] private float chromaticOffset = 5f;
     [SerializeField] private float chromaticAlpha = 0.5f;
-    [SerializeField] private float presentsAlpha = 0.6f;
     [SerializeField] private float curvatureStrength = 0.18f;
     [SerializeField] private float scanlineDensity = 180f;
     [SerializeField] private float scanlineStrength = 1f;
@@ -36,14 +34,11 @@ public class UI_LogoCrtEffect : MonoBehaviour
 
     private void Awake()
     {
-        voloImage.raycastTarget = false;
-        presentsImage.raycastTarget = false;
-        SetPresentsAlpha();
+        logoImage.raycastTarget = false;
 
         blueImage = CreateChromaticImage("CRT Blue", Color.blue, Vector2.left * chromaticOffset);
         redImage = CreateChromaticImage("CRT Red", Color.red, Vector2.right * chromaticOffset);
-        voloImage.transform.SetSiblingIndex(2);
-        presentsImage.transform.SetSiblingIndex(3);
+        logoImage.transform.SetSiblingIndex(2);
 
         CreateOverlay();
         CreatePowerShutter();
@@ -110,23 +105,16 @@ public class UI_LogoCrtEffect : MonoBehaviour
     {
         color.a = chromaticAlpha;
 
-        var layer = Instantiate(voloImage, voloImage.transform.parent);
+        var layer = Instantiate(logoImage, logoImage.transform.parent);
         layer.name = layerName;
         layer.color = color;
         layer.raycastTarget = false;
-        layer.material = voloImage.material;
+        layer.material = logoImage.material;
 
         var rectTransform = (RectTransform)layer.transform;
-        rectTransform.anchoredPosition = ((RectTransform)voloImage.transform).anchoredPosition + offset;
-        rectTransform.SetSiblingIndex(voloImage.transform.GetSiblingIndex());
+        rectTransform.anchoredPosition = ((RectTransform)logoImage.transform).anchoredPosition + offset;
+        rectTransform.SetSiblingIndex(logoImage.transform.GetSiblingIndex());
         return layer;
-    }
-
-    private void SetPresentsAlpha()
-    {
-        var color = presentsImage.color;
-        color.a = presentsAlpha;
-        presentsImage.color = color;
     }
 
     private void CreateOverlay()
@@ -204,8 +192,7 @@ public class UI_LogoCrtEffect : MonoBehaviour
     {
         var noise = Mathf.Sin(Time.time * 74f) * Mathf.Sin(Time.time * 31f) * powerFlickerStrength;
         var flickeredContentPower = Mathf.Clamp01(contentPower + noise * (1f - contentPower));
-        SetImageAlpha(voloImage, flickeredContentPower);
-        SetImageAlpha(presentsImage, presentsAlpha * flickeredContentPower);
+        SetImageAlpha(logoImage, flickeredContentPower);
         SetImageAlpha(blueImage, chromaticAlpha * flickeredContentPower);
         SetImageAlpha(redImage, chromaticAlpha * flickeredContentPower);
         SetRawImageAlpha(overlayImage, Mathf.Clamp01(0.35f + flickeredContentPower * 0.65f));
@@ -241,8 +228,7 @@ public class UI_LogoCrtEffect : MonoBehaviour
 
     private void SetContentScaleY(float scaleY)
     {
-        SetScaleY(voloImage, scaleY);
-        SetScaleY(presentsImage, scaleY);
+        SetScaleY(logoImage, scaleY);
         SetScaleY(blueImage, scaleY);
         SetScaleY(redImage, scaleY);
     }
