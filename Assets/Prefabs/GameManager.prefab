@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8265166740344270072}
   - component: {fileID: 5539179838138197658}
+  - component: {fileID: 7948728310801321598}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,3 +48,15 @@ MonoBehaviour:
   toggleFullscreen: {fileID: -7317171520087795823, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   chapterDataList: {fileID: 11400000, guid: 5c1c15db7f5444d6a7a9c67bc48631ba, type: 2}
   soundDictionary: {fileID: 11400000, guid: 8ca4df9ba5754a4683bfe2fceaf9ba77, type: 2}
+--- !u!114 &7948728310801321598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511096547753511401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b6e1bf20642024f81299dee03684c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
