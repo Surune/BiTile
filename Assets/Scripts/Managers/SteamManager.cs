@@ -43,6 +43,28 @@ public class SteamManager : MonoBehaviour {
 		}
 	}
 
+	public static void UnlockAchievement(string achievementId) {
+		if (!Initialized) {
+			return;
+		}
+
+		SteamUserStats.SetAchievement(achievementId);
+		SteamUserStats.StoreStats();
+	}
+
+	public static void ResetAchievements() {
+		if (!Initialized) {
+			return;
+		}
+
+		var achievementCount = SteamUserStats.GetNumAchievements();
+		for (uint i = 0; i < achievementCount; i++) {
+			SteamUserStats.ClearAchievement(SteamUserStats.GetAchievementName(i));
+		}
+
+		SteamUserStats.StoreStats();
+	}
+
 	protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
 	[AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
@@ -173,6 +195,12 @@ public class SteamManager : MonoBehaviour {
 		get {
 			return false;
 		}
+	}
+
+	public static void UnlockAchievement(string achievementId) {
+	}
+
+	public static void ResetAchievements() {
 	}
 #endif // !DISABLESTEAMWORKS
 }

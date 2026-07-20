@@ -230,6 +230,12 @@ public class UI_StageSelect : MonoBehaviour
             SaveManager.Reset();
         }
         GUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Reset Achievements"))
+        {
+            SteamManager.ResetAchievements();
+        }
+
         GUILayout.EndVertical();
     }
 

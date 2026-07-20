@@ -397,6 +397,7 @@ public class PuzzleManager : MonoBehaviour
             OnOffResetButton(false);
             acquiredStar = TryUnlockStageStar();
             unlockedNextStage = TryUnlockNextStage();
+            TryUnlockChapterAchievements();
             Invoke(nameof(PlaySuccessParticle), 0.3f);
             Invoke(nameof(SetNextButtonActive), 0.5f);
             if (acquiredStar)
@@ -427,6 +428,27 @@ public class PuzzleManager : MonoBehaviour
 
         SaveManager.LastUnlockedStage = nextProgressStage;
         return true;
+    }
+
+    private void TryUnlockChapterAchievements()
+    {
+        var currentProgressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage);
+        var isLastStageInChapter = currentProgressStage == PuzzleStageRepository.TotalStageCount
+                                   || PuzzleStageRepository.GetChapter(currentProgressStage + 1) != currentChapter;
+        if (isLastStageInChapter)
+        {
+            SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_CLEAR");
+        }
+
+        for (var progressStage = 1; progressStage <= PuzzleStageRepository.TotalStageCount; progressStage++)
+        {
+            if (PuzzleStageRepository.GetChapter(progressStage) == currentChapter && !SaveManager.HasStar(progressStage))
+            {
+                return;
+            }
+        }
+
+        SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_ALLSTAR");
     }
 
     private void SetNextButtonActive()
