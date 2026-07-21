@@ -6,7 +6,8 @@ using UnityEngine;
 
 public static class SaveManager
 {
-    private const string SaveFileName = "save.dat";
+    private const string SaveFileName = "save.sav";
+    private const string SaveDirectoryName = "SavesDir";
     private const string EncryptionKey = "BiTile.Save.File.v1";
     private static readonly byte[] EncryptionIv =
     {
@@ -16,7 +17,9 @@ public static class SaveManager
 
     private static SaveData data;
 
-    private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+    private static string InstallDirectory => Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+    private static string SaveDirectory => Path.Combine(InstallDirectory, SaveDirectoryName);
+    private static string SavePath => Path.Combine(SaveDirectory, SaveFileName);
 
     public static int LastUnlockedStage
     {
@@ -86,7 +89,7 @@ public static class SaveManager
 
     private static void Save()
     {
-        Directory.CreateDirectory(Application.persistentDataPath);
+        Directory.CreateDirectory(SaveDirectory);
         var json = JsonUtility.ToJson(data);
         var encryptedText = Encrypt(json);
         File.WriteAllText(SavePath, encryptedText);
