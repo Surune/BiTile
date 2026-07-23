@@ -448,7 +448,7 @@ public class PuzzleManager : MonoBehaviour
             }
         }
 
-        SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_ALLSTAR");
+        SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_PERFECT");
     }
 
     private void SetNextButtonActive()
