@@ -38,8 +38,8 @@ public static class Definitions
 
     public enum LKey
     {
-        None,
-        UI_GAMESTART,
+        None = -1,
+        UI_GAMESTART = 1,
         UI_QUIT,
         UI_OPTIONS,
         UI_CREDITS,
@@ -50,7 +50,10 @@ public static class Definitions
         UI_STAR,
         UI_NEXTSTAGE,
         UI_CHAPTER_UNLOCKED,
-        TUTORIAL_BASE,
+        UI_RESET_CONFIRMATION,
+        UI_CONFIRM,
+        UI_CANCEL,
+        TUTORIAL_BASE = 100,
         TUTORIAL_COUNT,
         TUTORIAL_UNDO,
         TUTORIAL_HINT,
@@ -58,9 +61,8 @@ public static class Definitions
         TUTORIAL_PLUS,
         TUTORIAL_X,
         TUTORIAL_FIXED,
-        TUTORIAL_LINK,
-        UI_RESET_CONFIRMATION,
-        UI_CONFIRM,
-        UI_CANCEL,
+        TUTORIAL_LINK_ONE,
+        TUTORIAL_LINK_TWO,
+        TUTORIAL_LINK_EACH,
     }
 }

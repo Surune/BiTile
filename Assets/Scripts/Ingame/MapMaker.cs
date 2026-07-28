@@ -99,13 +99,13 @@ public class MapMaker : MonoBehaviour
             return;
         }
 
-        if (type == '=')
+        if (PuzzleManager.IsLinkType(type))
         {
             for (var targetRow = 0; targetRow < rows; targetRow++)
             {
                 for (var targetColumn = 0; targetColumn < columns; targetColumn++)
                 {
-                    if (tiles[targetRow, targetColumn].Type == '=')
+                    if (tiles[targetRow, targetColumn].Type == type)
                     {
                         FlipColor(targetRow, targetColumn);
                     }

@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 3003}
-  lkey: 21
+  lkey: 12
 --- !u!1 &1442297716499476747
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 6409736849348027430}
-  lkey: 23
+  lkey: 14
 --- !u!1 &4411806763477334484
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LocalizedText
   text: {fileID: 118366510168307744}
-  lkey: 22
+  lkey: 13
 --- !u!1 &4561171002257553806
 GameObject:
   m_ObjectHideFlags: 0

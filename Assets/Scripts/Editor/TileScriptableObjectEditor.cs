@@ -8,13 +8,11 @@ public class TileScriptableObjectEditor : Editor
     private const int PatternWidth = 3;
     private const float CellSize = 18f;
 
-    private SerializedProperty typeNameProperty;
     private SerializedProperty modelProperty;
     private SerializedProperty flipPatternProperty;
 
     private void OnEnable()
     {
-        typeNameProperty = serializedObject.FindProperty("typeName");
         modelProperty = serializedObject.FindProperty("model");
         flipPatternProperty = serializedObject.FindProperty("flipPattern");
     }
@@ -27,7 +25,6 @@ public class TileScriptableObjectEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
         EditorGUI.EndDisabledGroup();
 
-        EditorGUILayout.PropertyField(typeNameProperty);
         EditorGUILayout.PropertyField(modelProperty);
 
         ResizePattern();

@@ -62,6 +62,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aaeb399fc42f74bdd9dbe0cd39b698f3, type: 2}
   - {fileID: 11400000, guid: 30da1547f8e3a41d9bddcc65aa7aaf8d, type: 2}
   - {fileID: 11400000, guid: 6a93dbd23aa54e42b4c5325bd802e938, type: 2}
+  - {fileID: 11400000, guid: 82e4fc7200c35df488fec7f820e36dfa, type: 2}
   starNotification: {fileID: 0}
   nextButton: {fileID: 0}
   hintButton: {fileID: 0}

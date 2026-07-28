@@ -272,7 +272,7 @@ public class PuzzleManager : MonoBehaviour
         );
     }
 
-    public Task ChangeTeleportTiles(float delayInterval)
+    public Task ChangeLinkTiles(char linkType, float delayInterval)
     {
         var tasks = new List<Task>();
         var delay = 0f;
@@ -280,7 +280,7 @@ public class PuzzleManager : MonoBehaviour
         for (var index = 0; index < puzzleTiles.Length; index++)
         {
             var tile = puzzleTiles[index];
-            if (tile.type != '=')
+            if (tile.type != linkType)
             {
                 continue;
             }
@@ -292,6 +292,11 @@ public class PuzzleManager : MonoBehaviour
         return Task.WhenAll(tasks);
     }
 
+    public static bool IsLinkType(char type)
+    {
+        return type == '1' || type == '2';
+    }
+
     private int GetIndexByType(char type)
     {
         return type switch
@@ -300,7 +305,8 @@ public class PuzzleManager : MonoBehaviour
             '+' => 1,
             '*' => 2,
             '!' => 3,
-            '=' => 4,
+            '1' => 4,
+            '2' => 5,
             _ => -1
         };
     }
@@ -380,14 +386,7 @@ public class PuzzleManager : MonoBehaviour
         HideHint();
         hintButton.interactable = false;
         currentClicks++;
-        GameManager.Instance.Sound.PlaySFX(type switch
-        {
-            '.' => Definitions.SoundType.Flip_Base,
-            '+' => Definitions.SoundType.Flip_Plus,
-            '*' => Definitions.SoundType.Flip_X,
-            '=' => Definitions.SoundType.Flip_Link,
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        });
+        GameManager.Instance.Sound.PlaySFX(GetTileSoundType(type));
         ui.UpdateClicks(currentClicks, maxClicks);
 
         if (CheckStageClear())
@@ -405,6 +404,22 @@ public class PuzzleManager : MonoBehaviour
                 Invoke(nameof(SetStarNotificationActive), 1.5f);
             }
         }
+    }
+
+    private static Definitions.SoundType GetTileSoundType(char type)
+    {
+        if (IsLinkType(type))
+        {
+            return Definitions.SoundType.Flip_Link;
+        }
+
+        return type switch
+        {
+            '.' => Definitions.SoundType.Flip_Base,
+            '+' => Definitions.SoundType.Flip_Plus,
+            '*' => Definitions.SoundType.Flip_X,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
     }
 
     private bool TryUnlockStageStar()
