@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bc68c897804a9ad428dd23c5d7b5506f
+guid: d13273bb91a3f444ca622f26bcfcdc3b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3138241961252744032
-    second: chapter_eight_number_0
+      213: -2691202195245075655
+    second: hard_six_tile_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chapter_eight_number_0
+      name: hard_six_tile_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a41e483099b274d0800000000000000
-      internalID: -3138241961252744032
+      spriteID: 9337aadacdde6aad0800000000000000
+      internalID: -2691202195245075655
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      chapter_eight_number_0: -3138241961252744032
+      hard_six_tile_0: -2691202195245075655
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

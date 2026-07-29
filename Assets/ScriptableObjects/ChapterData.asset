@@ -83,8 +83,8 @@ MonoBehaviour:
     RomanNumber: "\u2166"
     TileModel: {fileID: 919132149155446097, guid: 48650b70092878546917b01c5bd05645, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 9f7e0700320cb254d85e4bf60ff87605, type: 3}
-    BackgroundColor: {r: 0.3137255, g: 0.6627451, b: 0.60784316, a: 1}
-    TileColor: {r: 0.9490196, g: 0.72156864, b: 0.3647059, a: 1}
+    BackgroundColor: {r: 0.22352941, g: 0.16078432, b: 0.28235295, a: 1}
+    TileColor: {r: 0.99215686, g: 0.78039217, b: 0.2509804, a: 1}
     BackgroundSprites:
     - {fileID: 2153437637897528494, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}
     - {fileID: -5680992630530523857, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}
