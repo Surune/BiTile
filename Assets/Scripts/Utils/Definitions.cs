@@ -64,5 +64,6 @@ public static class Definitions
         TUTORIAL_LINK_ONE,
         TUTORIAL_LINK_TWO,
         TUTORIAL_LINK_EACH,
+        TUTORIAL_ALL,
     }
 }

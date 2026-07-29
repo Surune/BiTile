@@ -114,6 +114,18 @@ public class MapMaker : MonoBehaviour
             return;
         }
 
+        if (type == '@')
+        {
+            for (var targetRow = 0; targetRow < rows; targetRow++)
+            {
+                for (var targetColumn = 0; targetColumn < columns; targetColumn++)
+                {
+                    FlipColor(targetRow, targetColumn);
+                }
+            }
+            return;
+        }
+
         for (var rowOffset = -1; rowOffset <= 1; rowOffset++)
         {
             for (var columnOffset = -1; columnOffset <= 1; columnOffset++)
@@ -133,6 +145,11 @@ public class MapMaker : MonoBehaviour
 
     private void FlipColor(int row, int column)
     {
+        if (tiles[row, column].Type == '!')
+        {
+            return;
+        }
+
         tiles[row, column].Color = tiles[row, column].Color == 'B' ? 'W' : 'B';
     }
 

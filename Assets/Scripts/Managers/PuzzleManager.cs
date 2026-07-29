@@ -253,18 +253,16 @@ public class PuzzleManager : MonoBehaviour
             return;
         }
 
+        if (stageInfo[row, col].Type == '!')
+        {
+            return;
+        }
+
         stageInfo[row, col].Color = stageInfo[row, col].Color == 'W' ? 'B' : 'W';
 
         var tile = puzzleTiles[row * width + col];
         tile.color = stageInfo[row, col].Color;
         tile.type = stageInfo[row, col].Type;
-
-        if (tile.type == '!')
-        {
-            tile.color = 'W';
-            await tile.StartShake(delay);
-            return;
-        }
 
         await Task.WhenAll(
             tile.StartRotate(delay),
@@ -292,9 +290,24 @@ public class PuzzleManager : MonoBehaviour
         return Task.WhenAll(tasks);
     }
 
+    public Task ChangeAllTiles(float delayInterval)
+    {
+        var tasks = new List<Task>();
+        var delay = 0f;
+
+        for (var index = 0; index < puzzleTiles.Length; index++)
+        {
+            var tile = puzzleTiles[index];
+            tasks.Add(ChangeTileColor(tile.row, tile.col, delay));
+            delay += delayInterval;
+        }
+
+        return Task.WhenAll(tasks);
+    }
+
     public static bool IsLinkType(char type)
     {
-        return type == '1' || type == '2';
+        return type == '(' || type == ')';
     }
 
     private int GetIndexByType(char type)
@@ -305,8 +318,9 @@ public class PuzzleManager : MonoBehaviour
             '+' => 1,
             '*' => 2,
             '!' => 3,
-            '1' => 4,
-            '2' => 5,
+            '(' => 4,
+            ')' => 5,
+            '@' => 6,
             _ => -1
         };
     }
@@ -418,6 +432,7 @@ public class PuzzleManager : MonoBehaviour
             '.' => Definitions.SoundType.Flip_Base,
             '+' => Definitions.SoundType.Flip_Plus,
             '*' => Definitions.SoundType.Flip_X,
+            '@' => Definitions.SoundType.Flip_Base,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
