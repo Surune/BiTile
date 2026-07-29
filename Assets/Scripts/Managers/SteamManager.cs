@@ -43,6 +43,10 @@ public class SteamManager : MonoBehaviour {
 		}
 	}
 
+	public static string GetCurrentGameLanguage() {
+		return SteamApps.GetCurrentGameLanguage();
+	}
+
 	public static void UnlockAchievement(string achievementId) {
 		if (!Initialized) {
 			return;
@@ -195,6 +199,10 @@ public class SteamManager : MonoBehaviour {
 		get {
 			return false;
 		}
+	}
+
+	public static string GetCurrentGameLanguage() {
+		throw new System.NotSupportedException();
 	}
 
 	public static void UnlockAchievement(string achievementId) {

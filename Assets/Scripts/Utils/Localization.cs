@@ -113,11 +113,41 @@ public class Localization
         };
     }
 
+    private static string GetSteamLocale()
+    {
+        return SteamManager.GetCurrentGameLanguage() switch
+        {
+            "koreana" => Korean,
+            "japanese" => Japanese,
+            "schinese" => ChineseSimplified,
+            "tchinese" => ChineseTraditional,
+            "english" => English,
+            "spanish" => Spanish,
+            "latam" => Spanish,
+            "brazilian" => PortugueseBrazil,
+            "portuguese" => PortugueseBrazil,
+            "russian" => Russian,
+            "german" => German,
+            "french" => French,
+            "turkish" => Turkish,
+            "thai" => Thai,
+            "italian" => Italian,
+            _ => DefaultLocale
+        };
+    }
+
+    private static string GetDefaultLocale()
+    {
+        return SteamManager.Initialized
+            ? GetSteamLocale()
+            : GetSystemLocale();
+    }
+
     private static string LoadLocale()
     {
         var locale = PlayerPrefs.HasKey(PlayerPrefsLocaleKey)
             ? PlayerPrefs.GetString(PlayerPrefsLocaleKey)
-            : GetSystemLocale();
+            : GetDefaultLocale();
 
         for (var i = 0; i < SupportedLocales.Length; i++)
         {
@@ -127,7 +157,7 @@ public class Localization
             }
         }
 
-        return GetSystemLocale();
+        return GetDefaultLocale();
     }
 
     private Dictionary<string, Dictionary<string, string>> LoadText()
