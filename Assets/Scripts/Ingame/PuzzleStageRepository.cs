@@ -100,10 +100,9 @@ public class PuzzleStageRepository
             stageData.Width = int.Parse(row["ROW"]);
             stageData.Height = int.Parse(row["COLUMN"]);
             stageData.Tiles = CreateTileInfo(stageData.Width, stageData.Height, row["TYPE"], row["COLOR"]);
-            var hintValues = row["HINT"].Trim('(', ')').Split(", ");
             stageData.HintPosition = default;
-            stageData.HintPosition.x = int.Parse(hintValues[0]);
-            stageData.HintPosition.y = int.Parse(hintValues[1]);
+            stageData.HintPosition.x = int.Parse(row["HINT_ROW"]);
+            stageData.HintPosition.y = int.Parse(row["HINT_COLUMN"]);
             stageData.ShowHint = bool.Parse(row["SHOW_HINT"]);
             stageData.TutorialLkey = row["LKEY"] == string.Empty
                 ? Definitions.LKey.None
