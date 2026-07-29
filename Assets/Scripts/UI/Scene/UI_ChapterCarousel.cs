@@ -19,11 +19,15 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     private readonly List<UI_World_Chapter> chapterViews = new List<UI_World_Chapter>();
     private UI_ChapterSelect chapterSelect;
+    private PuzzleStageRepository stageRepository;
+    private Definitions.GameMode mode;
     private int selectedChapter = FirstChapter;
 
     public void Init(UI_ChapterSelect chapterSelect)
     {
         this.chapterSelect = chapterSelect;
+        mode = GameManager.Instance.StageSelection.Mode;
+        stageRepository = new PuzzleStageRepository(mode);
         RefreshChapters();
     }
 
@@ -75,7 +79,7 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     public void ConfirmSelectedChapter()
     {
-        if (PuzzleStageRepository.GetFirstProgressStage(selectedChapter) <= SaveManager.LastUnlockedStage)
+        if (IsChapterUnlocked(selectedChapter))
         {
             chapterSelect.SelectChapter(selectedChapter);
             return;
@@ -92,14 +96,13 @@ public class UI_ChapterCarousel : MonoBehaviour
         }
 
         chapterViews.Clear();
-        selectedChapter = Mathf.Clamp(GameManager.Instance.StageSelection.Chapter, FirstChapter, PuzzleStageRepository.TotalChapterCount);
+        selectedChapter = Mathf.Clamp(GameManager.Instance.StageSelection.Chapter, FirstChapter, stageRepository.TotalChapterCount);
 
-        var clearedStage = SaveManager.LastUnlockedStage;
-        for (var chapter = FirstChapter; chapter <= PuzzleStageRepository.TotalChapterCount; chapter++)
+        for (var chapter = FirstChapter; chapter <= stageRepository.TotalChapterCount; chapter++)
         {
-            var isUnlocked = PuzzleStageRepository.GetFirstProgressStage(chapter) <= clearedStage;
+            var isUnlocked = IsChapterUnlocked(chapter);
             var chapterView = Instantiate(chapterPrefab, transform);
-            var stageCount = PuzzleStageRepository.GetStageCount(chapter);
+            var stageCount = stageRepository.GetStageCount(chapter);
             var acquiredStarCount = GetAcquiredStarCount(chapter, stageCount);
             chapterView.Init(this, chapter, isUnlocked, acquiredStarCount, stageCount);
             chapterViews.Add(chapterView);
@@ -108,13 +111,20 @@ public class UI_ChapterCarousel : MonoBehaviour
         RefreshCarouselImmediate();
     }
 
+    private bool IsChapterUnlocked(int chapter)
+    {
+        return mode == Definitions.GameMode.Normal
+            ? stageRepository.GetFirstProgressStage(chapter) <= SaveManager.GetLastUnlockedStage(mode, chapter)
+            : SaveManager.IsNormalChapterCleared(chapter);
+    }
+
     private int GetAcquiredStarCount(int chapter, int stageCount)
     {
         var acquiredStarCount = 0;
         for (var stage = 1; stage <= stageCount; stage++)
         {
-            var progressStage = PuzzleStageRepository.GetProgressStage(chapter, stage);
-            if (SaveManager.HasStar(progressStage))
+            var progressStage = stageRepository.GetProgressStage(chapter, stage);
+            if (SaveManager.HasStar(mode, progressStage))
             {
                 acquiredStarCount++;
             }
@@ -125,7 +135,7 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     private void MoveCarousel(int direction)
     {
-        var nextChapter = Mathf.Clamp(selectedChapter + direction, FirstChapter, PuzzleStageRepository.TotalChapterCount);
+        var nextChapter = Mathf.Clamp(selectedChapter + direction, FirstChapter, stageRepository.TotalChapterCount);
         if (nextChapter == selectedChapter)
         {
             return;

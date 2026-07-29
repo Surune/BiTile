@@ -3,55 +3,61 @@ using System.Collections.Generic;
 
 public class PuzzleStageRepository
 {
-    private static Dictionary<(int, int), PuzzleStageData> levelInfo;
-    private static List<(int Chapter, int Stage)> stageKeys;
-    private static int totalChapterCount;
+    private readonly Definitions.GameMode mode;
+    private Dictionary<(int, int), PuzzleStageData> levelInfo;
+    private List<(int Chapter, int Stage)> stageKeys;
+    private int totalChapterCount;
 
-    public static int TotalStageCount
+    public int TotalStageCount
     {
         get
         {
-            levelInfo ??= LoadLevelInfo();
+            EnsureLoaded();
             return stageKeys.Count;
         }
     }
 
-    public static int TotalChapterCount
+    public int TotalChapterCount
     {
         get
         {
-            levelInfo ??= LoadLevelInfo();
+            EnsureLoaded();
             return totalChapterCount;
         }
     }
 
-    public static int GetChapter(int progressStage)
+    public PuzzleStageRepository(Definitions.GameMode mode)
     {
-        levelInfo ??= LoadLevelInfo();
+        this.mode = mode;
+    }
+
+    public int GetChapter(int progressStage)
+    {
+        EnsureLoaded();
         return stageKeys[progressStage - 1].Chapter;
     }
 
-    public static int GetStage(int progressStage)
+    public int GetStage(int progressStage)
     {
-        levelInfo ??= LoadLevelInfo();
+        EnsureLoaded();
         return stageKeys[progressStage - 1].Stage;
     }
 
-    public static int GetProgressStage(int chapter, int stage)
+    public int GetProgressStage(int chapter, int stage)
     {
-        levelInfo ??= LoadLevelInfo();
+        EnsureLoaded();
         return stageKeys.IndexOf((chapter, stage)) + 1;
     }
 
-    public static int GetFirstProgressStage(int chapter)
+    public int GetFirstProgressStage(int chapter)
     {
-        levelInfo ??= LoadLevelInfo();
+        EnsureLoaded();
         return stageKeys.IndexOf((chapter, 1)) + 1;
     }
 
-    public static int GetStageCount(int chapter)
+    public int GetStageCount(int chapter)
     {
-        levelInfo ??= LoadLevelInfo();
+        EnsureLoaded();
         var count = 0;
         for (var i = 0; i < stageKeys.Count; i++)
         {
@@ -66,22 +72,33 @@ public class PuzzleStageRepository
 
     public PuzzleStageData Load(int chapter, int stage)
     {
-        levelInfo ??= LoadLevelInfo();
+        EnsureLoaded();
         return CopyStageData(levelInfo[(chapter, stage)]);
     }
 
 #if UNITY_EDITOR
     public void Reload()
     {
-        levelInfo = LoadLevelInfo();
+        LoadLevelInfo();
     }
 #endif
 
-    private static Dictionary<(int, int), PuzzleStageData> LoadLevelInfo()
+    private void EnsureLoaded()
     {
-        var rows = CSVReader.Read("level_info");
-        var levelInfo = new Dictionary<(int, int), PuzzleStageData>(rows.Count);
-        var keys = new List<(int Chapter, int Stage)>(rows.Count);
+        if (levelInfo == null)
+        {
+            LoadLevelInfo();
+        }
+    }
+
+    private void LoadLevelInfo()
+    {
+        var resourceName = mode == Definitions.GameMode.Normal
+            ? "level_info"
+            : "hard_level_info";
+        var rows = CSVReader.Read(resourceName);
+        levelInfo = new Dictionary<(int, int), PuzzleStageData>(rows.Count);
+        stageKeys = new List<(int Chapter, int Stage)>(rows.Count);
         totalChapterCount = 0;
 
         foreach (var row in rows)
@@ -109,12 +126,9 @@ public class PuzzleStageRepository
                 : Enum.Parse<Definitions.LKey>(row["LKEY"]);
 
             var key = (chapter, stage);
-            keys.Add(key);
+            stageKeys.Add(key);
             levelInfo.Add(key, stageData);
         }
-
-        stageKeys = keys;
-        return levelInfo;
     }
 
     private static PuzzleStageData CopyStageData(PuzzleStageData source)

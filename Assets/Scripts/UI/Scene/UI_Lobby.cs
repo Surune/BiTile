@@ -22,6 +22,7 @@ public class UI_Lobby : MonoBehaviour
     [SerializeField] private TMP_Text versionText;
     [SerializeField] private InputActionReference confirmAction;
 
+    private Button hardModeButton;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
     private Sequence transitionSequence;
@@ -33,10 +34,12 @@ public class UI_Lobby : MonoBehaviour
 
     private void Awake()
     {
+        CreateModeButtons();
         CacheTransitionTargets();
 
         quitButton.onClick.AddListener(Application.Quit);
-        startButton.onClick.AddListener(OnGameStart);
+        startButton.onClick.AddListener(() => OnGameStart(Definitions.GameMode.Normal));
+        hardModeButton.onClick.AddListener(() => OnGameStart(Definitions.GameMode.Hard));
         optionButton.onClick.AddListener(OnOptionButton);
 
         versionText.text = $"{Application.version}({BuildInfo.GitHash})";
@@ -85,16 +88,17 @@ public class UI_Lobby : MonoBehaviour
             return;
         }
 
-        OnGameStart();
+        OnGameStart(Definitions.GameMode.Normal);
     }
 
-    private void OnGameStart()
+    private void OnGameStart(Definitions.GameMode mode)
     {
         if (isTransitioning)
         {
             return;
         }
 
+        GameManager.Instance.SetMode(mode);
         isTransitioning = true;
         canvasGroup.blocksRaycasts = false;
 
@@ -102,6 +106,42 @@ public class UI_Lobby : MonoBehaviour
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.GameStart);
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.ChapterSelectSceneName, LoadSceneMode.Additive);
         loadOperation.completed += _ => PlayChapterSelectTransition();
+    }
+
+    private void CreateModeButtons()
+    {
+        var buttonParent = startButton.transform.parent;
+        var siblingIndex = startButton.transform.GetSiblingIndex();
+
+        var modeButtons = new GameObject("ModeButtons", typeof(RectTransform), typeof(HorizontalLayoutGroup));
+        modeButtons.layer = gameObject.layer;
+        var modeButtonsRectTransform = (RectTransform)modeButtons.transform;
+        modeButtonsRectTransform.SetParent(buttonParent, false);
+        modeButtonsRectTransform.SetSiblingIndex(siblingIndex);
+        modeButtonsRectTransform.sizeDelta = new Vector2(0f, 175f);
+
+        startButton.transform.SetParent(modeButtonsRectTransform, false);
+        startButton.GetComponentInChildren<UI_LocalizedText>().SetLKey(Definitions.LKey.UI_NORMAL_MODE);
+
+        hardModeButton = Instantiate(startButton, modeButtonsRectTransform);
+        hardModeButton.name = "HardModeButton";
+        hardModeButton.GetComponentInChildren<UI_LocalizedText>().SetLKey(Definitions.LKey.UI_HARD_MODE);
+        RefreshModeButtons();
+
+        var layoutGroup = modeButtons.GetComponent<HorizontalLayoutGroup>();
+        layoutGroup.spacing = 20f;
+        layoutGroup.childAlignment = TextAnchor.MiddleCenter;
+        layoutGroup.childControlWidth = true;
+        layoutGroup.childControlHeight = true;
+        layoutGroup.childForceExpandWidth = true;
+        layoutGroup.childForceExpandHeight = true;
+    }
+
+    public void RefreshModeButtons()
+    {
+        hardModeButton.interactable = SaveManager.IsHardModeUnlocked();
+        hardModeButton.GetComponentInChildren<TMP_Text>().color =
+            hardModeButton.interactable ? Color.white : Color.gray;
     }
 
     private void OnOptionButton()

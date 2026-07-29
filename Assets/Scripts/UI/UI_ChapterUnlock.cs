@@ -32,7 +32,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
 
     public async Task Play(int chapter)
     {
-        var chapterData = GameManager.Instance.Chapter.GetData(chapter);
+        var chapterData = GameManager.Instance.GetChapterData(chapter);
         chapterNameText.text = $"{chapterData.RomanNumber}. {GameManager.Instance.Localization.Get(chapterData.NameLKey)}";
         accent.color = chapterData.BackgroundColor;
         modelRoot = CreatePreview(chapterData);

@@ -42,7 +42,7 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
         this.chapter = chapter;
         this.isUnlocked = isUnlocked;
 
-        var chapterData = GameManager.Instance.Chapter.GetData(chapter);
+        var chapterData = GameManager.Instance.GetChapterData(chapter);
         groundModel = Instantiate(chapterData.TileModel, transform);
         numberModel = Instantiate(isUnlocked ? chapterData.NumberModel : lockedNumber, transform);
         numberModel.transform.localScale = new Vector3(numberScale, numberScale, numberScale);

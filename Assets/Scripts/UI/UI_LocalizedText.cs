@@ -28,4 +28,9 @@ public class UI_LocalizedText : MonoBehaviour
     {
         text.text = Localization.Get(lkey);
     }
+
+    public void SetLKey(Definitions.LKey value)
+    {
+        lkey = value;
+    }
 }

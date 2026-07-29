@@ -1,14 +1,19 @@
 public class ChapterManager
 {
-    private ChapterDataList chapterDataList;
+    private readonly ChapterDataList normalChapterDataList;
+    private readonly ChapterDataList hardChapterDataList;
 
-    public ChapterManager(ChapterDataList preset)
+    public ChapterManager(ChapterDataList normalPreset, ChapterDataList hardPreset)
     {
-        chapterDataList = preset;
+        normalChapterDataList = normalPreset;
+        hardChapterDataList = hardPreset;
     }
     
-    public ChapterData GetData(int chapter)
+    public ChapterData GetData(Definitions.GameMode mode, int chapter)
     {
+        var chapterDataList = mode == Definitions.GameMode.Normal
+            ? normalChapterDataList
+            : hardChapterDataList;
         return chapterDataList.Data[GetIndex(chapter)];
     }
 

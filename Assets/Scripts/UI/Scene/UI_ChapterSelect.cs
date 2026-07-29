@@ -120,7 +120,7 @@ public class UI_ChapterSelect : MonoBehaviour
 
         chapterCarousel.transform.localPosition = chapterContentDefaultPosition + Vector3.up * GetChapterExitDistance();
         backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();
-        backgroundCamera.backgroundColor = GameManager.Instance.Chapter.GetData(chapter).BackgroundColor;
+        backgroundCamera.backgroundColor = GameManager.Instance.GetChapterData(chapter).BackgroundColor;
 
         UI_StageSelect.PlayIntroOnAwake = false;
         var loadOperation = SceneManager.LoadSceneAsync(Definitions.StageSelectSceneName, LoadSceneMode.Additive);
@@ -166,7 +166,7 @@ public class UI_ChapterSelect : MonoBehaviour
         backgroundCamera.DOKill();
         chapterContent.localPosition = chapterContentDefaultPosition;
         backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition;
-        var chapterColor = GameManager.Instance.Chapter.GetData(GameManager.Instance.StageSelection.Chapter).BackgroundColor;
+        var chapterColor = GameManager.Instance.GetChapterData(GameManager.Instance.StageSelection.Chapter).BackgroundColor;
         var sequence = DOTween.Sequence();
         sequence.Join(chapterContent.DOLocalMoveY(chapterContentDefaultPosition.y + GetChapterExitDistance(), TransitionDuration).SetEase(Ease.InOutCubic));
         sequence.Join(backButtonRectTransform.DOAnchorPos(backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance(), TransitionDuration).SetEase(Ease.InOutCubic));

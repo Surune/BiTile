@@ -130,6 +130,7 @@ public class UI_Options : MonoBehaviour
     private void ConfirmReset()
     {
         SaveManager.Reset();
+        FindFirstObjectByType<UI_Lobby>().RefreshModeButtons();
         ReturnToGameStartScreen();
     }
 

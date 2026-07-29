@@ -15,14 +15,14 @@ public class UI_World_Stage : MonoBehaviour
     private int chapter;
     private int stage;
 
-    public void SetInfo(int chapter, int stage, int progressStage, int cleared, bool hasStar, Color starColor)
+    public void SetInfo(int chapter, int stage, bool isUnlocked, bool hasStar, Color starColor)
     {
         this.chapter = chapter;
         this.stage = stage;
         starImage.color = hasStar ? starColor : lockedColor;
         stageText.text = stage.ToString();
         
-        if (progressStage <= cleared)
+        if (isUnlocked)
         {
             tileImage.color = Color.white;
             button.onClick.AddListener(Accept);

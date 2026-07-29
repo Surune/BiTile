@@ -21,6 +21,8 @@ public class UI_StageSelect : MonoBehaviour
     [SerializeField] private InputActionReference backAction;
 
     private int selectedChapter;
+    private Definitions.GameMode mode;
+    private PuzzleStageRepository stageRepository;
     private RectTransform rootRectTransform;
     private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
     private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
@@ -35,6 +37,8 @@ public class UI_StageSelect : MonoBehaviour
     private void Awake()
     {
         rootRectTransform = (RectTransform)transform;
+        mode = GameManager.Instance.StageSelection.Mode;
+        stageRepository = new PuzzleStageRepository(mode);
 
         CacheTransitionTargets();
         var shouldPlayIntro = PlayIntroOnAwake;
@@ -53,7 +57,7 @@ public class UI_StageSelect : MonoBehaviour
         RefreshStages(selectedChapter);
 
 #if UNITY_EDITOR
-        editorLastUnlockedStageText = SaveManager.LastUnlockedStage.ToString();
+        editorLastUnlockedStageText = SaveManager.GetLastUnlockedStage(mode, selectedChapter).ToString();
 #endif
     }
 
@@ -188,25 +192,28 @@ public class UI_StageSelect : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var clearedStage = SaveManager.LastUnlockedStage;
-        for (var i = FirstStage; i <= PuzzleStageRepository.TotalStageCount; i++)
+        var lastUnlockedStage = SaveManager.GetLastUnlockedStage(mode, chapter);
+        for (var i = FirstStage; i <= stageRepository.TotalStageCount; i++)
         {
-            if (PuzzleStageRepository.GetChapter(i) != chapter)
+            if (stageRepository.GetChapter(i) != chapter)
             {
                 continue;
             }
 
             var stage = Instantiate(stagePrefab, stageContainer);
-            var stageChapter = PuzzleStageRepository.GetChapter(i);
-            var stageNumber = PuzzleStageRepository.GetStage(i);
-            var starColor = GameManager.Instance.Chapter.GetData(stageChapter).TileColor;
-            stage.SetInfo(stageChapter, stageNumber, i, clearedStage, SaveManager.HasStar(i), starColor);
+            var stageChapter = stageRepository.GetChapter(i);
+            var stageNumber = stageRepository.GetStage(i);
+            var starColor = GameManager.Instance.GetChapterData(stageChapter).TileColor;
+            var isUnlocked = mode == Definitions.GameMode.Normal
+                ? i <= lastUnlockedStage
+                : stageNumber <= lastUnlockedStage;
+            stage.SetInfo(stageChapter, stageNumber, isUnlocked, SaveManager.HasStar(mode, i), starColor);
         }
     }
 
     private void RefreshChapterName()
     {
-        var chapterData = GameManager.Instance.Chapter.GetData(selectedChapter);
+        var chapterData = GameManager.Instance.GetChapterData(selectedChapter);
         var chapterName = GameManager.Instance.Localization.Get(chapterData.NameLKey);
         chapterNameText.text = $"{chapterData.RomanNumber}. {chapterName}";
     }
@@ -216,7 +223,7 @@ public class UI_StageSelect : MonoBehaviour
     {
         GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(260f));
         GUILayout.Label("Stage Selection Unlock");
-        GUILayout.Label($"Current Last Unlocked: {SaveManager.LastUnlockedStage}");
+        GUILayout.Label($"Current Last Unlocked: {SaveManager.GetLastUnlockedStage(mode, selectedChapter)}");
         editorLastUnlockedStageText = GUILayout.TextField(editorLastUnlockedStageText, GUILayout.Width(120f));
 
         GUILayout.BeginHorizontal();
@@ -241,9 +248,12 @@ public class UI_StageSelect : MonoBehaviour
 
     private void ApplyEditorLastUnlockedStage()
     {
-        var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, PuzzleStageRepository.TotalStageCount);
+        var maxStage = mode == Definitions.GameMode.Normal
+            ? stageRepository.TotalStageCount
+            : stageRepository.GetStageCount(selectedChapter);
+        var lastUnlockedStage = Mathf.Clamp(int.Parse(editorLastUnlockedStageText), FirstStage, maxStage);
         editorLastUnlockedStageText = lastUnlockedStage.ToString();
-        SaveManager.LastUnlockedStage = lastUnlockedStage;
+        SaveManager.SetLastUnlockedStage(mode, selectedChapter, lastUnlockedStage);
         RefreshStages(selectedChapter);
     }
 #endif

@@ -28,6 +28,12 @@ public static class Definitions
         Flip_Link = 103,
         Flip_Fixed = 104,
     }
+
+    public enum GameMode
+    {
+        Normal,
+        Hard
+    }
     
     public enum Sound
     {
@@ -53,6 +59,8 @@ public static class Definitions
         UI_RESET_CONFIRMATION,
         UI_CONFIRM,
         UI_CANCEL,
+        UI_NORMAL_MODE,
+        UI_HARD_MODE,
         TUTORIAL_BASE = 100,
         TUTORIAL_COUNT,
         TUTORIAL_UNDO,

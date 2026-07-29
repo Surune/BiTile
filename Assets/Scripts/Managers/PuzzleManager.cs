@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
-    private readonly PuzzleStageRepository stageRepository = new PuzzleStageRepository();
+    private PuzzleStageRepository stageRepository;
     private PuzzleStageData currentStageData;
 
     [SerializeField] private PuzzleTile tilePrefab;
@@ -53,6 +53,7 @@ public class PuzzleManager : MonoBehaviour
     private bool isStageTransitionInProgress;
 
     private Color tileColor;
+    private Definitions.GameMode currentMode;
     private int currentChapter = 1;
     private int currentStage = 1;
     private int maxClicks = 1;
@@ -119,6 +120,8 @@ public class PuzzleManager : MonoBehaviour
 
     private void StartGame(StageSelectionState stageSelection)
     {
+        currentMode = stageSelection.Mode;
+        stageRepository = new PuzzleStageRepository(currentMode);
         currentChapter = stageSelection.Chapter;
         currentStage = stageSelection.Stage;
 
@@ -162,7 +165,7 @@ public class PuzzleManager : MonoBehaviour
         stageInfo = currentStageData.Tiles;
         width = currentStageData.Width;
         height = currentStageData.Height;
-        var chapterData = GameManager.Instance.Chapter.GetData(currentChapter);
+        var chapterData = GameManager.Instance.GetChapterData(currentChapter);
         tileColor = chapterData.TileColor;
         camera.backgroundColor = chapterData.BackgroundColor;
         
@@ -410,6 +413,8 @@ public class PuzzleManager : MonoBehaviour
             OnOffResetButton(false);
             acquiredStar = TryUnlockStageStar();
             unlockedNextStage = TryUnlockNextStage();
+            TryCompleteNormalChapter();
+            TryCompleteMode();
             TryUnlockChapterAchievements();
             Invoke(nameof(PlaySuccessParticle), 0.3f);
             Invoke(nameof(SetNextButtonActive), 0.5f);
@@ -444,35 +449,82 @@ public class PuzzleManager : MonoBehaviour
             return false;
         }
 
-        var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage);
-        return SaveManager.UnlockStar(progressStage);
+        var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage);
+        return SaveManager.UnlockStar(currentMode, progressStage);
     }
 
     private bool TryUnlockNextStage()
     {
-        var nextProgressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
-        if (nextProgressStage > PuzzleStageRepository.TotalStageCount || nextProgressStage <= SaveManager.LastUnlockedStage)
+        var nextProgressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
+        if (nextProgressStage > stageRepository.TotalStageCount)
         {
             return false;
         }
 
-        SaveManager.LastUnlockedStage = nextProgressStage;
+        var nextChapter = stageRepository.GetChapter(nextProgressStage);
+        if (currentMode == Definitions.GameMode.Hard)
+        {
+            if (nextChapter != currentChapter)
+            {
+                return SaveManager.IsNormalChapterCleared(nextChapter);
+            }
+
+            var nextStage = stageRepository.GetStage(nextProgressStage);
+            if (nextStage <= SaveManager.GetLastUnlockedStage(currentMode, currentChapter))
+            {
+                return false;
+            }
+
+            SaveManager.SetLastUnlockedStage(currentMode, currentChapter, nextStage);
+            return true;
+        }
+
+        if (nextProgressStage <= SaveManager.GetLastUnlockedStage(currentMode, currentChapter))
+        {
+            return false;
+        }
+
+        SaveManager.SetLastUnlockedStage(currentMode, currentChapter, nextProgressStage);
         return true;
+    }
+
+    private void TryCompleteNormalChapter()
+    {
+        if (currentMode == Definitions.GameMode.Normal &&
+            currentStage == stageRepository.GetStageCount(currentChapter))
+        {
+            SaveManager.CompleteNormalChapter(currentChapter);
+        }
+    }
+
+    private void TryCompleteMode()
+    {
+        var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage);
+        if (progressStage == stageRepository.TotalStageCount)
+        {
+            SaveManager.CompleteMode(currentMode);
+        }
     }
 
     private void TryUnlockChapterAchievements()
     {
-        var currentProgressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage);
-        var isLastStageInChapter = currentProgressStage == PuzzleStageRepository.TotalStageCount
-                                   || PuzzleStageRepository.GetChapter(currentProgressStage + 1) != currentChapter;
+        if (currentMode == Definitions.GameMode.Hard)
+        {
+            return;
+        }
+
+        var currentProgressStage = stageRepository.GetProgressStage(currentChapter, currentStage);
+        var isLastStageInChapter = currentProgressStage == stageRepository.TotalStageCount
+                                   || stageRepository.GetChapter(currentProgressStage + 1) != currentChapter;
         if (isLastStageInChapter)
         {
             SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_CLEAR");
         }
 
-        for (var progressStage = 1; progressStage <= PuzzleStageRepository.TotalStageCount; progressStage++)
+        for (var progressStage = 1; progressStage <= stageRepository.TotalStageCount; progressStage++)
         {
-            if (PuzzleStageRepository.GetChapter(progressStage) == currentChapter && !SaveManager.HasStar(progressStage))
+            if (stageRepository.GetChapter(progressStage) == currentChapter &&
+                !SaveManager.HasStar(currentMode, progressStage))
             {
                 return;
             }
@@ -559,8 +611,8 @@ public class PuzzleManager : MonoBehaviour
 
         StopSuccessParticle();
 
-        var progressStage = PuzzleStageRepository.GetProgressStage(currentChapter, currentStage) + 1;
-        if (progressStage > PuzzleStageRepository.TotalStageCount)
+        var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
+        if (progressStage > stageRepository.TotalStageCount)
         {
             starNotificationAnimation.Hide();
             nextButton.gameObject.SetActive(false);
@@ -570,7 +622,7 @@ public class PuzzleManager : MonoBehaviour
             return;
         }
 
-        var nextChapter = PuzzleStageRepository.GetChapter(progressStage);
+        var nextChapter = stageRepository.GetChapter(progressStage);
 
         isStageTransitionInProgress = true;
         starNotificationAnimation.Hide();
@@ -580,6 +632,22 @@ public class PuzzleManager : MonoBehaviour
         OnOffUndoButton(false);
 
         isClickable = false;
+
+        if (currentMode == Definitions.GameMode.Hard && nextChapter != currentChapter)
+        {
+            GameManager.Instance.SetChapter(unlockedNextStage ? nextChapter : currentChapter);
+            if (unlockedNextStage)
+            {
+                UI_Lobby.OpenStageSelectOnAwake = true;
+            }
+            else
+            {
+                UI_Lobby.OpenChapterSelectOnAwake = true;
+            }
+
+            SceneManager.LoadScene(Definitions.LobbySceneName);
+            return;
+        }
 
         if (nextChapter != currentChapter && unlockedNextStage)
         {
@@ -594,7 +662,7 @@ public class PuzzleManager : MonoBehaviour
         await board.DOLocalRotate(Vector3.forward * 90f, stageTransitionHalfRotateDuration).SetEase(Ease.InQuad).AsyncWaitForCompletion();
 
         currentChapter = nextChapter;
-        currentStage = PuzzleStageRepository.GetStage(progressStage);
+        currentStage = stageRepository.GetStage(progressStage);
 
         currentClicks = 0;
         undoHistory.Clear();

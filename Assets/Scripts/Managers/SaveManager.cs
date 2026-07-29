@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,31 +22,80 @@ public static class SaveManager
     private static string SaveDirectory => Path.Combine(InstallDirectory, SaveDirectoryName);
     private static string SavePath => Path.Combine(SaveDirectory, SaveFileName);
 
-    public static int LastUnlockedStage
+    public static int GetLastUnlockedStage(Definitions.GameMode mode, int chapter)
     {
-        get => Data.lastUnlockedStage;
-        set
+        return mode == Definitions.GameMode.Normal
+            ? Data.lastUnlockedStage
+            : GetHardClearedStageCount(chapter) + 1;
+    }
+
+    public static void SetLastUnlockedStage(Definitions.GameMode mode, int chapter, int stage)
+    {
+        if (mode == Definitions.GameMode.Normal)
         {
-            Data.lastUnlockedStage = value;
-            Save();
+            Data.lastUnlockedStage = stage;
         }
+        else
+        {
+            SetHardClearedStageCount(chapter, stage - 1);
+        }
+
+        Save();
     }
 
-    public static bool HasStar(int progressStage)
+    public static bool IsHardModeUnlocked()
     {
-        return Data.starredProgressStages.Contains(progressStage);
+        return Data.normalClearedChapterMask != 0;
     }
 
-    public static bool UnlockStar(int progressStage)
+    public static bool IsNormalChapterCleared(int chapter)
     {
-        if (Data.starredProgressStages.Contains(progressStage))
+        return (Data.normalClearedChapterMask & 1 << (chapter - 1)) != 0;
+    }
+
+    public static void CompleteNormalChapter(int chapter)
+    {
+        Data.normalClearedChapterMask |= 1 << (chapter - 1);
+        Save();
+    }
+
+    public static bool HasStar(Definitions.GameMode mode, int progressStage)
+    {
+        return GetStarredProgressStages(mode).Contains(progressStage);
+    }
+
+    public static bool UnlockStar(Definitions.GameMode mode, int progressStage)
+    {
+        var starredProgressStages = GetStarredProgressStages(mode);
+        if (starredProgressStages.Contains(progressStage))
         {
             return false;
         }
 
-        Data.starredProgressStages.Add(progressStage);
+        starredProgressStages.Add(progressStage);
         Save();
         return true;
+    }
+
+    public static bool IsModeCleared(Definitions.GameMode mode)
+    {
+        return mode == Definitions.GameMode.Normal
+            ? Data.normalModeCleared
+            : Data.hardModeCleared;
+    }
+
+    public static void CompleteMode(Definitions.GameMode mode)
+    {
+        if (mode == Definitions.GameMode.Normal)
+        {
+            Data.normalModeCleared = true;
+        }
+        else
+        {
+            Data.hardModeCleared = true;
+        }
+
+        Save();
     }
 
     public static void Reset()
@@ -93,6 +143,58 @@ public static class SaveManager
         var json = JsonUtility.ToJson(data);
         var encryptedText = Encrypt(json);
         File.WriteAllText(SavePath, encryptedText);
+    }
+
+    private static List<int> GetStarredProgressStages(Definitions.GameMode mode)
+    {
+        return mode == Definitions.GameMode.Normal
+            ? Data.starredProgressStages
+            : Data.hardStarredProgressStages;
+    }
+
+    private static int GetHardClearedStageCount(int chapter)
+    {
+        return chapter switch
+        {
+            1 => Data.hardChapter1ClearedStageCount,
+            2 => Data.hardChapter2ClearedStageCount,
+            3 => Data.hardChapter3ClearedStageCount,
+            4 => Data.hardChapter4ClearedStageCount,
+            5 => Data.hardChapter5ClearedStageCount,
+            6 => Data.hardChapter6ClearedStageCount,
+            7 => Data.hardChapter7ClearedStageCount,
+            _ => throw new ArgumentOutOfRangeException(nameof(chapter), chapter, null)
+        };
+    }
+
+    private static void SetHardClearedStageCount(int chapter, int clearedStageCount)
+    {
+        switch (chapter)
+        {
+            case 1:
+                Data.hardChapter1ClearedStageCount = clearedStageCount;
+                break;
+            case 2:
+                Data.hardChapter2ClearedStageCount = clearedStageCount;
+                break;
+            case 3:
+                Data.hardChapter3ClearedStageCount = clearedStageCount;
+                break;
+            case 4:
+                Data.hardChapter4ClearedStageCount = clearedStageCount;
+                break;
+            case 5:
+                Data.hardChapter5ClearedStageCount = clearedStageCount;
+                break;
+            case 6:
+                Data.hardChapter6ClearedStageCount = clearedStageCount;
+                break;
+            case 7:
+                Data.hardChapter7ClearedStageCount = clearedStageCount;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(chapter), chapter, null);
+        }
     }
 
     private static string Encrypt(string plainText)

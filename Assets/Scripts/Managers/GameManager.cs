@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public Localization Localization => _localization;
     
     [SerializeField] private InputActionReference toggleFullscreen;
-    [SerializeField] private ChapterDataList chapterDataList;
+    [SerializeField] private ChapterDataList normalChapterDataList;
+    [SerializeField] private ChapterDataList hardChapterDataList;
     [SerializeField] private SoundDictionary soundDictionary;
 
     private ChapterManager chapter;
@@ -33,11 +34,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         StageSelectionState stageSelection;
+        stageSelection.Mode = Definitions.GameMode.Normal;
         stageSelection.Chapter = 1;
         stageSelection.Stage = 1;
         _stageSelection = stageSelection;
         
-        chapter = new ChapterManager(chapterDataList);
+        chapter = new ChapterManager(normalChapterDataList, hardChapterDataList);
         _sound.Init(soundDictionary);
         _localization.Init();
         DisplayModeManager.Init();
@@ -60,5 +62,17 @@ public class GameManager : MonoBehaviour
     {
         _stageSelection.Chapter = chapter;
         _stageSelection.Stage = stage;
+    }
+
+    public void SetMode(Definitions.GameMode mode)
+    {
+        _stageSelection.Mode = mode;
+        _stageSelection.Chapter = 1;
+        _stageSelection.Stage = 1;
+    }
+
+    public ChapterData GetChapterData(int chapterNumber)
+    {
+        return chapter.GetData(_stageSelection.Mode, chapterNumber);
     }
 }
