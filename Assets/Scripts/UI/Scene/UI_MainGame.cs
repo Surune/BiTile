@@ -55,7 +55,7 @@ public class UI_MainGame : MonoBehaviour
         }
 
         isExiting = true;
-        UI_Lobby.OpenStageSelectOnAwake = true;
-        SceneManager.LoadScene(Definitions.LobbySceneName);
+        UI_ChapterSelect.OpenStageSelectOnAwake = true;
+        SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
     }
 }

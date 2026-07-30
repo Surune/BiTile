@@ -50,8 +50,12 @@ public class SoundManager
     public void PlayBGM(Definitions.SoundType soundType)
     {
         var audioClip = soundDictionary.GetClip(soundType);
-        
         var audioSource = audioSources[(int)Definitions.Sound.Bgm];
+        if (audioSource.isPlaying && audioSource.clip == audioClip)
+        {
+            return;
+        }
+
         if (audioSource.isPlaying)
         {
             audioSource.Stop();

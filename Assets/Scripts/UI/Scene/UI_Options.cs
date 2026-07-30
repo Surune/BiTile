@@ -131,7 +131,6 @@ public class UI_Options : MonoBehaviour
     {
         SaveManager.Reset();
         GameManager.Instance.ResetStageSelection();
-        FindFirstObjectByType<UI_Lobby>().RefreshModeButtons();
         ReturnToGameStartScreen();
     }
 

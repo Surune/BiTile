@@ -594,8 +594,7 @@ public class PuzzleManager : MonoBehaviour
             starNotificationAnimation.Hide();
             nextButton.gameObject.SetActive(false);
             GameManager.Instance.SetChapter(currentChapter);
-            UI_Lobby.OpenChapterSelectOnAwake = true;
-            SceneManager.LoadScene(Definitions.LobbySceneName);
+            SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
         }
 
@@ -615,14 +614,10 @@ public class PuzzleManager : MonoBehaviour
             GameManager.Instance.SetChapter(unlockedNextStage ? nextChapter : currentChapter);
             if (unlockedNextStage)
             {
-                UI_Lobby.OpenStageSelectOnAwake = true;
-            }
-            else
-            {
-                UI_Lobby.OpenChapterSelectOnAwake = true;
+                UI_ChapterSelect.OpenStageSelectOnAwake = true;
             }
 
-            SceneManager.LoadScene(Definitions.LobbySceneName);
+            SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
         }
 
@@ -631,8 +626,8 @@ public class PuzzleManager : MonoBehaviour
             CancelInvoke(nameof(SetStarNotificationActive));
             await ui.PlayChapterUnlock(nextChapter);
             GameManager.Instance.SetChapter(nextChapter);
-            UI_Lobby.OpenStageSelectOnAwake = true;
-            SceneManager.LoadScene(Definitions.LobbySceneName);
+            UI_ChapterSelect.OpenStageSelectOnAwake = true;
+            SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
         }
 

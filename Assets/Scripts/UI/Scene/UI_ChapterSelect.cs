@@ -3,47 +3,93 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_ChapterSelect : MonoBehaviour
 {
     private const float TransitionDuration = 0.4f;
     private const float ChapterExitDistance = 7f;
+    private static readonly Color SelectedModeColor = new Color(1f, 0.7411765f, 0.2196078f);
 
-    public static bool PlayIntroOnAwake { get; set; }
+    public static bool OpenStageSelectOnAwake { get; set; }
 
     [SerializeField] private UI_ChapterCarousel chapterCarousel;
     [SerializeField] private Camera backgroundCamera;
     [SerializeField] private float chapterExitDistance = ChapterExitDistance;
-    [SerializeField] private Button backButton;
     [SerializeField] private InputActionReference backAction;
     [SerializeField] private InputActionReference confirmAction;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Button normalModeButton;
+    [SerializeField] private Button hardModeButton;
+    [SerializeField] private RectTransform modeButtonsRectTransform;
 
     private bool isTransitioning;
     private Vector3 chapterContentDefaultPosition;
     private RectTransform backButtonRectTransform;
     private Vector2 backButtonDefaultAnchoredPosition;
+    private Vector2 modeButtonsDefaultAnchoredPosition;
+
     private Color defaultBackgroundColor;
     private InputAction backInputAction;
     private InputAction confirmInputAction;
 
     private void Awake()
     {
-        chapterCarousel.Init(this);
-        chapterContentDefaultPosition = chapterCarousel.transform.localPosition;
+        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
+
         backButtonRectTransform = (RectTransform)backButton.transform;
         backButtonDefaultAnchoredPosition = backButtonRectTransform.anchoredPosition;
+        modeButtonsDefaultAnchoredPosition = modeButtonsRectTransform.anchoredPosition;
+
+        normalModeButton.onClick.AddListener(() => SelectMode(Definitions.GameMode.Normal));
+        hardModeButton.onClick.AddListener(() => SelectMode(Definitions.GameMode.Hard));
+        RefreshModeButtons();
+
+        chapterCarousel.Init(this);
+        chapterContentDefaultPosition = chapterCarousel.transform.localPosition;
         defaultBackgroundColor = backgroundCamera.backgroundColor;
 
-        var shouldPlayIntro = PlayIntroOnAwake;
-        PlayIntroOnAwake = false;
-        if (shouldPlayIntro)
+        var openStageSelectImmediately = OpenStageSelectOnAwake;
+        OpenStageSelectOnAwake = false;
+        if (openStageSelectImmediately)
         {
-            PrepareIntroPosition();
+            OpenStageSelectImmediately(GameManager.Instance.StageSelection.Chapter);
         }
 
         backButton.onClick.AddListener(OnBackButton);
         backInputAction = backAction.action.Clone();
         confirmInputAction = confirmAction.action.Clone();
+    }
+
+    private void SelectMode(Definitions.GameMode mode)
+    {
+        if (isTransitioning || mode == GameManager.Instance.StageSelection.Mode)
+        {
+            return;
+        }
+
+        GameManager.Instance.SetMode(mode);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        chapterCarousel.Init(this);
+        RefreshModeButtons();
+    }
+
+    private void RefreshModeButtons()
+    {
+        var hardModeUnlocked = SaveManager.IsHardModeUnlocked();
+        modeButtonsRectTransform.gameObject.SetActive(hardModeUnlocked);
+        if (!hardModeUnlocked)
+        {
+            return;
+        }
+
+        var currentMode = GameManager.Instance.StageSelection.Mode;
+        normalModeButton.interactable = currentMode != Definitions.GameMode.Normal;
+        hardModeButton.interactable = currentMode != Definitions.GameMode.Hard;
+        normalModeButton.GetComponentInChildren<TMP_Text>().color =
+            currentMode == Definitions.GameMode.Normal ? SelectedModeColor : Color.white;
+        hardModeButton.GetComponentInChildren<TMP_Text>().color =
+            currentMode == Definitions.GameMode.Hard ? SelectedModeColor : Color.white;
     }
 
     private void OnEnable()
@@ -86,6 +132,7 @@ public class UI_ChapterSelect : MonoBehaviour
 
     private void OnDestroy()
     {
+        modeButtonsRectTransform.DOKill();
         backInputAction.Dispose();
         confirmInputAction.Dispose();
     }
@@ -120,6 +167,7 @@ public class UI_ChapterSelect : MonoBehaviour
 
         chapterCarousel.transform.localPosition = chapterContentDefaultPosition + Vector3.up * GetChapterExitDistance();
         backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();
+        modeButtonsRectTransform.anchoredPosition = modeButtonsDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();
         backgroundCamera.backgroundColor = GameManager.Instance.GetChapterData(chapter).BackgroundColor;
 
         UI_StageSelect.PlayIntroOnAwake = false;
@@ -143,18 +191,7 @@ public class UI_ChapterSelect : MonoBehaviour
         }
 
         isTransitioning = true;
-        var lobbyScene = SceneManager.GetSceneByName(Definitions.LobbySceneName);
-        if (!lobbyScene.isLoaded)
-        {
-            SceneManager.LoadScene(Definitions.LobbySceneName);
-            return;
-        }
-
-        var lobbyScreen = FindFirstObjectByType<UI_Lobby>();
-        var sequence = DOTween.Sequence();
-        sequence.Join(PlayExitTransition(TransitionDuration));
-        sequence.Join(lobbyScreen.PlayReturnTransition(TransitionDuration));
-        sequence.OnComplete(() => SceneManager.UnloadSceneAsync(Definitions.ChapterSelectSceneName));
+        SceneManager.LoadScene(Definitions.LobbySceneName);
     }
 
     private void PlayStageSelectTransition()
@@ -163,13 +200,16 @@ public class UI_ChapterSelect : MonoBehaviour
         var chapterContent = chapterCarousel.transform;
         chapterContent.DOKill();
         backButtonRectTransform.DOKill();
+        modeButtonsRectTransform.DOKill();
         backgroundCamera.DOKill();
         chapterContent.localPosition = chapterContentDefaultPosition;
         backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition;
+        modeButtonsRectTransform.anchoredPosition = modeButtonsDefaultAnchoredPosition;
         var chapterColor = GameManager.Instance.GetChapterData(GameManager.Instance.StageSelection.Chapter).BackgroundColor;
         var sequence = DOTween.Sequence();
         sequence.Join(chapterContent.DOLocalMoveY(chapterContentDefaultPosition.y + GetChapterExitDistance(), TransitionDuration).SetEase(Ease.InOutCubic));
         sequence.Join(backButtonRectTransform.DOAnchorPos(backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance(), TransitionDuration).SetEase(Ease.InOutCubic));
+        sequence.Join(modeButtonsRectTransform.DOAnchorPos(modeButtonsDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance(), TransitionDuration).SetEase(Ease.InOutCubic));
         sequence.Join(backgroundCamera.DOColor(chapterColor, TransitionDuration).SetEase(Ease.InOutCubic));
         sequence.Join(stageSelect.PlayIntroTransition(TransitionDuration));
         sequence.OnComplete(() => isTransitioning = false);
@@ -181,46 +221,18 @@ public class UI_ChapterSelect : MonoBehaviour
         var chapterContent = chapterCarousel.transform;
         chapterContent.DOKill();
         backButtonRectTransform.DOKill();
+        modeButtonsRectTransform.DOKill();
         backgroundCamera.DOKill();
         chapterContent.localPosition = chapterContentDefaultPosition + Vector3.up * GetChapterExitDistance();
         backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();
+        modeButtonsRectTransform.anchoredPosition = modeButtonsDefaultAnchoredPosition + Vector2.up * GetCanvasExitDistance();
         var sequence = DOTween.Sequence();
         sequence.Join(chapterContent.DOLocalMove(chapterContentDefaultPosition, duration).SetEase(Ease.InOutCubic));
         sequence.Join(backButtonRectTransform.DOAnchorPos(backButtonDefaultAnchoredPosition, duration).SetEase(Ease.InOutCubic));
+        sequence.Join(modeButtonsRectTransform.DOAnchorPos(modeButtonsDefaultAnchoredPosition, duration).SetEase(Ease.InOutCubic));
         sequence.Join(backgroundCamera.DOColor(defaultBackgroundColor, duration).SetEase(Ease.InOutCubic));
         sequence.OnComplete(() => isTransitioning = false);
         return sequence;
-    }
-
-    public Tween PlayIntroTransition(float duration)
-    {
-        isTransitioning = true;
-        var chapterContent = chapterCarousel.transform;
-        chapterContent.DOKill();
-        backButtonRectTransform.DOKill();
-        var sequence = DOTween.Sequence();
-        sequence.Join(chapterContent.DOLocalMove(chapterContentDefaultPosition, duration).SetEase(Ease.InOutCubic));
-        sequence.Join(backButtonRectTransform.DOAnchorPos(backButtonDefaultAnchoredPosition, duration).SetEase(Ease.InOutCubic));
-        sequence.OnComplete(() => isTransitioning = false);
-        return sequence;
-    }
-
-    private Tween PlayExitTransition(float duration)
-    {
-        var chapterContent = chapterCarousel.transform;
-        chapterContent.DOKill();
-        backButtonRectTransform.DOKill();
-        backgroundCamera.DOKill();
-        var sequence = DOTween.Sequence();
-        sequence.Join(chapterContent.DOLocalMove(chapterContentDefaultPosition + Vector3.down * GetChapterExitDistance(), duration).SetEase(Ease.InOutCubic));
-        sequence.Join(backButtonRectTransform.DOAnchorPos(backButtonDefaultAnchoredPosition + Vector2.down * GetCanvasExitDistance(), duration).SetEase(Ease.InOutCubic));
-        return sequence;
-    }
-
-    private void PrepareIntroPosition()
-    {
-        chapterCarousel.transform.localPosition = chapterContentDefaultPosition + Vector3.down * GetChapterExitDistance();
-        backButtonRectTransform.anchoredPosition = backButtonDefaultAnchoredPosition + Vector2.down * GetCanvasExitDistance();
     }
 
     private float GetChapterExitDistance()
