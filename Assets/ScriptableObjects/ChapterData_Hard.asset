@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 112879256778469c8d4aad942a66e981, type: 3}
-  m_Name: ChapterData
+  m_Name: ChapterData_Hard
   m_EditorClassIdentifier: 
+  CompletedMaterial: {fileID: 2100000, guid: 295100df653ea2b4da1cf1078d6ee24b, type: 2}
   Data:
   - Id: 1
     RomanNumber: "\u2160"
-    TileModel: {fileID: 919132149155446097, guid: f5769dfff60c10549ae62f29bcede2e7, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: 0e6424b9fc0c37c4c816a39a12141589, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 5dc85a0ba9e89234d804ebd87498ebae, type: 3}
     BackgroundColor: {r: 0.3137255, g: 0.6039216, b: 0.29803923, a: 1}
-    TileColor: {r: 1, g: 0.7607843, b: 0.2784314, a: 1}
+    TileColor: {r: 1, g: 0.32156864, b: 0.32156864, a: 1}
     BackgroundSprites:
     - {fileID: -4522064208414700646, guid: 40581ff33aaf18b4a9b8a7ac80d9d805, type: 3}
     - {fileID: -859706135, guid: 40581ff33aaf18b4a9b8a7ac80d9d805, type: 3}
@@ -26,10 +27,10 @@ MonoBehaviour:
     - {fileID: -697592485, guid: 40581ff33aaf18b4a9b8a7ac80d9d805, type: 3}
   - Id: 2
     RomanNumber: "\u2161"
-    TileModel: {fileID: 919132149155446097, guid: 3793a1a3bfb534744a80dfe7b753b729, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: 743bc017dbc47064b8890eee67d54013, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 54063289869ac164f92639f633208fc0, type: 3}
     BackgroundColor: {r: 0.33333334, g: 0.20784314, b: 0.13333334, a: 1}
-    TileColor: {r: 0.9372549, g: 0.4509804, b: 0.3019608, a: 1}
+    TileColor: {r: 0.99215686, g: 0.65882355, b: 0.15686275, a: 1}
     BackgroundSprites:
     - {fileID: 7615421633276393370, guid: f96391ba0fdf73e4c8ddfd655ea2c279, type: 3}
     - {fileID: 3251344432923753471, guid: f96391ba0fdf73e4c8ddfd655ea2c279, type: 3}
@@ -37,10 +38,10 @@ MonoBehaviour:
     - {fileID: -3824744866503032671, guid: f96391ba0fdf73e4c8ddfd655ea2c279, type: 3}
   - Id: 3
     RomanNumber: "\u2162"
-    TileModel: {fileID: 919132149155446097, guid: 70e09278727c1e04c94b76380e642a37, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: f32f771d92e349d4c8ae02e17b49caf3, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: f5b51eef246baaf44a6a6d9af3448fb9, type: 3}
     BackgroundColor: {r: 0.16470589, g: 0.3647059, b: 0.53333336, a: 1}
-    TileColor: {r: 0.4745098, g: 0.8117647, b: 0.83137256, a: 1}
+    TileColor: {r: 0.4745098, g: 0.6117647, b: 0.91764706, a: 1}
     BackgroundSprites:
     - {fileID: 576913317996634308, guid: e17ca38557e749e468bb757ac2d6fd32, type: 3}
     - {fileID: -706304765067960952, guid: e17ca38557e749e468bb757ac2d6fd32, type: 3}
@@ -48,10 +49,10 @@ MonoBehaviour:
     - {fileID: 7618622820160929971, guid: e17ca38557e749e468bb757ac2d6fd32, type: 3}
   - Id: 4
     RomanNumber: "\u2163"
-    TileModel: {fileID: 919132149155446097, guid: 0b63801b683e02c4d853a6d746f3f636, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: e7e102c03cb472c42a514449e7b1faef, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: c3ae37beb536c7e4bbca05b48cea99a5, type: 3}
     BackgroundColor: {r: 0.5294118, g: 0.31764707, b: 0.19607843, a: 1}
-    TileColor: {r: 0.96862745, g: 0.6313726, b: 0.22352941, a: 1}
+    TileColor: {r: 0.45490196, g: 0.6156863, b: 0.18039216, a: 1}
     BackgroundSprites:
     - {fileID: 1762869199, guid: 4fe63f67e08de0945bb8d3c4d06f29b7, type: 3}
     - {fileID: 97751222, guid: 4fe63f67e08de0945bb8d3c4d06f29b7, type: 3}
@@ -59,10 +60,10 @@ MonoBehaviour:
     - {fileID: -298257686, guid: 4fe63f67e08de0945bb8d3c4d06f29b7, type: 3}
   - Id: 5
     RomanNumber: "\u2164"
-    TileModel: {fileID: 919132149155446097, guid: 39404329ff3ae054886794db058ac2d9, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: 7b9c60457b2bb0c45b6456acd18bc6b1, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: c46b1410eeda0874787e93ab7afcf8ae, type: 3}
     BackgroundColor: {r: 0.38431373, g: 0.20784314, b: 0.2509804, a: 1}
-    TileColor: {r: 0.91764706, g: 0.50980395, b: 0.6156863, a: 1}
+    TileColor: {r: 1, g: 0.6313726, b: 0.77254903, a: 1}
     BackgroundSprites:
     - {fileID: 3163274483233213068, guid: 7cedd3a367860e14185be8ff0c935f57, type: 3}
     - {fileID: -385933326869493122, guid: 7cedd3a367860e14185be8ff0c935f57, type: 3}
@@ -70,10 +71,10 @@ MonoBehaviour:
     - {fileID: 4881287986594462334, guid: 7cedd3a367860e14185be8ff0c935f57, type: 3}
   - Id: 6
     RomanNumber: "\u2165"
-    TileModel: {fileID: 919132149155446097, guid: e2104afc3c5506f4291070d03eca1c72, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: fc00d7761b4aace4f8dfe8434f88bb5e, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 7954be61a61c3984dbcb92bb2288ac38, type: 3}
     BackgroundColor: {r: 0.20784314, g: 0.21176471, b: 0.15686275, a: 1}
-    TileColor: {r: 0.84705883, g: 0.19215687, b: 0.19215687, a: 1}
+    TileColor: {r: 0.8392157, g: 0.5294118, b: 0.15294118, a: 1}
     BackgroundSprites:
     - {fileID: -2388705498012619923, guid: ed43c4d0858b96b4ab70d46407cf4b81, type: 3}
     - {fileID: -3734810385448229697, guid: ed43c4d0858b96b4ab70d46407cf4b81, type: 3}
@@ -81,10 +82,10 @@ MonoBehaviour:
     - {fileID: -6406400764894600274, guid: ed43c4d0858b96b4ab70d46407cf4b81, type: 3}
   - Id: 7
     RomanNumber: "\u2166"
-    TileModel: {fileID: 919132149155446097, guid: 48650b70092878546917b01c5bd05645, type: 3}
+    TileModel: {fileID: 919132149155446097, guid: a29acd1abd0a34b48b6ef9e1e276776f, type: 3}
     NumberModel: {fileID: 919132149155446097, guid: 9f7e0700320cb254d85e4bf60ff87605, type: 3}
     BackgroundColor: {r: 0.22352941, g: 0.16078432, b: 0.28235295, a: 1}
-    TileColor: {r: 0.99215686, g: 0.78039217, b: 0.2509804, a: 1}
+    TileColor: {r: 0.44313726, g: 0.3647059, b: 0.43137255, a: 1}
     BackgroundSprites:
     - {fileID: 2153437637897528494, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}
     - {fileID: -5680992630530523857, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}

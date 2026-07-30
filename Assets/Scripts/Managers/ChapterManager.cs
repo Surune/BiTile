@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ChapterManager
 {
     private readonly ChapterDataList normalChapterDataList;
@@ -11,10 +13,19 @@ public class ChapterManager
     
     public ChapterData GetData(Definitions.GameMode mode, int chapter)
     {
-        var chapterDataList = mode == Definitions.GameMode.Normal
+        return GetDataList(mode).Data[GetIndex(chapter)];
+    }
+
+    public Material GetCompletedMaterial(Definitions.GameMode mode)
+    {
+        return GetDataList(mode).CompletedMaterial;
+    }
+
+    private ChapterDataList GetDataList(Definitions.GameMode mode)
+    {
+        return mode == Definitions.GameMode.Normal
             ? normalChapterDataList
             : hardChapterDataList;
-        return chapterDataList.Data[GetIndex(chapter)];
     }
 
     private int GetIndex(int chapter)

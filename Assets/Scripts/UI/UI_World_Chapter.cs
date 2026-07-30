@@ -23,7 +23,6 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Color lockedColor;
     
     [Header("Complete")]
-    [SerializeField] private Material completedGlowMaterial;
     [SerializeField] private float completedGlowFlowSpeed = 0.45f;
 
     private Vector3 numberModelDefaultLocalPosition;
@@ -96,7 +95,9 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 
     private void ApplyCompletedGlow()
     {
-        numberModel.AddComponent<UI_CompletedChapterGlow>().Init(completedGlowMaterial, completedGlowFlowSpeed);
+        var completedMaterial = GameManager.Instance.Chapter.GetCompletedMaterial(
+            GameManager.Instance.StageSelection.Mode);
+        numberModel.AddComponent<UI_CompletedChapterGlow>().Init(completedMaterial, completedGlowFlowSpeed);
     }
 
     public void OnPointerClick(PointerEventData eventData)

@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ChapterData", menuName = "ScriptableObjects/ChapterData", order = 3)]
 public class ChapterDataList : ScriptableObject
 {
+    public Material CompletedMaterial;
     [TableView]
     public ChapterData[] Data;
 }
