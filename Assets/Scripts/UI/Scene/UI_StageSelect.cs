@@ -241,6 +241,16 @@ public class UI_StageSelect : MonoBehaviour
         }
         GUILayout.EndHorizontal();
 
+        if (GUILayout.Button("Unlock Current Chapter"))
+        {
+            UnlockEditorCurrentChapter();
+        }
+
+        if (GUILayout.Button("All-Star Current Chapter"))
+        {
+            AllStarEditorCurrentChapter();
+        }
+
         if (GUILayout.Button("Reset Achievements"))
         {
             SteamManager.ResetAchievements();
@@ -255,6 +265,26 @@ public class UI_StageSelect : MonoBehaviour
         var clearedStageCount = Mathf.Clamp(int.Parse(editorClearedStageCountText), 0, stageCount);
         editorClearedStageCountText = clearedStageCount.ToString();
         SaveManager.SetClearedStageCount(mode, selectedChapter, clearedStageCount);
+        RefreshStages(selectedChapter);
+    }
+
+    private void UnlockEditorCurrentChapter()
+    {
+        var stageCount = stageRepository.GetStageCount(selectedChapter);
+        editorClearedStageCountText = stageCount.ToString();
+        SaveManager.SetClearedStageCount(mode, selectedChapter, stageCount);
+        SaveManager.UnlockHardMode();
+        RefreshStages(selectedChapter);
+    }
+
+    private void AllStarEditorCurrentChapter()
+    {
+        var stageCount = stageRepository.GetStageCount(selectedChapter);
+        for (var stage = FirstStage; stage <= stageCount; stage++)
+        {
+            SaveManager.UnlockStar(mode, selectedChapter, stage);
+        }
+
         RefreshStages(selectedChapter);
     }
 #endif
