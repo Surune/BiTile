@@ -413,8 +413,6 @@ public class PuzzleManager : MonoBehaviour
             OnOffResetButton(false);
             acquiredStar = TryUnlockStageStar();
             unlockedNextStage = TryUnlockNextStage();
-            TryCompleteNormalChapter();
-            TryCompleteMode();
             TryUnlockChapterAchievements();
             Invoke(nameof(PlaySuccessParticle), 0.3f);
             Invoke(nameof(SetNextButtonActive), 0.5f);
@@ -449,12 +447,23 @@ public class PuzzleManager : MonoBehaviour
             return false;
         }
 
-        var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage);
-        return SaveManager.UnlockStar(currentMode, progressStage);
+        return SaveManager.UnlockStar(currentMode, currentChapter, currentStage);
     }
 
     private bool TryUnlockNextStage()
     {
+        var clearedStageCount = SaveManager.GetClearedStageCount(currentMode, currentChapter);
+        var clearedNewStage = currentStage > clearedStageCount;
+        if (clearedNewStage)
+        {
+            SaveManager.SetClearedStageCount(currentMode, currentChapter, currentStage);
+            if (currentMode == Definitions.GameMode.Normal &&
+                currentStage == stageRepository.GetStageCount(currentChapter))
+            {
+                SaveManager.UnlockHardMode();
+            }
+        }
+
         var nextProgressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (nextProgressStage > stageRepository.TotalStageCount)
         {
@@ -462,48 +471,16 @@ public class PuzzleManager : MonoBehaviour
         }
 
         var nextChapter = stageRepository.GetChapter(nextProgressStage);
-        if (currentMode == Definitions.GameMode.Hard)
+        if (currentMode == Definitions.GameMode.Hard && nextChapter != currentChapter)
         {
-            if (nextChapter != currentChapter)
-            {
-                return SaveManager.IsNormalChapterCleared(nextChapter);
-            }
-
-            var nextStage = stageRepository.GetStage(nextProgressStage);
-            if (nextStage <= SaveManager.GetLastUnlockedStage(currentMode, currentChapter))
-            {
-                return false;
-            }
-
-            SaveManager.SetLastUnlockedStage(currentMode, currentChapter, nextStage);
-            return true;
+            var normalStageRepository = new PuzzleStageRepository(Definitions.GameMode.Normal);
+            return SaveManager.IsChapterCleared(
+                Definitions.GameMode.Normal,
+                nextChapter,
+                normalStageRepository.GetStageCount(nextChapter));
         }
 
-        if (nextProgressStage <= SaveManager.GetLastUnlockedStage(currentMode, currentChapter))
-        {
-            return false;
-        }
-
-        SaveManager.SetLastUnlockedStage(currentMode, currentChapter, nextProgressStage);
-        return true;
-    }
-
-    private void TryCompleteNormalChapter()
-    {
-        if (currentMode == Definitions.GameMode.Normal &&
-            currentStage == stageRepository.GetStageCount(currentChapter))
-        {
-            SaveManager.CompleteNormalChapter(currentChapter);
-        }
-    }
-
-    private void TryCompleteMode()
-    {
-        var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage);
-        if (progressStage == stageRepository.TotalStageCount)
-        {
-            SaveManager.CompleteMode(currentMode);
-        }
+        return clearedNewStage;
     }
 
     private void TryUnlockChapterAchievements()
@@ -521,10 +498,10 @@ public class PuzzleManager : MonoBehaviour
             SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_CLEAR");
         }
 
-        for (var progressStage = 1; progressStage <= stageRepository.TotalStageCount; progressStage++)
+        var stageCount = stageRepository.GetStageCount(currentChapter);
+        for (var stage = 1; stage <= stageCount; stage++)
         {
-            if (stageRepository.GetChapter(progressStage) == currentChapter &&
-                !SaveManager.HasStar(currentMode, progressStage))
+            if (!SaveManager.HasStar(currentMode, currentChapter, stage))
             {
                 return;
             }
@@ -663,6 +640,7 @@ public class PuzzleManager : MonoBehaviour
 
         currentChapter = nextChapter;
         currentStage = stageRepository.GetStage(progressStage);
+        GameManager.Instance.SetStage(currentChapter, currentStage);
 
         currentClicks = 0;
         undoHistory.Clear();

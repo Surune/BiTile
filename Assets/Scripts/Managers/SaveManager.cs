@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,7 +8,7 @@ public static class SaveManager
 {
     private const string SaveFileName = "save.sav";
     private const string SaveDirectoryName = "SavesDir";
-    private const string EncryptionKey = "BiTile.Save.File.v1";
+    private const string EncryptionKey = "BiTile";
     private static readonly byte[] EncryptionIv =
     {
         0x42, 0x69, 0x54, 0x69, 0x6C, 0x65, 0x53, 0x61,
@@ -18,84 +17,72 @@ public static class SaveManager
 
     private static SaveData data;
 
-    private static string InstallDirectory => Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-    private static string SaveDirectory => Path.Combine(InstallDirectory, SaveDirectoryName);
-    private static string SavePath => Path.Combine(SaveDirectory, SaveFileName);
+    private static string SaveDir => Path.GetFullPath(Path.Combine(Application.dataPath, "..", SaveDirectoryName));
+    private static string SavePath => Path.Combine(SaveDir, SaveFileName);
 
-    public static int GetLastUnlockedStage(Definitions.GameMode mode, int chapter)
+    public static int GetClearedStageCount(Definitions.GameMode mode, int chapterId)
     {
-        return mode == Definitions.GameMode.Normal
-            ? Data.lastUnlockedStage
-            : GetHardClearedStageCount(chapter) + 1;
+        var index = GetChapterProgressIndex(mode, chapterId);
+        return index < 0 ? 0 : Data.chapterProgresses[index].clearedStageCount;
     }
 
-    public static void SetLastUnlockedStage(Definitions.GameMode mode, int chapter, int stage)
+    public static void SetClearedStageCount(Definitions.GameMode mode, int chapterId, int clearedStageCount)
     {
-        if (mode == Definitions.GameMode.Normal)
+        var index = GetChapterProgressIndex(mode, chapterId);
+        if (index < 0)
         {
-            Data.lastUnlockedStage = stage;
+            AddChapterProgress(mode, chapterId).clearedStageCount = clearedStageCount;
         }
         else
         {
-            SetHardClearedStageCount(chapter, stage - 1);
+            Data.chapterProgresses[index].clearedStageCount = clearedStageCount;
         }
 
         Save();
+    }
+
+    public static bool IsChapterCleared(Definitions.GameMode mode, int chapterId, int stageCount)
+    {
+        return GetClearedStageCount(mode, chapterId) == stageCount;
     }
 
     public static bool IsHardModeUnlocked()
     {
-        return Data.normalClearedChapterMask != 0;
+        return Data.hardModeUnlocked;
     }
 
-    public static bool IsNormalChapterCleared(int chapter)
+    public static void UnlockHardMode()
     {
-        return (Data.normalClearedChapterMask & 1 << (chapter - 1)) != 0;
-    }
-
-    public static void CompleteNormalChapter(int chapter)
-    {
-        Data.normalClearedChapterMask |= 1 << (chapter - 1);
+        Data.hardModeUnlocked = true;
         Save();
     }
 
-    public static bool HasStar(Definitions.GameMode mode, int progressStage)
+    public static bool HasStar(Definitions.GameMode mode, int chapterId, int stage)
     {
-        return GetStarredProgressStages(mode).Contains(progressStage);
+        var index = GetChapterProgressIndex(mode, chapterId);
+        return index >= 0 && Data.chapterProgresses[index].starredStages.Contains(stage);
     }
 
-    public static bool UnlockStar(Definitions.GameMode mode, int progressStage)
+    public static bool UnlockStar(Definitions.GameMode mode, int chapterId, int stage)
     {
-        var starredProgressStages = GetStarredProgressStages(mode);
-        if (starredProgressStages.Contains(progressStage))
+        var index = GetChapterProgressIndex(mode, chapterId);
+        if (index < 0)
         {
-            return false;
-        }
-
-        starredProgressStages.Add(progressStage);
-        Save();
-        return true;
-    }
-
-    public static bool IsModeCleared(Definitions.GameMode mode)
-    {
-        return mode == Definitions.GameMode.Normal
-            ? Data.normalModeCleared
-            : Data.hardModeCleared;
-    }
-
-    public static void CompleteMode(Definitions.GameMode mode)
-    {
-        if (mode == Definitions.GameMode.Normal)
-        {
-            Data.normalModeCleared = true;
+            AddChapterProgress(mode, chapterId).starredStages.Add(stage);
         }
         else
         {
-            Data.hardModeCleared = true;
+            var starredStages = Data.chapterProgresses[index].starredStages;
+            if (starredStages.Contains(stage))
+            {
+                return false;
+            }
+
+            starredStages.Add(stage);
         }
 
         Save();
+        return true;
     }
 
     public static void Reset()
@@ -108,135 +95,89 @@ public static class SaveManager
     {
         get
         {
-            if (data == null)
-            {
-                data = Load();
-            }
-
+            data ??= Load();
             return data;
         }
     }
 
     private static SaveData Load()
     {
-        if (!File.Exists(SavePath))
+        if (File.Exists(SavePath))
         {
-            return CreateDefaultSaveData();
+            var encryptedText = File.ReadAllText(SavePath);
+            var json = Decrypt(encryptedText);
+            return JsonUtility.FromJson<SaveData>(json);
         }
 
-        var encryptedText = File.ReadAllText(SavePath);
-        var json = Decrypt(encryptedText);
-        return JsonUtility.FromJson<SaveData>(json);
-    }
-
-    private static SaveData CreateDefaultSaveData()
-    {
-        var saveData = new SaveData();
-        data = saveData;
+        data = new SaveData();
         Save();
-        return saveData;
+        return data;
     }
 
     private static void Save()
     {
-        Directory.CreateDirectory(SaveDirectory);
+        Directory.CreateDirectory(SaveDir);
         var json = JsonUtility.ToJson(data);
         var encryptedText = Encrypt(json);
         File.WriteAllText(SavePath, encryptedText);
     }
 
-    private static List<int> GetStarredProgressStages(Definitions.GameMode mode)
+    private static ChapterProgressData AddChapterProgress(Definitions.GameMode mode, int chapterId)
     {
-        return mode == Definitions.GameMode.Normal
-            ? Data.starredProgressStages
-            : Data.hardStarredProgressStages;
-    }
-
-    private static int GetHardClearedStageCount(int chapter)
-    {
-        return chapter switch
+        var chapterProgress = new ChapterProgressData
         {
-            1 => Data.hardChapter1ClearedStageCount,
-            2 => Data.hardChapter2ClearedStageCount,
-            3 => Data.hardChapter3ClearedStageCount,
-            4 => Data.hardChapter4ClearedStageCount,
-            5 => Data.hardChapter5ClearedStageCount,
-            6 => Data.hardChapter6ClearedStageCount,
-            7 => Data.hardChapter7ClearedStageCount,
-            _ => throw new ArgumentOutOfRangeException(nameof(chapter), chapter, null)
+            mode = mode,
+            chapterId = chapterId
         };
+        Data.chapterProgresses.Add(chapterProgress);
+        return chapterProgress;
     }
 
-    private static void SetHardClearedStageCount(int chapter, int clearedStageCount)
+    private static int GetChapterProgressIndex(Definitions.GameMode mode, int chapterId)
     {
-        switch (chapter)
+        for (var i = 0; i < Data.chapterProgresses.Count; i++)
         {
-            case 1:
-                Data.hardChapter1ClearedStageCount = clearedStageCount;
-                break;
-            case 2:
-                Data.hardChapter2ClearedStageCount = clearedStageCount;
-                break;
-            case 3:
-                Data.hardChapter3ClearedStageCount = clearedStageCount;
-                break;
-            case 4:
-                Data.hardChapter4ClearedStageCount = clearedStageCount;
-                break;
-            case 5:
-                Data.hardChapter5ClearedStageCount = clearedStageCount;
-                break;
-            case 6:
-                Data.hardChapter6ClearedStageCount = clearedStageCount;
-                break;
-            case 7:
-                Data.hardChapter7ClearedStageCount = clearedStageCount;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(chapter), chapter, null);
+            var chapterProgress = Data.chapterProgresses[i];
+            if (chapterProgress.mode == mode && chapterProgress.chapterId == chapterId)
+            {
+                return i;
+            }
         }
+
+        return -1;
     }
 
     private static string Encrypt(string plainText)
     {
-        using (var aes = Aes.Create())
-        {
-            aes.Key = CreateKey();
-            aes.IV = EncryptionIv;
+        using var aes = Aes.Create();
+        aes.Key = CreateKey();
+        aes.IV = EncryptionIv;
 
-            var plainBytes = Encoding.UTF8.GetBytes(plainText);
-            using (var memoryStream = new MemoryStream())
-            using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-            {
-                cryptoStream.Write(plainBytes, 0, plainBytes.Length);
-                cryptoStream.FlushFinalBlock();
-                return Convert.ToBase64String(memoryStream.ToArray());
-            }
-        }
+        var plainBytes = Encoding.UTF8.GetBytes(plainText);
+        using var memoryStream = new MemoryStream();
+        using var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write);
+        cryptoStream.Write(plainBytes, 0, plainBytes.Length);
+        cryptoStream.FlushFinalBlock();
+
+        return Convert.ToBase64String(memoryStream.ToArray());
     }
 
     private static string Decrypt(string encryptedText)
     {
-        using (var aes = Aes.Create())
-        {
-            aes.Key = CreateKey();
-            aes.IV = EncryptionIv;
+        using var aes = Aes.Create();
+        aes.Key = CreateKey();
+        aes.IV = EncryptionIv;
 
-            var encryptedBytes = Convert.FromBase64String(encryptedText);
-            using (var memoryStream = new MemoryStream(encryptedBytes))
-            using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
-            using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
-            {
-                return reader.ReadToEnd();
-            }
-        }
+        var encryptedBytes = Convert.FromBase64String(encryptedText);
+        using var memoryStream = new MemoryStream(encryptedBytes);
+        using var cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
+        using var reader = new StreamReader(cryptoStream, Encoding.UTF8);
+        return reader.ReadToEnd();
     }
 
     private static byte[] CreateKey()
     {
-        using (var sha256 = SHA256.Create())
-        {
-            return sha256.ComputeHash(Encoding.UTF8.GetBytes(EncryptionKey));
-        }
+        using var sha256 = SHA256.Create();
+        return sha256.ComputeHash(Encoding.UTF8.GetBytes(EncryptionKey));
     }
 }

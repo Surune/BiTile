@@ -113,9 +113,20 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     private bool IsChapterUnlocked(int chapter)
     {
-        return mode == Definitions.GameMode.Normal
-            ? stageRepository.GetFirstProgressStage(chapter) <= SaveManager.GetLastUnlockedStage(mode, chapter)
-            : SaveManager.IsNormalChapterCleared(chapter);
+        if (mode == Definitions.GameMode.Normal)
+        {
+            return chapter == FirstChapter ||
+                   SaveManager.IsChapterCleared(
+                       mode,
+                       chapter - 1,
+                       stageRepository.GetStageCount(chapter - 1));
+        }
+
+        var normalStageRepository = new PuzzleStageRepository(Definitions.GameMode.Normal);
+        return SaveManager.IsChapterCleared(
+            Definitions.GameMode.Normal,
+            chapter,
+            normalStageRepository.GetStageCount(chapter));
     }
 
     private int GetAcquiredStarCount(int chapter, int stageCount)
@@ -123,8 +134,7 @@ public class UI_ChapterCarousel : MonoBehaviour
         var acquiredStarCount = 0;
         for (var stage = 1; stage <= stageCount; stage++)
         {
-            var progressStage = stageRepository.GetProgressStage(chapter, stage);
-            if (SaveManager.HasStar(mode, progressStage))
+            if (SaveManager.HasStar(mode, chapter, stage))
             {
                 acquiredStarCount++;
             }

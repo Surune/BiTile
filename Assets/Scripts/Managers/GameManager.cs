@@ -4,6 +4,10 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-10000)]
 public class GameManager : MonoBehaviour
 {
+    private const string LastSelectedModeKey = "LastSelectedMode";
+    private const string LastSelectedChapterKey = "LastSelectedChapter";
+    private const string LastSelectedStageKey = "LastSelectedStage";
+
     public static GameManager Instance => instance;
     private static GameManager instance;
 
@@ -33,11 +37,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        StageSelectionState stageSelection;
-        stageSelection.Mode = Definitions.GameMode.Normal;
-        stageSelection.Chapter = 1;
-        stageSelection.Stage = 1;
-        _stageSelection = stageSelection;
+        _stageSelection = LoadStageSelection();
         
         chapter = new ChapterManager(normalChapterDataList, hardChapterDataList);
         _sound.Init(soundDictionary);
@@ -55,24 +55,63 @@ public class GameManager : MonoBehaviour
 
     public void SetChapter(int chapter)
     {
+        if (_stageSelection.Chapter != chapter)
+        {
+            _stageSelection.Stage = 1;
+        }
+
         _stageSelection.Chapter = chapter;
+        SaveStageSelection();
     }
 
     public void SetStage(int chapter, int stage)
     {
         _stageSelection.Chapter = chapter;
         _stageSelection.Stage = stage;
+        SaveStageSelection();
     }
 
     public void SetMode(Definitions.GameMode mode)
     {
+        if (_stageSelection.Mode != mode)
+        {
+            _stageSelection.Chapter = 1;
+            _stageSelection.Stage = 1;
+        }
+
         _stageSelection.Mode = mode;
+        SaveStageSelection();
+    }
+
+    public void ResetStageSelection()
+    {
+        _stageSelection.Mode = Definitions.GameMode.Normal;
         _stageSelection.Chapter = 1;
         _stageSelection.Stage = 1;
+        SaveStageSelection();
     }
 
     public ChapterData GetChapterData(int chapterNumber)
     {
         return chapter.GetData(_stageSelection.Mode, chapterNumber);
+    }
+
+    private static StageSelectionState LoadStageSelection()
+    {
+        StageSelectionState stageSelection;
+        stageSelection.Mode = (Definitions.GameMode)PlayerPrefs.GetInt(
+            LastSelectedModeKey,
+            (int)Definitions.GameMode.Normal);
+        stageSelection.Chapter = PlayerPrefs.GetInt(LastSelectedChapterKey, 1);
+        stageSelection.Stage = PlayerPrefs.GetInt(LastSelectedStageKey, 1);
+        return stageSelection;
+    }
+
+    private void SaveStageSelection()
+    {
+        PlayerPrefs.SetInt(LastSelectedModeKey, (int)_stageSelection.Mode);
+        PlayerPrefs.SetInt(LastSelectedChapterKey, _stageSelection.Chapter);
+        PlayerPrefs.SetInt(LastSelectedStageKey, _stageSelection.Stage);
+        PlayerPrefs.Save();
     }
 }
