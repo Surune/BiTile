@@ -10,6 +10,10 @@ public class UI_StageSelect : MonoBehaviour
 {
     private const int FirstStage = 1;
     private const float TransitionDuration = 0.4f;
+#if UNITY_EDITOR
+    private const float CheatGuiWidth = 260f;
+    private const float CheatGuiMargin = 10f;
+#endif
 
     public static bool PlayIntroOnAwake { get; set; }
 
@@ -224,7 +228,12 @@ public class UI_StageSelect : MonoBehaviour
 #if UNITY_EDITOR
     private void OnGUI()
     {
-        GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(260f));
+        GUILayout.BeginArea(Rect.MinMaxRect(
+            Screen.width - CheatGuiWidth - CheatGuiMargin,
+            CheatGuiMargin,
+            Screen.width - CheatGuiMargin,
+            Screen.height - CheatGuiMargin));
+        GUILayout.BeginVertical(GUI.skin.box);
         GUILayout.Label("Stage Selection Unlock");
         GUILayout.Label($"Current Cleared Stages: {SaveManager.GetClearedStageCount(mode, selectedChapter)}");
         editorClearedStageCountText = GUILayout.TextField(editorClearedStageCountText, GUILayout.Width(120f));
@@ -257,6 +266,7 @@ public class UI_StageSelect : MonoBehaviour
         }
 
         GUILayout.EndVertical();
+        GUILayout.EndArea();
     }
 
     private void ApplyEditorClearedStageCount()

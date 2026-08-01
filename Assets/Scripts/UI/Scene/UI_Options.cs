@@ -1,6 +1,4 @@
 using TMPro;
-using DG.Tweening;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -8,10 +6,6 @@ using UnityEngine.UI;
 
 public class UI_Options : MonoBehaviour
 {
-    private const float TransitionDuration = 0.4f;
-
-    public static bool PlayIntroOnAwake { get; set; }
-
     [SerializeField] private Button closeButton;
     [SerializeField] private InputActionReference backAction;
     
@@ -38,26 +32,11 @@ public class UI_Options : MonoBehaviour
 
     private UI_ResetConfirmationPopup resetConfirmationPopup;
 
-    private RectTransform rootRectTransform;
-    private readonly List<RectTransform> transitionTargets = new List<RectTransform>();
-    private readonly List<Vector2> defaultAnchoredPositions = new List<Vector2>();
-    private Sequence transitionSequence;
     private bool isTransitioning;
     private InputAction backInputAction;
 
     private void Awake()
     {
-        rootRectTransform = (RectTransform)transform;
-        var shouldPlayIntro = PlayIntroOnAwake;
-        PlayIntroOnAwake = false;
-
-        CacheTransitionTargets();
-
-        if (shouldPlayIntro)
-        {
-            PrepareIntroPosition();
-        }
-
         closeButton.onClick.AddListener(Close);
         backInputAction = backAction.action.Clone();
         resetButton.onClick.AddListener(OpenResetConfirmation);
@@ -106,19 +85,6 @@ public class UI_Options : MonoBehaviour
         UpdateSfxValue(GameManager.Instance.Sound.SfxVolume);
         RefreshDisplayModeButtons();
         gameObject.SetActive(true);
-    }
-
-    public Tween PlayIntroTransition(float duration)
-    {
-        isTransitioning = true;
-        transitionSequence?.Kill();
-        transitionSequence = CreateMoveSequence(Vector2.zero, duration);
-        transitionSequence.OnComplete(() =>
-        {
-            transitionSequence = null;
-            isTransitioning = false;
-        });
-        return transitionSequence;
     }
 
     private void OpenResetConfirmation()
@@ -213,63 +179,17 @@ public class UI_Options : MonoBehaviour
         if (gameObject.scene.name == Definitions.OptionSceneName)
         {
             isTransitioning = true;
-            var lobbyScreen = FindFirstObjectByType<UI_Lobby>();
-            transitionSequence?.Kill();
-            transitionSequence = DOTween.Sequence().SetTarget(this).SetLink(gameObject);
-            transitionSequence.Join(lobbyScreen.PlayReturnTransition(TransitionDuration));
-            transitionSequence.Join(CreateMoveSequence(Vector2.right * GetTransitionOffset(), TransitionDuration));
-            transitionSequence.OnComplete(() => SceneManager.UnloadSceneAsync(Definitions.OptionSceneName));
+            FindFirstObjectByType<UI_Lobby>().RestoreAfterOptionsClose();
+            SceneManager.UnloadSceneAsync(Definitions.OptionSceneName);
             return;
         }
 
         gameObject.SetActive(false);
     }
 
-    private void PrepareIntroPosition()
-    {
-        var introOffset = Vector2.right * GetTransitionOffset();
-        for (var i = 0; i < transitionTargets.Count; i++)
-        {
-            transitionTargets[i].anchoredPosition = defaultAnchoredPositions[i] + introOffset;
-        }
-    }
-
-    private Sequence CreateMoveSequence(Vector2 offset, float duration)
-    {
-        var sequence = DOTween.Sequence().SetTarget(this).SetLink(gameObject);
-        for (var i = 0; i < transitionTargets.Count; i++)
-        {
-            sequence.Join(transitionTargets[i].DOAnchorPos(defaultAnchoredPositions[i] + offset, duration)
-                .SetEase(Ease.InOutCubic)
-                .SetTarget(transitionTargets[i])
-                .SetLink(transitionTargets[i].gameObject));
-        }
-
-        return sequence;
-    }
-
-    private void CacheTransitionTargets()
-    {
-        transitionTargets.Clear();
-        defaultAnchoredPositions.Clear();
-
-        foreach (Transform child in transform)
-        {
-            var rectTarget = (RectTransform)child;
-            transitionTargets.Add(rectTarget);
-            defaultAnchoredPositions.Add(rectTarget.anchoredPosition);
-        }
-    }
-
-    private float GetTransitionOffset()
-    {
-        return rootRectTransform.rect.width > 0f ? rootRectTransform.rect.width : Screen.width;
-    }
-
     private void OnDestroy()
     {
         DisplayModeManager.Changed -= RefreshDisplayModeButtons;
-        transitionSequence?.Kill();
         backInputAction.Dispose();
     }
 }
