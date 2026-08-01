@@ -30,6 +30,10 @@ public class SoundManager
         UnityEngine.Object.DontDestroyOnLoad(root);
         soundDictionary = dictionary;
              
+        var listener = new GameObject { name = "Listener" };
+        listener.AddComponent<AudioListener>();
+        listener.transform.parent = root.transform;
+        
         var soundNames = Enum.GetNames(typeof(Definitions.Sound));
         for (var i = 0; i < soundNames.Length - 1; i++)
         {
