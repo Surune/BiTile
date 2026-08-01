@@ -33,6 +33,10 @@ public class UI_ChapterSelect : MonoBehaviour
     private InputAction backInputAction;
     private InputAction confirmInputAction;
 
+    public bool HasFocus =>
+        !isTransitioning &&
+        !SceneManager.GetSceneByName(Definitions.StageSelectSceneName).isLoaded;
+
     private void Awake()
     {
         GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);

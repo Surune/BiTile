@@ -33,6 +33,12 @@ public class UI_ChapterCarousel : MonoBehaviour
 
     private void Update()
     {
+        if (!chapterSelect.HasFocus)
+        {
+            RefreshCarousel();
+            return;
+        }
+
         var scrollY = scroll.action.ReadValue<Vector2>().y;
 
         if (scrollY >= mouseWheelSensitivity)
