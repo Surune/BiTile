@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: Angry Moai
   productName: FLIP OVER
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 0ad3c10be6a148842b8e6000ebe5f79d, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_ShowUnitySplashScreen: 0
