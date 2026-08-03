@@ -107,7 +107,7 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
-  m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 2ca0a4ff06fb816408388a6be4a1b3da, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
-  m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 2ca0a4ff06fb816408388a6be4a1b3da, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -822,7 +822,7 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
-  m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 2ca0a4ff06fb816408388a6be4a1b3da, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1184,7 +1184,7 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
-  m_sharedMaterial: {fileID: -3384357838057401628, guid: 6e9fc73a5d4b14a9781e4b6bb96fa32e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 2ca0a4ff06fb816408388a6be4a1b3da, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1472,7 +1472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b058df55cdbf14f49a8678edba113a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasRectTransform: {fileID: 5362167837776736710}
   canvasGroup: {fileID: 3369688984057126942}
   quitButton: {fileID: 6533703527012539516}
   startButton: {fileID: 8417966849597419842}

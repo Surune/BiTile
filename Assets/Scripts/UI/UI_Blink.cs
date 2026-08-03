@@ -5,9 +5,14 @@ using TMPro;
 public class UI_Blink : MonoBehaviour
 {
     [SerializeField] private TMP_Text textObject;
-    [SerializeField] private Color blinkColor = Color.white;
-    [SerializeField] private float blinkDuration = 1.0f;
+    [SerializeField] private Color blinkColor = Color.clear;
+    [SerializeField] private float blinkDuration = 1f;
     private Color originalColor;
+
+    private void OnValidate()
+    {
+        textObject = GetComponent<TMP_Text>();
+    }
 
     private void Awake()
     {

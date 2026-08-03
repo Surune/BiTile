@@ -23,8 +23,8 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
     
     [Header("UI")]
-    [SerializeField] private Transform starNotification;
-    [SerializeField] private Button nextButton;
+    [SerializeField] private UI_StarNotification starNotification;
+    [SerializeField] private Transform clearNotification;
     [SerializeField] private Button hintButton;
     [SerializeField] private ButtonKey undoButtonKey;
     [SerializeField] private ButtonKey resetButtonKey;
@@ -34,7 +34,7 @@ public class PuzzleManager : MonoBehaviour
     [Header("Inputs")]
     [SerializeField] private InputActionReference undo;
     [SerializeField] private InputActionReference reset;
-    [SerializeField] private InputActionReference confirmAction;
+    [SerializeField] private InputActionReference confirm;
 
     private InputAction confirmInputAction;
     
@@ -60,11 +60,11 @@ public class PuzzleManager : MonoBehaviour
     private int currentClicks = 0;
     private bool acquiredStar;
     private bool unlockedNextStage;
-    private UI_StarNotification starNotificationAnimation;
 
     private void Awake()
     {
-        confirmInputAction = confirmAction.action.Clone();
+        confirmInputAction = confirm.action.Clone();
+        confirmInputAction.AddBinding("<Pointer>/press");
         StartGame(GameManager.Instance.StageSelection);
     }
 
@@ -112,7 +112,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void OnConfirmAction(InputAction.CallbackContext context)
     {
-        if (nextButton.gameObject.activeInHierarchy)
+        if (clearNotification.gameObject.activeInHierarchy)
         {
             LoadNextStage();
         }
@@ -125,11 +125,8 @@ public class PuzzleManager : MonoBehaviour
         currentChapter = stageSelection.Chapter;
         currentStage = stageSelection.Stage;
 
-        starNotificationAnimation = starNotification.GetComponent<UI_StarNotification>();
-        starNotificationAnimation.Hide();
-        
-        nextButton.gameObject.SetActive(false);
-        nextButton.onClick.AddListener(LoadNextStage);
+        starNotification.Hide();
+        clearNotification.gameObject.SetActive(false);
         
         hintButton.onClick.AddListener(ShowHint);
 
@@ -150,8 +147,8 @@ public class PuzzleManager : MonoBehaviour
         CancelInvoke(nameof(PlaySuccessParticle));
         CancelInvoke(nameof(SetStarNotificationActive));
         StopSuccessParticle();
-        starNotificationAnimation.Hide();
-        nextButton.gameObject.SetActive(false);
+        starNotification.Hide();
+        clearNotification.gameObject.SetActive(false);
         OnOffResetButton(false);
 
         currentStageData = stageRepository.Load(currentChapter, currentStage);
@@ -514,9 +511,9 @@ public class PuzzleManager : MonoBehaviour
     {
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
         
-        nextButton.transform.rotation = Quaternion.Euler(0, 270, 0);
-        nextButton.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
-        nextButton.gameObject.SetActive(true);
+        clearNotification.transform.rotation = Quaternion.Euler(0, 270, 0);
+        clearNotification.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
+        clearNotification.gameObject.SetActive(true);
 
         OnOffUndoButton(false);
         OnOffResetButton(false);
@@ -535,7 +532,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void SetStarNotificationActive()
     {
-        starNotificationAnimation.Play();
+        starNotification.Play();
     }
 
     public void Retry()
@@ -571,8 +568,8 @@ public class PuzzleManager : MonoBehaviour
         ui.UpdateClicks(currentClicks, maxClicks);
         await RestoreTileColors(undoHistory.Pop());
 
-        starNotificationAnimation.Hide();
-        nextButton.gameObject.SetActive(false);
+        starNotification.Hide();
+        clearNotification.gameObject.SetActive(false);
         hintButton.interactable = currentClicks == 0;
         OnOffResetButton(currentClicks > 0);
         OnOffUndoButton(undoHistory.Count > 0);
@@ -591,8 +588,8 @@ public class PuzzleManager : MonoBehaviour
         var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > stageRepository.TotalStageCount)
         {
-            starNotificationAnimation.Hide();
-            nextButton.gameObject.SetActive(false);
+            starNotification.Hide();
+            clearNotification.gameObject.SetActive(false);
             GameManager.Instance.SetChapter(currentChapter);
             SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
@@ -601,8 +598,8 @@ public class PuzzleManager : MonoBehaviour
         var nextChapter = stageRepository.GetChapter(progressStage);
 
         isStageTransitionInProgress = true;
-        starNotificationAnimation.Hide();
-        nextButton.gameObject.SetActive(false);
+        starNotification.Hide();
+        clearNotification.gameObject.SetActive(false);
         hintButton.interactable = false;
         OnOffResetButton(false);
         OnOffUndoButton(false);

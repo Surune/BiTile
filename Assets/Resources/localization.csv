@@ -7,11 +7,11 @@ UI_RESET,Reset Progression,진행상황 초기화,進行状況をリセット,�
 UI_RESET_CONFIRMATION,Reset all progression?,모든 진행상황을 초기화할까요?,すべての進行状況をリセットしますか？,要重置所有进度吗？,要重置所有進度嗎？,¿Restablecer todo el progreso?,Redefinir todo o progresso?,Сбросить весь прогресс?,Gesamten Fortschritt zurücksetzen?,Réinitialiser toute la progression ?,Tüm ilerleme sıfırlansın mı?,รีเซ็ตความคืบหน้าทั้งหมดหรือไม่?,Azzerare tutti i progressi?
 UI_CONFIRM,Confirm,확인,確認,确认,確認,Confirmar,Confirmar,Подтвердить,Bestätigen,Confirmer,Onayla,ยืนยัน,Conferma
 UI_CANCEL,Cancel,취소,キャンセル,取消,取消,Cancelar,Cancelar,Отмена,Abbrechen,Annuler,İptal,ยกเลิก,Annulla
-UI_UNLOCK,Unlock All Chapters,모든 챕터 잠금해제,すべてのチャプターを解除,解锁所有章节,解鎖所有章節,Desbloquear todos los capítulos,Desbloquear todos os capítulos,Разблокировать все главы,Alle Kapitel freischalten,Débloquer tous les chapitres,Tüm Bölümlerin Kilidini Aç,ปลดล็อกทุกบท,Sblocca tutti i capitoli
+UI_STAGECLEAR,Stage Clear!,스테이지 클리어!,ステージクリア！,关卡完成！,關卡完成！,¡Nivel superado!,Fase concluída!,Уровень пройден!,Level geschafft!,Niveau terminé !,Aşama Tamamlandı!,ผ่านด่าน!,Livello completato!
 UI_WINDOW,Window,창모드,ウィンドウ,窗口模式,視窗模式,Ventana,Janela,Окно,Fenster,Fenêtre,Pencere,หน้าต่าง,Finestra
 UI_FULLSCREEN,Fullscreen,전체화면,フルスクリーン,全屏,全螢幕,Pantalla completa,Tela cheia,Полный экран,Vollbild,Plein écran,Tam ekran,เต็มหน้าจอ,Schermo intero
 UI_STAR,You got a <sprite index=0>!,<sprite index=0> 획득!,<sprite index=0>をゲット！,拿到 <sprite index=0> 啦！,拿到 <sprite index=0> 啦！,¡Conseguiste una <sprite index=0>!,Você ganhou uma <sprite index=0>!,Вы получили <sprite index=0>!,Du hast einen <sprite index=0> bekommen!,Tu as obtenu une <sprite index=0> !,Bir <sprite index=0> kazandın!,ได้ <sprite index=0> แล้ว!,Hai ottenuto una <sprite index=0>!
-UI_NEXTSTAGE,Next Stage,다음 스테이지,次のステージ,下一关,下一關,Siguiente nivel,Proxima fase,Следующий уровень,Nächste Stufe,Niveau suivant,Sonraki aşama,ด่านถัดไป,Livello successivo
+UI_CONTINUE,Click anywhere to continue...,아무 곳이나 클릭하여 계속...,続けるにはどこかをクリック...,点击任意位置继续...,點擊任意位置繼續...,Haz clic en cualquier lugar para continuar...,Clique em qualquer lugar para continuar...,Нажмите в любом месте для продолжения...,Klicke irgendwo zum Fortfahren...,Cliquez n’importe où pour continuer...,Devam etmek için herhangi bir yere tıkla...,คลิกที่ใดก็ได้เพื่อดำเนินการต่อ...,Fai clic in un punto qualsiasi per continuare...
 UI_CHAPTER_UNLOCKED,NEW CHAPTER!,새로운 챕터!,新しいチャプター！,新章节！,新章節！,¡NUEVO CAPÍTULO!,NOVO CAPÍTULO!,НОВАЯ ГЛАВА!,NEUES KAPITEL!,NOUVEAU CHAPITRE !,YENİ BÖLÜM!,บทใหม่!,NUOVO CAPITOLO!
 UI_NORMAL_MODE,Normal,노말,ノーマル,诺玛尔,諾瑪爾,Normal,Normal,Нормал,Normal,Normal,Normal,นอร์มอล,Normal
 UI_HARD_MODE,Hard,하드,ハード,哈德,哈德,Hard,Hard,Хард,Hard,Hard,Hard,ฮาร์ด,Hard

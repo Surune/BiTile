@@ -64,8 +64,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a93dbd23aa54e42b4c5325bd802e938, type: 2}
   - {fileID: 11400000, guid: 82e4fc7200c35df488fec7f820e36dfa, type: 2}
   - {fileID: 11400000, guid: 8b228f2137a94e0b9c1421f31213df84, type: 2}
-  starNotification: {fileID: 0}
-  nextButton: {fileID: 0}
+  completeNotification: {fileID: 0}
   hintButton: {fileID: 0}
   undoButtonKey:
     Button: {fileID: 0}
@@ -77,7 +76,7 @@ MonoBehaviour:
   disabledColor: {r: 1, g: 1, b: 1, a: 0.2509804}
   undo: {fileID: 2183905184980455353, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   reset: {fileID: 6638399153580964215, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
-  confirmAction: {fileID: 11400000, guid: e653dfd5aa8c4e4da58f1a4a12bfb48d, type: 2}
+  confirm: {fileID: -4605888510310660194, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
 --- !u!114 &7724896144061836501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 4471783632127212477}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6427876, y: 0, z: 0, w: 0.7660445}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -287,7 +286,7 @@ Camera:
   far clip plane: 10
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 6.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

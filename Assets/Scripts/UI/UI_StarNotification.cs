@@ -5,26 +5,34 @@ using UnityEngine.UI;
 
 public class UI_StarNotification : MonoBehaviour
 {
+    [SerializeField] private RectTransform rect;
     [SerializeField] private Image dimOverlay;
     [SerializeField] private TMP_Text starText;
-    [SerializeField] private RectTransform nextButtonTarget;
-    [SerializeField] private float dimAlpha = 0.9f;
+    [SerializeField] private TMP_Text counterText;
+    [SerializeField] private float dimAlpha = 1f;
     [SerializeField] private float dimFadeDuration = 0.1f;
-    [SerializeField] private float stampStartScale = 3.2f;
+    [SerializeField] private float stampStartScale = 5f;
     [SerializeField] private float stampDuration = 0.1f;
     [SerializeField] private float impactScale = 0.8f;
     [SerializeField] private float reboundScale = 1.08f;
     [SerializeField] private float reboundDuration = 0.05f;
     [SerializeField] private float settleDuration = 0.1f;
-    [SerializeField] private float holdDuration = 1f;
+    [SerializeField] private float holdDuration = 1.75f;
     [SerializeField] private float fadeOutDuration = 0.2f;
     [SerializeField] private float exitMoveDuration = 0.25f;
-    [SerializeField] private float exitScale = 0.5f;
-    [SerializeField] private float targetOffset = 150f;
+    [SerializeField] private float exitScale = 0.7f;
+    private Vector3 originalAnchoredPos;
+
+    private void Awake()
+    {
+        originalAnchoredPos = rect.anchoredPosition;
+    }
 
     public void Play()
     {
         DOTween.Kill(this);
+        rect.anchoredPosition = originalAnchoredPos;
+        transform.localScale = Vector3.one;
         gameObject.SetActive(true);
 
         dimOverlay.color = Color.clear;
@@ -39,21 +47,22 @@ public class UI_StarNotification : MonoBehaviour
             .SetLink(gameObject);
 
         sequence.Append(dimOverlay.DOFade(dimAlpha, dimFadeDuration));
+        sequence.Join(counterText.DOFade(0f, dimFadeDuration * 0.5f));
         sequence.Join(starText.DOFade(1f, dimFadeDuration * 0.5f));
-        sequence.Join(starText.rectTransform.DOScale(Vector3.one * impactScale, stampDuration).SetEase(Ease.InQuart));
+        sequence.Join(starText.rectTransform.DOScale(Vector3.one * impactScale, stampDuration).SetEase(Ease.InQuad));
         sequence.AppendCallback(() => GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Star));
-        sequence.Append(starText.rectTransform.DOScale(Vector3.one * reboundScale, reboundDuration).SetEase(Ease.OutQuad));
-        sequence.Append(starText.rectTransform.DOScale(Vector3.one, settleDuration).SetEase(Ease.OutBack));
+        sequence.Append(starText.rectTransform.DOScale(Vector3.one * reboundScale, reboundDuration).SetEase(Ease.InQuad));
+        sequence.Append(starText.rectTransform.DOScale(Vector3.one, settleDuration).SetEase(Ease.InQuad));
         sequence.AppendInterval(holdDuration);
-        var targetPosition = nextButtonTarget.TransformPoint(Vector3.up * targetOffset);
-        sequence.Append(dimOverlay.DOFade(0f, fadeOutDuration));
-        sequence.Join(starText.rectTransform.DOMove(targetPosition, exitMoveDuration).SetEase(Ease.Linear));
-        sequence.Join(starText.rectTransform.DOScale(Vector3.one * exitScale, exitMoveDuration).SetEase(Ease.Linear));
+        sequence.Append(dimOverlay.DOFade(0f, fadeOutDuration).SetEase(Ease.OutQuad));
+        sequence.Join(transform.DOMove(counterText.transform.position, exitMoveDuration).SetEase(Ease.InQuad));
+        sequence.Join(transform.DOScale(Vector3.one * exitScale, exitMoveDuration).SetEase(Ease.InQuad));
     }
 
     public void Hide()
     {
         DOTween.Kill(this);
+        counterText.color = Color.white;
         gameObject.SetActive(false);
     }
 
