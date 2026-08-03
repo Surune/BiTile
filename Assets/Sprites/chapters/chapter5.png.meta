@@ -112,19 +112,19 @@ TextureImporter:
       name: chapter5_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 17
-        width: 12
-        height: 14
+        x: 0
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c8a4c2cf16536eb20800000000000000
+      spriteID: b470bf36586be3d44b25343f94e5bed2
       internalID: 3163274483233213068
       vertices: []
       indices: 
@@ -134,19 +134,19 @@ TextureImporter:
       name: chapter5_1
       rect:
         serializedVersion: 2
-        x: 17
-        y: 17
-        width: 14
-        height: 14
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e7a85f81fa3e4aaf0800000000000000
+      spriteID: c83040aa713d5d54292692b8ad6f8101
       internalID: -385933326869493122
       vertices: []
       indices: 
@@ -156,19 +156,19 @@ TextureImporter:
       name: chapter5_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 1
-        width: 12
-        height: 14
+        x: 0
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a1914cf8eb6caa8c0800000000000000
+      spriteID: 4e01c86e66404e948aa45d75a9b59f1b
       internalID: -3987155998325073638
       vertices: []
       indices: 
@@ -178,19 +178,19 @@ TextureImporter:
       name: chapter5_3
       rect:
         serializedVersion: 2
-        x: 18
-        y: 2
-        width: 12
-        height: 12
+        x: 16
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e7a3857cf81ddb340800000000000000
+      spriteID: 651bb9656e36ea24f8818afa2dc2b8d1
       internalID: 4881287986594462334
       vertices: []
       indices: 
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 36d25e798e3290841a46a1a2754492a1
     internalID: 0
     vertices: []
     indices: 
@@ -208,7 +208,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceOnImport
+        value: True
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":true,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       chapter5_0: 3163274483233213068
       chapter5_1: -385933326869493122

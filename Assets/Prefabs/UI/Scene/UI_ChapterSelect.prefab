@@ -418,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chapterCarousel: {fileID: 6381529748293862150}
   backgroundCamera: {fileID: 3760096424211690955}
-  chapterExitDistance: 7
+  chapterExitDistance: 10
   backAction: {fileID: 1781888165450107641, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   confirmAction: {fileID: 11400000, guid: e653dfd5aa8c4e4da58f1a4a12bfb48d, type: 2}
   backButton: {fileID: 24638700013031466}

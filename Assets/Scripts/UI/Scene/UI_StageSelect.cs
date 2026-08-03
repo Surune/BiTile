@@ -23,6 +23,8 @@ public class UI_StageSelect : MonoBehaviour
     [SerializeField] private UI_World_Stage stagePrefab;
     [SerializeField] private Button backButton;
     [SerializeField] private InputActionReference backAction;
+    [SerializeField] private Image stageImage1;
+    [SerializeField] private Image stageImage2;
 
     private int selectedChapter;
     private Definitions.GameMode mode;
@@ -56,8 +58,8 @@ public class UI_StageSelect : MonoBehaviour
         backInputAction = backAction.action.Clone();
         
         selectedChapter = GameManager.Instance.StageSelection.Chapter;
-        GameManager.Instance.Localization.LocaleChanged += RefreshChapterName;
-        RefreshChapterName();
+        GameManager.Instance.Localization.LocaleChanged += RefreshChapter;
+        RefreshChapter();
         RefreshStages(selectedChapter);
 
 #if UNITY_EDITOR
@@ -165,7 +167,7 @@ public class UI_StageSelect : MonoBehaviour
     private void OnDestroy()
     {
         KillTransitionTweens();
-        GameManager.Instance.Localization.LocaleChanged -= RefreshChapterName;
+        GameManager.Instance.Localization.LocaleChanged -= RefreshChapter;
         backInputAction.Dispose();
     }
 
@@ -218,11 +220,14 @@ public class UI_StageSelect : MonoBehaviour
         }
     }
 
-    private void RefreshChapterName()
+    private void RefreshChapter()
     {
         var chapterData = GameManager.Instance.GetChapterData(selectedChapter);
         var chapterName = GameManager.Instance.Localization.Get(chapterData.NameLKey);
         chapterNameText.text = $"{chapterData.RomanNumber}. {chapterName}";
+        
+        stageImage1.sprite = GameManager.Instance.GetChapterData(selectedChapter).BackgroundSprites[0];
+        stageImage2.sprite = GameManager.Instance.GetChapterData(selectedChapter).BackgroundSprites[1];
     }
 
 #if UNITY_EDITOR
