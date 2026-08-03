@@ -1,19 +1,14 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
 {
     private const string StarCountFormat = "<sprite index=0> {0}/{1}";
-
-    [Header("Input")]
-    [SerializeField] private InputActionReference rightClick;
     
     [Header("Visual")]
     [SerializeField] private TMP_Text starCountText;
-    [SerializeField] private float groundRotateSpeed = 5f;
-    [SerializeField] private float fastGroundRotateSpeed = 180f;
+    [SerializeField] private float rotateSpeed = 3f;
     [SerializeField] private float numberScale = 0.9f;
     [SerializeField] private float numberFloatSpeed = 1f;
     [SerializeField] private float numberFloatHeight = 0.1f;
@@ -67,7 +62,6 @@ public class UI_World_Chapter : MonoBehaviour, IPointerClickHandler
     {
         if (isSelected)
         {
-            var rotateSpeed = rightClick.action.IsPressed() ? fastGroundRotateSpeed : groundRotateSpeed;
             groundModel.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, Space.Self);
         }
 

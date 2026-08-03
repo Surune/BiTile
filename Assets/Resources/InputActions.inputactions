@@ -28,7 +28,7 @@
                     "name": "ToggleFullScreen",
                     "type": "Button",
                     "id": "e16cd1e9-c83f-4d04-92df-ef07d0315f4f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -43,27 +43,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Point",
-                    "type": "Value",
-                    "id": "c49a7493-d533-4936-8d06-11a92930896e",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Click",
                     "type": "Button",
                     "id": "d00e4365-8ae8-4744-9a44-595086d54219",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RightClick",
-                    "type": "Button",
-                    "id": "f568d7c7-7010-4c39-97a4-36eab41073df",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -320,34 +302,12 @@
                 },
                 {
                     "name": "",
-                    "id": "0fd5f1c3-1cfb-4f12-b2f2-14731bb0250f",
-                    "path": "<Pointer>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5afacb32-517b-4874-a0e1-42a1546948d3",
                     "path": "<Pointer>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c5e7c710-41bd-4d52-bd7f-260ae743791a",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

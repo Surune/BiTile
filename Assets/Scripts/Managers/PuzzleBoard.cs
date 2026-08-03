@@ -8,8 +8,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PuzzleManager : MonoBehaviour
+public class PuzzleBoard : MonoBehaviour
 {
+    private const int ClickParticleCount = 6;
+
     private PuzzleStageRepository stageRepository;
     private PuzzleStageData currentStageData;
 
@@ -17,7 +19,6 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private UI_MainGame ui;
     [SerializeField] private Camera camera;
     [SerializeField] private Transform board;
-    [SerializeField] private ParticleSystem successParticle;
     [SerializeField] private float tileSpacing = 125f;
     [SerializeField] private float stageTransitionHalfRotateDuration = 0.25f;
     [SerializeField] private TileScriptableObject[] tileInfoObjects;
@@ -35,8 +36,14 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField] private InputActionReference undo;
     [SerializeField] private InputActionReference reset;
     [SerializeField] private InputActionReference confirm;
+    [SerializeField] private InputActionReference click;
+
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem successParticle;
+    [SerializeField] private ParticleSystem clickParticle;
 
     private InputAction confirmInputAction;
+    private InputAction clickInputAction;
     
     private int width;
     private int height;
@@ -64,7 +71,7 @@ public class PuzzleManager : MonoBehaviour
     private void Awake()
     {
         confirmInputAction = confirm.action.Clone();
-        confirmInputAction.AddBinding("<Pointer>/press");
+        clickInputAction = click.action.Clone();
         StartGame(GameManager.Instance.StageSelection);
     }
 
@@ -78,6 +85,9 @@ public class PuzzleManager : MonoBehaviour
 
         confirmInputAction.performed += OnConfirmAction;
         confirmInputAction.Enable();
+
+        clickInputAction.performed += OnClickAction;
+        clickInputAction.Enable();
     }
 
     private void OnDisable()
@@ -92,6 +102,9 @@ public class PuzzleManager : MonoBehaviour
 
         confirmInputAction.performed -= OnConfirmAction;
         confirmInputAction.Disable();
+
+        clickInputAction.performed -= OnClickAction;
+        clickInputAction.Disable();
     }
 
     private void OnUndoAction(InputAction.CallbackContext context)
@@ -111,6 +124,22 @@ public class PuzzleManager : MonoBehaviour
     }
 
     private void OnConfirmAction(InputAction.CallbackContext context)
+    {
+        TryLoadNextStage();
+    }
+
+    private void OnClickAction(InputAction.CallbackContext context)
+    {
+        var pointer = (Pointer)context.control.device;
+        var ray = camera.ScreenPointToRay(pointer.position.ReadValue());
+        var distance = -ray.origin.y / ray.direction.y;
+        clickParticle.transform.position = ray.GetPoint(distance);
+        clickParticle.Emit(ClickParticleCount);
+
+        TryLoadNextStage();
+    }
+
+    private void TryLoadNextStage()
     {
         if (clearNotification.gameObject.activeInHierarchy)
         {
@@ -678,6 +707,7 @@ public class PuzzleManager : MonoBehaviour
     private void OnDestroy()
     {
         confirmInputAction.Dispose();
+        clickInputAction.Dispose();
     }
 }
 

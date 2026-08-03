@@ -16,16 +16,16 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Color whiteColor;
     [SerializeField] private HintTile hintTilePrefab;
     private TileScriptableObject tileInfo;
-    private PuzzleManager puzzleManager;
+    private PuzzleBoard puzzleBoard;
     private MeshRenderer meshRenderer;
     private HintTile hintTile;
     private bool isHintVisible;
     private bool isAnimating;
     private const float DelayInterval = 0.02f;
 
-    public void Init(PuzzleManager instance, int row, int col, char type, char color, TileScriptableObject tileInfo, Color tileColor)
+    public void Init(PuzzleBoard instance, int row, int col, char type, char color, TileScriptableObject tileInfo, Color tileColor)
     {
-        puzzleManager = instance;
+        puzzleBoard = instance;
         this.tileInfo = tileInfo;
         this.row = row;
         this.col = col;
@@ -47,7 +47,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
 
     private async void OnTileClick()
     {
-        if (isAnimating || !puzzleManager.TryBeginTileClick())
+        if (isAnimating || !puzzleBoard.TryBeginTileClick())
         {
             return;
         }
@@ -58,19 +58,19 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         {
             GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip_Fixed);
             await StartShake();
-            puzzleManager.CompleteTileClick();
+            puzzleBoard.CompleteTileClick();
             return;
         }
 
-        puzzleManager.RecordUndoState();
-        var changeTask = PuzzleManager.IsLinkType(type)
-            ? puzzleManager.ChangeLinkTiles(type, DelayInterval)
+        puzzleBoard.RecordUndoState();
+        var changeTask = PuzzleBoard.IsLinkType(type)
+            ? puzzleBoard.ChangeLinkTiles(type, DelayInterval)
             : type == '@'
-                ? puzzleManager.ChangeAllTiles(DelayInterval)
-                : tileInfo.ChangeTiles(puzzleManager, row, col, DelayInterval);
-        puzzleManager.TileClicked(type);
+                ? puzzleBoard.ChangeAllTiles(DelayInterval)
+                : tileInfo.ChangeTiles(puzzleBoard, row, col, DelayInterval);
+        puzzleBoard.TileClicked(type);
         await changeTask;
-        puzzleManager.CompleteTileClick();
+        puzzleBoard.CompleteTileClick();
     }
 
     public async Task RefreshColorWithDelay(float delay)

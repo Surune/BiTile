@@ -99,7 +99,7 @@ public class MapMaker : MonoBehaviour
             return;
         }
 
-        if (PuzzleManager.IsLinkType(type))
+        if (PuzzleBoard.IsLinkType(type))
         {
             for (var targetRow = 0; targetRow < rows; targetRow++)
             {

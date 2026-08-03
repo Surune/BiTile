@@ -227,10 +227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67b1482526cfd2e418beaf3b08d45cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_World_Chapter
-  rightClick: {fileID: -8457166978106387167, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   starCountText: {fileID: 8954662675053422946}
-  groundRotateSpeed: 5
-  fastGroundRotateSpeed: 180
+  rotateSpeed: 3
   numberScale: 0.9
   numberFloatSpeed: 1
   numberFloatHeight: 0.1

@@ -1477,4 +1477,4 @@ MonoBehaviour:
   startButton: {fileID: 8417966849597419842}
   optionButton: {fileID: 8549321694296622085}
   versionText: {fileID: 4682191474513132624}
-  confirmAction: {fileID: 11400000, guid: e653dfd5aa8c4e4da58f1a4a12bfb48d, type: 2}
+  confirmAction: {fileID: -4605888510310660194, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
