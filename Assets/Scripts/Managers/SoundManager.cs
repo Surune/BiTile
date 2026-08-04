@@ -20,26 +20,38 @@ public class SoundManager
 
     public void Init(SoundDictionary dictionary)
     {
-        var root = GameObject.Find("@Sound");
-        if (root != null)
-        {
-            return;
-        }
-        
-        root = new GameObject { name = "@Sound" };
-        UnityEngine.Object.DontDestroyOnLoad(root);
         soundDictionary = dictionary;
-             
-        var listener = new GameObject { name = "Listener" };
-        listener.AddComponent<AudioListener>();
-        listener.transform.parent = root.transform;
-        
+
+        var root = GameObject.Find("@Sound");
+        if (root == null)
+        {
+            root = new GameObject { name = "@Sound" };
+            UnityEngine.Object.DontDestroyOnLoad(root);
+        }
+
+        if (root.GetComponentInChildren<AudioListener>(true) == null)
+        {
+            var listener = new GameObject { name = "Listener" };
+            listener.AddComponent<AudioListener>();
+            listener.transform.SetParent(root.transform);
+        }
+
         var soundNames = Enum.GetNames(typeof(Definitions.Sound));
         for (var i = 0; i < soundNames.Length - 1; i++)
         {
-            var go = new GameObject { name = soundNames[i] };
-            audioSources[i] = go.AddComponent<AudioSource>();
-            go.transform.parent = root.transform;
+            var sourceTransform = root.transform.Find(soundNames[i]);
+            if (sourceTransform == null)
+            {
+                var sourceObject = new GameObject { name = soundNames[i] };
+                sourceObject.transform.SetParent(root.transform);
+                sourceTransform = sourceObject.transform;
+            }
+
+            audioSources[i] = sourceTransform.GetComponent<AudioSource>();
+            if (audioSources[i] == null)
+            {
+                audioSources[i] = sourceTransform.gameObject.AddComponent<AudioSource>();
+            }
         }
 
         audioSources[(int)Definitions.Sound.Bgm].loop = true;

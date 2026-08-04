@@ -39,7 +39,7 @@ public class UI_ChapterSelect : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
+        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Lobby);
 
         backButtonRectTransform = (RectTransform)backButton.transform;
         backButtonDefaultAnchoredPosition = backButtonRectTransform.anchoredPosition;

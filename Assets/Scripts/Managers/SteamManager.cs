@@ -19,6 +19,7 @@ using Steamworks;
 // The SteamManager provides a base implementation of Steamworks.NET on which you can build upon.
 // It handles the basics of starting up and shutting down the SteamAPI for use.
 //
+[DefaultExecutionOrder(-11000)]
 [DisallowMultipleComponent]
 public class SteamManager : MonoBehaviour {
 #if !DISABLESTEAMWORKS

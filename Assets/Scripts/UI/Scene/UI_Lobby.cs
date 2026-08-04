@@ -27,7 +27,7 @@ public class UI_Lobby : MonoBehaviour
 
         confirmInputAction = confirmAction.action.Clone();
 
-        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Bgm);
+        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Lobby);
     }
 
     private void OnEnable()
