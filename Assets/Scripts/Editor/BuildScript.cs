@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -8,16 +9,16 @@ using Debug = UnityEngine.Debug;
 
 public static class BuildScript
 {
-    private const string BuildInfoPath = "Assets/Resources/build_info.txt";
+    private const string BuildInfoPath = "Builds/build_info.txt";
     private const int GitHashLength = 12;
 
-    [MenuItem("Build/Build Windows")]
+    [MenuItem("Build/Build Windows", false, 101)]
     public static void BuildWindows()
     {
         Build(BuildTarget.StandaloneWindows64);
     }
 
-    [MenuItem("Build/Build macOS")]
+    [MenuItem("Build/Build macOS", false, 201)]
     public static void BuildMacOS()
     {
         Build(BuildTarget.StandaloneOSX);
@@ -43,6 +44,15 @@ public static class BuildScript
         if (report.summary.result != BuildResult.Succeeded)
         {
             throw new Exception($"Build failed: {report.summary.result}");
+        }
+
+        if (buildTarget == BuildTarget.StandaloneWindows || buildTarget == BuildTarget.StandaloneWindows64)
+        {
+            CreateWindowsZip(report.summary.outputPath);
+        }
+        else if (buildTarget == BuildTarget.StandaloneOSX)
+        {
+            CreateMacOSZip(report.summary.outputPath);
         }
 
         OpenBuildFolder(buildTarget, report.summary.outputPath);
@@ -103,14 +113,71 @@ public static class BuildScript
         };
     }
 
+    private static void CreateMacOSZip(string appPath)
+    {
+        if (UnityEngine.Application.platform != UnityEngine.RuntimePlatform.OSXEditor)
+        {
+            throw new PlatformNotSupportedException("Creating a macOS distribution ZIP requires macOS and ditto.");
+        }
+
+        var buildFolderPath = Path.GetDirectoryName(appPath);
+        var zipPath = $"{buildFolderPath}.zip";
+
+        if (File.Exists(zipPath))
+        {
+            File.Delete(zipPath);
+        }
+
+        var process = Process.Start(new ProcessStartInfo
+        {
+            FileName = "/usr/bin/ditto",
+            Arguments = $"--norsrc -c -k --keepParent {QuoteArgument(appPath)} {QuoteArgument(zipPath)}",
+            WorkingDirectory = buildFolderPath,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        });
+
+        var output = process.StandardOutput.ReadToEnd();
+        var error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+
+        if (process.ExitCode != 0)
+        {
+            throw new Exception($"Failed to create macOS ZIP: {error.Trim()}");
+        }
+
+        Debug.Log($"macOS ZIP created: {zipPath}\n{output.Trim()}");
+    }
+
+    private static void CreateWindowsZip(string exePath)
+    {
+        var buildFolderPath = Path.GetDirectoryName(exePath);
+        var zipPath = $"{buildFolderPath}.zip";
+
+        if (File.Exists(zipPath))
+        {
+            File.Delete(zipPath);
+        }
+
+        ZipFile.CreateFromDirectory(
+            buildFolderPath,
+            zipPath,
+            CompressionLevel.Optimal,
+            false);
+
+        Debug.Log($"Windows ZIP created: {zipPath}");
+    }
+
+    private static string QuoteArgument(string value)
+    {
+        return $"\"{value.Replace("\\", "\\\\").Replace("\"", "\\\"")}\"";
+    }
+
     private static void OpenBuildFolder(BuildTarget buildTarget, string outputPath)
     {
         var buildFolderPath = buildTarget == BuildTarget.WebGL ? outputPath : Path.GetDirectoryName(outputPath);
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = "explorer.exe",
-            Arguments = $"\"{buildFolderPath}\"",
-            UseShellExecute = true,
-        });
+        EditorUtility.RevealInFinder(buildFolderPath);
     }
 }
