@@ -166,8 +166,6 @@ public class PuzzleBoard : MonoBehaviour
         OnOffUndoButton(false);
 
         LoadStage();
-
-        GameManager.Instance.Sound.PlayBGM(Definitions.SoundType.Music);
     }
 
     private void LoadStage()
@@ -192,6 +190,7 @@ public class PuzzleBoard : MonoBehaviour
         width = currentStageData.Width;
         height = currentStageData.Height;
         var chapterData = GameManager.Instance.GetChapterData(currentChapter);
+        GameManager.Instance.Sound.PlayBGM(chapterData.Bgm);
         tileColor = chapterData.TileColor;
         camera.backgroundColor = chapterData.BackgroundColor;
         

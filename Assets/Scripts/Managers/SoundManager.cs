@@ -53,7 +53,11 @@ public class SoundManager
 
     public void PlayBGM(Definitions.SoundType soundType)
     {
-        var audioClip = soundDictionary.GetClip(soundType);
+        PlayBGM(soundDictionary.GetClip(soundType));
+    }
+
+    public void PlayBGM(AudioClip audioClip)
+    {
         var audioSource = audioSources[(int)Definitions.Sound.Bgm];
         if (audioSource.isPlaying && audioSource.clip == audioClip)
         {

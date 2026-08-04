@@ -25,6 +25,7 @@ MonoBehaviour:
     - {fileID: -859706135, guid: 40581ff33aaf18b4a9b8a7ac80d9d805, type: 3}
     - {fileID: 941564140, guid: 40581ff33aaf18b4a9b8a7ac80d9d805, type: 3}
     - {fileID: -697592485, guid: 40581ff33aaf18b4a9b8a7ac80d9d805, type: 3}
+    Bgm: {fileID: 8300000, guid: 4ed7d93691aadf4438af612dabfde0c8, type: 3}
   - Id: 2
     RomanNumber: "\u2161"
     TileModel: {fileID: 919132149155446097, guid: 743bc017dbc47064b8890eee67d54013, type: 3}
@@ -36,6 +37,7 @@ MonoBehaviour:
     - {fileID: 3251344432923753471, guid: f96391ba0fdf73e4c8ddfd655ea2c279, type: 3}
     - {fileID: 5357631628711237644, guid: f96391ba0fdf73e4c8ddfd655ea2c279, type: 3}
     - {fileID: -3824744866503032671, guid: f96391ba0fdf73e4c8ddfd655ea2c279, type: 3}
+    Bgm: {fileID: 8300000, guid: 94fdc1eda15d4644a967e8596e43f343, type: 3}
   - Id: 3
     RomanNumber: "\u2162"
     TileModel: {fileID: 919132149155446097, guid: f32f771d92e349d4c8ae02e17b49caf3, type: 3}
@@ -47,6 +49,7 @@ MonoBehaviour:
     - {fileID: -706304765067960952, guid: e17ca38557e749e468bb757ac2d6fd32, type: 3}
     - {fileID: -595943689705052719, guid: e17ca38557e749e468bb757ac2d6fd32, type: 3}
     - {fileID: 7618622820160929971, guid: e17ca38557e749e468bb757ac2d6fd32, type: 3}
+    Bgm: {fileID: 8300000, guid: fdab6af930e15e8439326b2088a06c1c, type: 3}
   - Id: 4
     RomanNumber: "\u2163"
     TileModel: {fileID: 919132149155446097, guid: e7e102c03cb472c42a514449e7b1faef, type: 3}
@@ -58,6 +61,7 @@ MonoBehaviour:
     - {fileID: 97751222, guid: 4fe63f67e08de0945bb8d3c4d06f29b7, type: 3}
     - {fileID: 284008669, guid: 4fe63f67e08de0945bb8d3c4d06f29b7, type: 3}
     - {fileID: -298257686, guid: 4fe63f67e08de0945bb8d3c4d06f29b7, type: 3}
+    Bgm: {fileID: 8300000, guid: 4ed7d93691aadf4438af612dabfde0c8, type: 3}
   - Id: 5
     RomanNumber: "\u2164"
     TileModel: {fileID: 919132149155446097, guid: 7b9c60457b2bb0c45b6456acd18bc6b1, type: 3}
@@ -69,6 +73,7 @@ MonoBehaviour:
     - {fileID: -385933326869493122, guid: 7cedd3a367860e14185be8ff0c935f57, type: 3}
     - {fileID: -3987155998325073638, guid: 7cedd3a367860e14185be8ff0c935f57, type: 3}
     - {fileID: 4881287986594462334, guid: 7cedd3a367860e14185be8ff0c935f57, type: 3}
+    Bgm: {fileID: 8300000, guid: 4ed7d93691aadf4438af612dabfde0c8, type: 3}
   - Id: 6
     RomanNumber: "\u2165"
     TileModel: {fileID: 919132149155446097, guid: fc00d7761b4aace4f8dfe8434f88bb5e, type: 3}
@@ -80,6 +85,7 @@ MonoBehaviour:
     - {fileID: -3734810385448229697, guid: ed43c4d0858b96b4ab70d46407cf4b81, type: 3}
     - {fileID: 1849641386686504986, guid: ed43c4d0858b96b4ab70d46407cf4b81, type: 3}
     - {fileID: -6406400764894600274, guid: ed43c4d0858b96b4ab70d46407cf4b81, type: 3}
+    Bgm: {fileID: 8300000, guid: 4ed7d93691aadf4438af612dabfde0c8, type: 3}
   - Id: 7
     RomanNumber: "\u2166"
     TileModel: {fileID: 919132149155446097, guid: a29acd1abd0a34b48b6ef9e1e276776f, type: 3}
@@ -91,3 +97,4 @@ MonoBehaviour:
     - {fileID: -5680992630530523857, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}
     - {fileID: 3977096281276095596, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}
     - {fileID: 6789265077868645612, guid: 810f27f2734a2024ea6215a8fcc398ab, type: 3}
+    Bgm: {fileID: 8300000, guid: 4ed7d93691aadf4438af612dabfde0c8, type: 3}

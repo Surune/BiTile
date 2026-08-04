@@ -19,5 +19,6 @@ public struct ChapterData
     public Color BackgroundColor;
     public Color TileColor;
     public Sprite[] BackgroundSprites;
+    public AudioClip Bgm;
     public string NameLKey => $"CHAPTER_{Id}_NAME";
 }
