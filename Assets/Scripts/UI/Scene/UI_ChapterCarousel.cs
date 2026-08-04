@@ -102,7 +102,14 @@ public class UI_ChapterCarousel : MonoBehaviour
         }
 
         chapterViews.Clear();
-        selectedChapter = Mathf.Clamp(GameManager.Instance.StageSelection.Chapter, FirstChapter, stageRepository.TotalChapterCount);
+        selectedChapter = FirstChapter;
+        for (var chapter = FirstChapter; chapter <= stageRepository.TotalChapterCount; chapter++)
+        {
+            if (IsChapterUnlocked(chapter))
+            {
+                selectedChapter = chapter;
+            }
+        }
 
         for (var chapter = FirstChapter; chapter <= stageRepository.TotalChapterCount; chapter++)
         {

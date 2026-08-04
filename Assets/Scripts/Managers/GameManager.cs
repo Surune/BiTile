@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     private const string LastSelectedModeKey = "LastSelectedMode";
-    private const string LastSelectedChapterKey = "LastSelectedChapter";
     private const string LastSelectedStageKey = "LastSelectedStage";
 
     public static GameManager Instance => instance;
@@ -102,7 +101,7 @@ public class GameManager : MonoBehaviour
         stageSelection.Mode = (Definitions.GameMode)PlayerPrefs.GetInt(
             LastSelectedModeKey,
             (int)Definitions.GameMode.Normal);
-        stageSelection.Chapter = PlayerPrefs.GetInt(LastSelectedChapterKey, 1);
+        stageSelection.Chapter = 1;
         stageSelection.Stage = PlayerPrefs.GetInt(LastSelectedStageKey, 1);
         return stageSelection;
     }
@@ -110,7 +109,6 @@ public class GameManager : MonoBehaviour
     private void SaveStageSelection()
     {
         PlayerPrefs.SetInt(LastSelectedModeKey, (int)_stageSelection.Mode);
-        PlayerPrefs.SetInt(LastSelectedChapterKey, _stageSelection.Chapter);
         PlayerPrefs.SetInt(LastSelectedStageKey, _stageSelection.Stage);
         PlayerPrefs.Save();
     }
