@@ -45,6 +45,7 @@ public static class Definitions
     public enum LKey
     {
         None = -1,
+        // UI ; do not change the order
         UI_GAMESTART = 1,
         UI_QUIT,
         UI_OPTIONS,
@@ -61,7 +62,9 @@ public static class Definitions
         UI_CANCEL,
         UI_NORMAL_MODE,
         UI_HARD_MODE,
-        TUTORIAL_BASE = 100,
+        UI_WISHLIST,
+        // TUTORIAL
+        TUTORIAL_BASE = 1000,
         TUTORIAL_COUNT,
         TUTORIAL_UNDO,
         TUTORIAL_HINT,

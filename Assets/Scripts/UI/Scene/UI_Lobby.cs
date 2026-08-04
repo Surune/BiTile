@@ -7,9 +7,10 @@ using UnityEngine.UI;
 public class UI_Lobby : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private Button quitButton;
     [SerializeField] private Button startButton;
+    [SerializeField] private Button creditButton;
     [SerializeField] private Button optionButton;
+    [SerializeField] private Button quitButton;
     [SerializeField] private TMP_Text versionText;
     [SerializeField] private InputActionReference confirmAction;
 
