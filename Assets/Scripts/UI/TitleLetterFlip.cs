@@ -44,7 +44,7 @@ public class TitleLetterFlip : MonoBehaviour
         if (isRotating || !Mouse.current.leftButton.wasPressedThisFrame)
             return;
 
-        Ray ray = titleCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        var ray = titleCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         var hitIndex = -1;
         var nearestDistance = float.PositiveInfinity;
 
@@ -61,8 +61,9 @@ public class TitleLetterFlip : MonoBehaviour
             return;
 
         isRotating = true;
-        bool nextFlipped = !isFlipped[hitIndex];
-        Transform letter = letters[hitIndex];
+        var nextFlipped = !isFlipped[hitIndex];
+        var letter = letters[hitIndex];
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip_Base);
         DOTween.Sequence()
             .Append(letter
                 .DOLocalRotate(Vector3.up * 180f, duration, RotateMode.LocalAxisAdd)
@@ -81,8 +82,8 @@ public class TitleLetterFlip : MonoBehaviour
 
     private void OnDisable()
     {
-        for (var i = 0; i < letters.Length; i++)
-            DOTween.Kill(letters[i]);
+        foreach (var t in letters)
+            DOTween.Kill(t);
 
         isRotating = false;
     }
