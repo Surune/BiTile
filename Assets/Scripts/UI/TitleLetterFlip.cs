@@ -2,6 +2,7 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class TitleLetterFlip : MonoBehaviour
 {
@@ -41,7 +42,8 @@ public class TitleLetterFlip : MonoBehaviour
 
     private void Update()
     {
-        if (isRotating || !Mouse.current.leftButton.wasPressedThisFrame)
+        if (isRotating || SceneManager.GetSceneByName(Definitions.OptionSceneName).isLoaded ||
+            !Mouse.current.leftButton.wasPressedThisFrame)
             return;
 
         var ray = titleCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
