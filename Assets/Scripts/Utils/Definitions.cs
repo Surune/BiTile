@@ -9,7 +9,8 @@ public static class Definitions
     public enum SoundType
     {
         None = 0,
-        Lobby = 1,
+        Logo = 1,
+        Lobby = 2,
         Decline = 3,
         GameStart = 4,
         Scroll = 5,
