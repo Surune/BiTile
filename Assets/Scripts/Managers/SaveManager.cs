@@ -17,7 +17,7 @@ public static class SaveManager
 
     private static SaveData data;
 
-    private static string SaveDir => Path.GetFullPath(Path.Combine(Application.dataPath, "..", SaveDirectoryName));
+    private static string SaveDir => Path.Combine(Application.persistentDataPath, SaveDirectoryName);
     private static string SavePath => Path.Combine(SaveDir, SaveFileName);
 
     public static int GetClearedStageCount(Definitions.GameMode mode, int chapterId)
