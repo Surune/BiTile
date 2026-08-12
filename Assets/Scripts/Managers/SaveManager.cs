@@ -91,6 +91,11 @@ public static class SaveManager
         Save();
     }
 
+    public static void Reload()
+    {
+        data = Load();
+    }
+
     private static SaveData Data
     {
         get
