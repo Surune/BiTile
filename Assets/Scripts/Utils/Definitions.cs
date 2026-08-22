@@ -68,6 +68,7 @@ public static class Definitions
         TUTORIAL_COUNT,
         TUTORIAL_UNDO,
         TUTORIAL_HINT,
+        TUTORIAL_SOLVE,
         TUTORIAL_SIZE,
         TUTORIAL_PLUS,
         TUTORIAL_X,
