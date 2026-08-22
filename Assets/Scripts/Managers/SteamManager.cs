@@ -23,6 +23,8 @@ using Steamworks;
 [DisallowMultipleComponent]
 public class SteamManager : MonoBehaviour {
 #if !DISABLESTEAMWORKS
+	public const string NormalStageProgressLeaderboardName = "NORMAL_STAGE_PROGRESS";
+
 	protected static bool s_EverInitialized = false;
 
 	protected static SteamManager s_instance;
@@ -38,6 +40,9 @@ public class SteamManager : MonoBehaviour {
 	}
 
 	protected bool m_bInitialized = false;
+	private SteamLeaderboard_t normalStageProgressLeaderboard;
+	private int pendingNormalStageProgress;
+	private CallResult<LeaderboardFindResult_t> normalStageProgressLeaderboardResult;
 	public static bool Initialized {
 		get {
 			return Instance.m_bInitialized;
@@ -55,6 +60,10 @@ public class SteamManager : MonoBehaviour {
 
 		SteamUserStats.SetAchievement(achievementId);
 		SteamUserStats.StoreStats();
+	}
+
+	public static void SetNormalStageProgress(int stage) {
+		Instance.SetNormalStageProgressInternal(stage);
 	}
 
 	public static void ResetAchievements() {
@@ -150,6 +159,34 @@ public class SteamManager : MonoBehaviour {
 		}
 
 		s_EverInitialized = true;
+		normalStageProgressLeaderboardResult = CallResult<LeaderboardFindResult_t>.Create(OnNormalStageProgressLeaderboardFound);
+		normalStageProgressLeaderboardResult.Set(SteamUserStats.FindOrCreateLeaderboard(
+			NormalStageProgressLeaderboardName,
+			ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending,
+			ELeaderboardDisplayType.k_ELeaderboardDisplayTypeNumeric));
+	}
+
+	private void SetNormalStageProgressInternal(int stage) {
+		pendingNormalStageProgress = Mathf.Max(pendingNormalStageProgress, stage);
+		if (normalStageProgressLeaderboard.m_SteamLeaderboard == 0) {
+			return;
+		}
+
+		SteamUserStats.UploadLeaderboardScore(
+			normalStageProgressLeaderboard,
+			ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest,
+			pendingNormalStageProgress,
+			null,
+			0);
+	}
+
+	private void OnNormalStageProgressLeaderboardFound(LeaderboardFindResult_t callback, bool ioFailure) {
+		if (ioFailure || callback.m_bLeaderboardFound == 0) {
+			return;
+		}
+
+		normalStageProgressLeaderboard = callback.m_hSteamLeaderboard;
+		SetNormalStageProgressInternal(pendingNormalStageProgress);
 	}
 
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
@@ -207,6 +244,9 @@ public class SteamManager : MonoBehaviour {
 	}
 
 	public static void UnlockAchievement(string achievementId) {
+	}
+
+	public static void SetNormalStageProgress(int stage) {
 	}
 
 	public static void ResetAchievements() {

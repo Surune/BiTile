@@ -154,6 +154,11 @@ public class PuzzleBoard : MonoBehaviour
         currentChapter = stageSelection.Chapter;
         currentStage = stageSelection.Stage;
 
+        if (currentMode == Definitions.GameMode.Normal)
+        {
+            SteamManager.SetNormalStageProgress(GetHighestNormalProgressStage());
+        }
+
         starNotification.Hide();
         clearNotification.gameObject.SetActive(false);
         
@@ -487,6 +492,11 @@ public class PuzzleBoard : MonoBehaviour
             {
                 SaveManager.UnlockHardMode();
             }
+
+            if (currentMode == Definitions.GameMode.Normal)
+            {
+                SteamManager.SetNormalStageProgress(stageRepository.GetProgressStage(currentChapter, currentStage));
+            }
         }
 
         var nextProgressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
@@ -506,6 +516,23 @@ public class PuzzleBoard : MonoBehaviour
         }
 
         return clearedNewStage;
+    }
+
+    private int GetHighestNormalProgressStage()
+    {
+        var highestProgressStage = 0;
+        for (var chapter = 1; chapter <= stageRepository.TotalChapterCount; chapter++)
+        {
+            var clearedStageCount = SaveManager.GetClearedStageCount(Definitions.GameMode.Normal, chapter);
+            if (clearedStageCount > 0)
+            {
+                highestProgressStage = Mathf.Max(
+                    highestProgressStage,
+                    stageRepository.GetFirstProgressStage(chapter) + clearedStageCount - 1);
+            }
+        }
+
+        return highestProgressStage;
     }
 
     private void TryUnlockChapterAchievements()
