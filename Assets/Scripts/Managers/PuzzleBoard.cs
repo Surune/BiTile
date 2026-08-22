@@ -487,6 +487,11 @@ public class PuzzleBoard : MonoBehaviour
             {
                 SaveManager.UnlockHardMode();
             }
+
+            if (currentMode == Definitions.GameMode.Normal)
+            {
+                SteamManager.SetMaxNormalStage(stageRepository.GetProgressStage(currentChapter, currentStage));
+            }
         }
 
         var nextProgressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;

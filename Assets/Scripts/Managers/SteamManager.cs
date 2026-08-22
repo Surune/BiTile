@@ -23,6 +23,8 @@ using Steamworks;
 [DisallowMultipleComponent]
 public class SteamManager : MonoBehaviour {
 #if !DISABLESTEAMWORKS
+	public const string MaxNormalStageStatId = "STAT_MAX_NORMAL_STAGE";
+
 	protected static bool s_EverInitialized = false;
 
 	protected static SteamManager s_instance;
@@ -55,6 +57,10 @@ public class SteamManager : MonoBehaviour {
 
 		SteamUserStats.SetAchievement(achievementId);
 		SteamUserStats.StoreStats();
+	}
+
+	public static void SetMaxNormalStage(int stage) {
+		Instance.SetMaxNormalStageInternal(stage);
 	}
 
 	public static void ResetAchievements() {
@@ -152,6 +158,17 @@ public class SteamManager : MonoBehaviour {
 		s_EverInitialized = true;
 	}
 
+	private void SetMaxNormalStageInternal(int stage) {
+		int recordedStage;
+		SteamUserStats.GetStat(MaxNormalStageStatId, out recordedStage);
+		if (stage <= recordedStage) {
+			return;
+		}
+
+		SteamUserStats.SetStat(MaxNormalStageStatId, stage);
+		SteamUserStats.StoreStats();
+	}
+
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
 	protected virtual void OnEnable() {
 		if (s_instance == null) {
@@ -207,6 +224,9 @@ public class SteamManager : MonoBehaviour {
 	}
 
 	public static void UnlockAchievement(string achievementId) {
+	}
+
+	public static void SetMaxNormalStage(int stage) {
 	}
 
 	public static void ResetAchievements() {
