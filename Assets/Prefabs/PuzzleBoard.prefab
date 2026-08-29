@@ -68,15 +68,19 @@ MonoBehaviour:
   clearNotification: {fileID: 0}
   hintButton: {fileID: 0}
   undoButtonKey:
+    InputAction: {fileID: 2183905184980455353, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
+    Button: {fileID: 0}
+    KeyImage: {fileID: 0}
+  redoButtonKey:
+    InputAction: {fileID: -4451229247169049389, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
     Button: {fileID: 0}
     KeyImage: {fileID: 0}
   resetButtonKey:
+    InputAction: {fileID: 6638399153580964215, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
     Button: {fileID: 0}
     KeyImage: {fileID: 0}
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 1, g: 1, b: 1, a: 0.2509804}
-  undo: {fileID: 2183905184980455353, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
-  reset: {fileID: 6638399153580964215, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   confirm: {fileID: -4605888510310660194, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   click: {fileID: 7338062798804054554, guid: 38db61987e81b4ebaa256b4683f8785c, type: 3}
   successParticle: {fileID: 993461926478106388}

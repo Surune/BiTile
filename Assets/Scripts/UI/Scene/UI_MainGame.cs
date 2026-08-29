@@ -9,7 +9,6 @@ public class UI_MainGame : MonoBehaviour
     private const string StarCountFormat = "<sprite index=0> {0}/{1}";
 
     [SerializeField] private Button exitButton;
-    [SerializeField] private Button undoButton;
     
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private TMP_Text tutorialText;

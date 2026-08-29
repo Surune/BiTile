@@ -16,6 +16,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Redo",
+                    "type": "Button",
+                    "id": "b9f1aac1-e956-422c-a803-c8003e5ede1d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Reset",
                     "type": "Button",
                     "id": "cce04236-61bd-4b3f-a893-a2474349e816",
@@ -83,7 +92,7 @@
                 {
                     "name": "",
                     "id": "d5ad7b0b-a034-40c6-a1c9-0b689eccebf3",
-                    "path": "<Keyboard>/z",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -99,6 +108,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Undo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a365ad3-f8e5-453c-b4e0-1b879455be0c",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "652c7303-b803-4344-91b8-c9ed8d2f442c",
+                    "path": "<Mouse>/forwardButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
