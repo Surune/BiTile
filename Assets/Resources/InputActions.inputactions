@@ -34,6 +34,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ToggleCursor",
+                    "type": "Button",
+                    "id": "41ed4d6f-f598-4938-a631-78027196118f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ToggleFullScreen",
                     "type": "Button",
                     "id": "e16cd1e9-c83f-4d04-92df-ef07d0315f4f",
@@ -141,6 +150,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a6a38eb-200b-48fe-844d-7e1b7f5dcaf1",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleCursor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

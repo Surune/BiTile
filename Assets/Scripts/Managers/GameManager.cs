@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
     public SoundManager Sound => _sound;
     public StageSelectionState StageSelection => _stageSelection;
     public Localization Localization => _localization;
-    
+
+    [SerializeField] private InputActionReference toggleCursor;
     [SerializeField] private InputActionReference toggleFullscreen;
     [SerializeField] private ChapterDataList normalChapterDataList;
     [SerializeField] private ChapterDataList hardChapterDataList;
@@ -49,6 +50,11 @@ public class GameManager : MonoBehaviour
         if (toggleFullscreen.action.WasPressedThisFrame())
         {
             DisplayModeManager.ToggleFullScreen();
+        }
+
+        if (toggleCursor.action.WasPressedThisFrame())
+        {
+            Cursor.visible = !Cursor.visible;
         }
     }
 
