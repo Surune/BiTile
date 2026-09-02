@@ -63,6 +63,7 @@ public static class Definitions
         UI_NORMAL_MODE,
         UI_HARD_MODE,
         UI_WISHLIST,
+        UI_FEEDBACK,
         // TUTORIAL
         TUTORIAL_BASE = 1000,
         TUTORIAL_COUNT,
