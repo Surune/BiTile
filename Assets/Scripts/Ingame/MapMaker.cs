@@ -50,6 +50,7 @@ public class MapMaker : MonoBehaviour
 
     private void ApplyGridSize()
     {
+        Debug.Log("[MapMaker] 맵 생성 버튼 클릭", this);
         var lines = mapInput.text.Replace("\r", string.Empty).Split('\n');
         if (lines.Length == 1)
         {
@@ -79,6 +80,7 @@ public class MapMaker : MonoBehaviour
 
     private void PaintTile(int row, int column)
     {
+        Debug.Log($"[MapMaker] 타일 버튼 클릭: row={row}, column={column}, type={tiles[row, column].Type}, hintMode={isHintMode}", this);
         if (isHintMode)
         {
             hintPosition.x = row;
@@ -198,7 +200,7 @@ public class MapMaker : MonoBehaviour
                 color[index] = tiles[row, column].Color;
             }
         }
-        var csv = $",,,{rows},{columns},{new string(type)},{new string(color)},\"({hintPosition.x}, {hintPosition.y})\",";
+        var csv = $",,,{rows},{columns},{new string(type)},{new string(color)},{hintPosition.x},{hintPosition.y},FALSE,";
         GUIUtility.systemCopyBuffer = csv;
         statusText.text = $"복사 완료\n{csv}";
     }
