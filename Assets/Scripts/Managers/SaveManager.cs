@@ -85,6 +85,12 @@ public static class SaveManager
         return true;
     }
 
+    public static void ResetChapter(Definitions.GameMode mode, int chapterId)
+    {
+        Data.chapterProgresses.RemoveAll(progress => progress.mode == mode && progress.chapterId == chapterId);
+        Save();
+    }
+
     public static void Reset()
     {
         data = new SaveData();

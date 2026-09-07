@@ -251,7 +251,9 @@ public class UI_StageSelect : MonoBehaviour
 
         if (GUILayout.Button("Reset"))
         {
-            SaveManager.Reset();
+            SaveManager.ResetChapter(mode, selectedChapter);
+            editorClearedStageCountText = "0";
+            RefreshStages(selectedChapter);
         }
         GUILayout.EndHorizontal();
 
