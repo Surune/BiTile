@@ -569,19 +569,6 @@ public class PuzzleBoard : MonoBehaviour
 
     private void TryUnlockChapterAchievements()
     {
-        if (currentMode == Definitions.GameMode.Hard)
-        {
-            return;
-        }
-
-        var currentProgressStage = stageRepository.GetProgressStage(currentChapter, currentStage);
-        var isLastStageInChapter = currentProgressStage == stageRepository.TotalStageCount
-                                   || stageRepository.GetChapter(currentProgressStage + 1) != currentChapter;
-        if (isLastStageInChapter)
-        {
-            SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_CLEAR");
-        }
-
         var stageCount = stageRepository.GetStageCount(currentChapter);
         for (var stage = 1; stage <= stageCount; stage++)
         {
@@ -591,7 +578,10 @@ public class PuzzleBoard : MonoBehaviour
             }
         }
 
-        SteamManager.UnlockAchievement($"ACHIEVEMENT_CHAPTER_{currentChapter}_PERFECT");
+        var achievementId = currentMode == Definitions.GameMode.Normal
+            ? $"ACHIEVEMENT_CHAPTER_{currentChapter}_PERFECT"
+            : $"ACHIEVEMENT_HARD_{currentChapter}_PERFECT";
+        SteamManager.UnlockAchievement(achievementId);
     }
 
     private void SetNextButtonActive()
