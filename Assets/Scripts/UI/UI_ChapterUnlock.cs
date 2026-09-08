@@ -30,10 +30,14 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
     private bool isWaitingForTouch;
     private bool canContinue;
 
-    public async Task Play(int chapter)
+    public async Task Play(Definitions.GameMode mode, int chapter)
     {
-        var chapterData = GameManager.Instance.GetChapterData(chapter);
+        var chapterData = GameManager.Instance.Chapter.GetData(mode, chapter);
         chapterNameText.text = $"{chapterData.RomanNumber}. {GameManager.Instance.Localization.Get(chapterData.NameLKey)}";
+        if (mode == Definitions.GameMode.Hard)
+        {
+            chapterNameText.text += $" - {GameManager.Instance.Localization.Get(Definitions.LKey.UI_HARD_MODE)}";
+        }
         accent.color = chapterData.BackgroundColor;
         modelRoot = CreatePreview(chapterData);
         modelRoot.localRotation = Quaternion.Euler(0f, modelStartYaw, 0f);
@@ -56,6 +60,7 @@ public class UI_ChapterUnlock : MonoBehaviour, IPointerClickHandler
         canContinue = true;
         await touchCompletion.Task;
 
+        canContinue = false;
         isWaitingForTouch = false;
         var outro = DOTween.Sequence();
         outro.Append(content.DOFade(0f, fadeDuration));

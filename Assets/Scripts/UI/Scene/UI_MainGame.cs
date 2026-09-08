@@ -40,10 +40,20 @@ public class UI_MainGame : MonoBehaviour
         counterText.color = currentClicks > maxClicks ? starExceededColor : Color.white;
     }
 
-    public Task PlayChapterUnlock(int chapter)
+    public async Task PlayChapterUnlock(int clearedChapter, bool hasNextChapter)
+    {
+        if (hasNextChapter)
+        {
+            await PlayChapterUnlock(Definitions.GameMode.Normal, clearedChapter + 1);
+        }
+        await PlayChapterUnlock(Definitions.GameMode.Hard, clearedChapter);
+    }
+
+    private async Task PlayChapterUnlock(Definitions.GameMode mode, int chapter)
     {
         var chapterUnlock = Instantiate(chapterUnlockPrefab, transform);
-        return chapterUnlock.Play(chapter);
+        await chapterUnlock.Play(mode, chapter);
+        Destroy(chapterUnlock.gameObject);
     }
 
     private void OnExitButton()

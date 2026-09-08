@@ -67,6 +67,7 @@ public class PuzzleBoard : MonoBehaviour
     private int currentClicks = 0;
     private bool acquiredStar;
     private bool unlockedNextStage;
+    private bool unlockedHardChapter;
 
     private void Awake()
     {
@@ -207,6 +208,7 @@ public class PuzzleBoard : MonoBehaviour
         currentClicks = 0;
         acquiredStar = false;
         unlockedNextStage = false;
+        unlockedHardChapter = false;
         undoHistory.Clear();
         redoHistory.Clear();
         stageInfo = currentStageData.Tiles;
@@ -523,6 +525,7 @@ public class PuzzleBoard : MonoBehaviour
                 currentStage == stageRepository.GetStageCount(currentChapter))
             {
                 SaveManager.UnlockHardMode();
+                unlockedHardChapter = true;
             }
 
             if (currentMode == Definitions.GameMode.Normal)
@@ -698,8 +701,14 @@ public class PuzzleBoard : MonoBehaviour
         var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
         if (progressStage > stageRepository.TotalStageCount)
         {
+            isStageTransitionInProgress = true;
+            CancelInvoke(nameof(SetStarNotificationActive));
             starNotification.Hide();
             clearNotification.gameObject.SetActive(false);
+            if (unlockedHardChapter)
+            {
+                await ui.PlayChapterUnlock(currentChapter, false);
+            }
             GameManager.Instance.SetChapter(currentChapter);
             SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
             return;
@@ -732,7 +741,7 @@ public class PuzzleBoard : MonoBehaviour
         if (nextChapter != currentChapter && unlockedNextStage)
         {
             CancelInvoke(nameof(SetStarNotificationActive));
-            await ui.PlayChapterUnlock(nextChapter);
+            await ui.PlayChapterUnlock(currentChapter, true);
             GameManager.Instance.SetChapter(nextChapter);
             UI_ChapterSelect.OpenStageSelectOnAwake = true;
             SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
