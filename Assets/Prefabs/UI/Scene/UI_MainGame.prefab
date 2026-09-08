@@ -1499,9 +1499,9 @@ MonoBehaviour:
   reboundScale: 1.08
   reboundDuration: 0.05
   settleDuration: 0.1
-  holdDuration: 1.75
+  holdDuration: 1.5
   fadeOutDuration: 0.2
-  exitMoveDuration: 0.25
+  exitMoveDuration: 0.2
   exitScale: 0.7
 --- !u!114 &6469803138739174588
 MonoBehaviour:

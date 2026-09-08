@@ -58,6 +58,7 @@ public class PuzzleBoard : MonoBehaviour
     private bool isClickable = true;
     private bool isTileClickInProgress;
     private bool isStageTransitionInProgress;
+    private bool canLoadNextStage;
 
     private Color tileColor;
     private Definitions.GameMode currentMode;
@@ -156,7 +157,7 @@ public class PuzzleBoard : MonoBehaviour
 
     private void TryLoadNextStage()
     {
-        if (clearNotification.gameObject.activeInHierarchy)
+        if (canLoadNextStage)
         {
             LoadNextStage();
         }
@@ -193,6 +194,7 @@ public class PuzzleBoard : MonoBehaviour
 
     private void LoadStage()
     {
+        canLoadNextStage = false;
         CancelInvoke(nameof(SetNextButtonActive));
         CancelInvoke(nameof(PlaySuccessParticle));
         CancelInvoke(nameof(SetStarNotificationActive));
@@ -592,7 +594,8 @@ public class PuzzleBoard : MonoBehaviour
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
         
         clearNotification.transform.rotation = Quaternion.Euler(0, 270, 0);
-        clearNotification.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
+        clearNotification.transform.DORotate(Vector3.zero, 0.5f)
+            .OnComplete(() => canLoadNextStage = !acquiredStar);
         clearNotification.gameObject.SetActive(true);
 
         OnOffUndoButton(false);
@@ -613,7 +616,7 @@ public class PuzzleBoard : MonoBehaviour
 
     private void SetStarNotificationActive()
     {
-        starNotification.Play();
+        starNotification.Play(() => canLoadNextStage = true);
     }
 
     public void Retry()
@@ -696,6 +699,7 @@ public class PuzzleBoard : MonoBehaviour
             return;
         }
 
+        canLoadNextStage = false;
         StopSuccessParticle();
 
         var progressStage = stageRepository.GetProgressStage(currentChapter, currentStage) + 1;
