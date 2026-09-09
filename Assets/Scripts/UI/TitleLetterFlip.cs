@@ -43,6 +43,7 @@ public class TitleLetterFlip : MonoBehaviour
     private void Update()
     {
         if (isRotating || SceneManager.GetSceneByName(Definitions.OptionSceneName).isLoaded ||
+            SceneManager.GetSceneByName(Definitions.CreditsSceneName).isLoaded ||
             !Mouse.current.leftButton.wasPressedThisFrame)
             return;
 

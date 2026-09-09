@@ -21,6 +21,7 @@ public class UI_Lobby : MonoBehaviour
     {
         quitButton.onClick.AddListener(Application.Quit);
         startButton.onClick.AddListener(OnGameStart);
+        creditButton.onClick.AddListener(OnCreditButton);
         optionButton.onClick.AddListener(OnOptionButton);
 
         versionText.text = $"{Application.version}({BuildInfo.GitHash})";
@@ -45,6 +46,7 @@ public class UI_Lobby : MonoBehaviour
     private void OnConfirmAction(InputAction.CallbackContext context)
     {
         if (SceneManager.GetSceneByName(Definitions.OptionSceneName).isLoaded ||
+            SceneManager.GetSceneByName(Definitions.CreditsSceneName).isLoaded ||
             SceneManager.GetSceneByName(Definitions.StageSelectSceneName).isLoaded)
         {
             return;
@@ -65,6 +67,21 @@ public class UI_Lobby : MonoBehaviour
 
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.GameStart);
         SceneManager.LoadScene(Definitions.ChapterSelectSceneName);
+    }
+    
+    private void OnCreditButton()
+    {
+        if (isTransitioning || SceneManager.GetSceneByName(Definitions.CreditsSceneName).isLoaded)
+        {
+            return;
+        }
+
+        isTransitioning = true;
+        canvasGroup.blocksRaycasts = false;
+
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Select);
+        var loadOperation = SceneManager.LoadSceneAsync(Definitions.CreditsSceneName, LoadSceneMode.Additive);
+        loadOperation.completed += _ => isTransitioning = false;
     }
 
     private void OnOptionButton()

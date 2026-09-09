@@ -2,6 +2,7 @@ public static class Definitions
 {
     public static string LobbySceneName => "LobbyScene";
     public static string OptionSceneName => "OptionsScene";
+    public static string CreditsSceneName => "CreditsScene";
     public static string ChapterSelectSceneName => "ChapterSelectScene";
     public static string StageSelectSceneName => "StageSelectScene";
     public static string GameSceneName => "MainGameScene";
