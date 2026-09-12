@@ -21,13 +21,13 @@ public class UI_Logo : MonoBehaviour
 
     private async Task Display()
     {
-        await Task.Delay(powerOnDelay.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(powerOnDelay);
         logoImage.gameObject.SetActive(true);
         logoImage.color = new Color(1f, 1f, 1f, 0f);
         await logoImage.DOFade(1f, fadeInDuration).AsyncWaitForCompletion();
-        await Task.Delay(powerOffDelay.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(powerOffDelay);
         await logoImage.DOFade(0f, fadeOutDuration).AsyncWaitForCompletion();
-        await Task.Delay(sceneMovementDelay.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(sceneMovementDelay);
         await SceneManager.LoadSceneAsync(Definitions.LobbySceneName);
     }
 }

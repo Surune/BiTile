@@ -75,7 +75,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
 
     public async Task RefreshColorWithDelay(float delay)
     {
-        await Task.Delay((delay + 0.1f).ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(delay + 0.1f);
         RefreshColor();
     }
 
@@ -102,32 +102,32 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
 
     public async Task SetColorWithDelay(char value, float delayTime)
     {
-        await Task.Delay((delayTime + 0.1f).ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(delayTime + 0.1f);
         SetColor(value);
     }
 
     public async Task StartRotate(float delayTime = 0f)
     {
         isAnimating = true;
-        await Task.Delay(delayTime.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(delayTime);
         transform.DORotate(Vector3.forward * 180, rotationTime).SetRelative(true);
-        await Task.Delay(rotationTime.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(rotationTime);
         isAnimating = false;
     }
 
     public async Task StartUndoRotate(float delayTime = 0f)
     {
         isAnimating = true;
-        await Task.Delay(delayTime.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(delayTime);
         transform.DORotate(Vector3.back * 180, rotationTime).SetRelative(true);
-        await Task.Delay(rotationTime.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(rotationTime);
         isAnimating = false;
     }
 
     public async Task StartShake(float delayTime = 0f)
     {
         isAnimating = true;
-        await Task.Delay(delayTime.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(delayTime);
 
         var originalPos = transform.position;
         var shakeSequence = DOTween.Sequence();
@@ -139,7 +139,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
         shakeSequence.Append(transform.DOMove(originalPos, 0.04f));
         shakeSequence.Play();
         
-        await Task.Delay(rotationTime.ToMilliseconds());
+        await Awaitable.WaitForSecondsAsync(rotationTime);
         isAnimating = false;
     }
 
