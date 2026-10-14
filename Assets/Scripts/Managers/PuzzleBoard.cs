@@ -452,7 +452,7 @@ public class PuzzleBoard : MonoBehaviour
         await Task.WhenAll(tasks);
     }
 
-    public void TileClicked(char type)
+    public void TileClicked()
     {
         if (!isClickable)
         {
@@ -463,7 +463,7 @@ public class PuzzleBoard : MonoBehaviour
         HideHint();
         hintButton.interactable = false;
         currentClicks++;
-        GameManager.Instance.Sound.PlaySFX(GetTileSoundType(type));
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip);
         ui.UpdateClicks(currentClicks, maxClicks);
 
         if (CheckStageClear())
@@ -487,23 +487,6 @@ public class PuzzleBoard : MonoBehaviour
         {
             Invoke(nameof(SetStarNotificationActive), 1.5f);
         }
-    }
-
-    private static Definitions.SoundType GetTileSoundType(char type)
-    {
-        if (IsLinkType(type))
-        {
-            return Definitions.SoundType.Flip_Link;
-        }
-
-        return type switch
-        {
-            '.' => Definitions.SoundType.Flip_Base,
-            '+' => Definitions.SoundType.Flip_Plus,
-            '*' => Definitions.SoundType.Flip_X,
-            '@' => Definitions.SoundType.Flip_Base,
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
     }
 
     private bool TryUnlockStageStar()

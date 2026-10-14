@@ -22,11 +22,7 @@ public static class Definitions
         Undo = 10,
         Star = 11,
         UnlockChapter = 12,
-        // Flip Sounds
-        Flip_Base = 100,
-        Flip_Plus = 101,
-        Flip_X = 102,
-        Flip_Link = 103,
+        Flip = 100,
         Flip_Fixed = 104,
     }
 

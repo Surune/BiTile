@@ -68,7 +68,7 @@ public class PuzzleTile : MonoBehaviour, IPointerClickHandler
             : type == '@'
                 ? puzzleBoard.ChangeAllTiles(DelayInterval)
                 : tileInfo.ChangeTiles(puzzleBoard, row, col, DelayInterval);
-        puzzleBoard.TileClicked(type);
+        puzzleBoard.TileClicked();
         await changeTask;
         puzzleBoard.CompleteTileClick();
     }

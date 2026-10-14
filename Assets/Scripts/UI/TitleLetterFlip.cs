@@ -66,7 +66,7 @@ public class TitleLetterFlip : MonoBehaviour
         isRotating = true;
         var nextFlipped = !isFlipped[hitIndex];
         var letter = letters[hitIndex];
-        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip_Base);
+        GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.Flip);
         DOTween.Sequence()
             .Append(letter
                 .DOLocalRotate(Vector3.up * 180f, duration, RotateMode.LocalAxisAdd)

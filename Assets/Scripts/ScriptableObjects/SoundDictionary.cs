@@ -6,11 +6,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SoundDictionary", menuName = "ScriptableObjects/SoundDictionary", order = 2)]
 public class SoundDictionary : ScriptableObject
 {
-    [SerializeField, TableView] private List<SoundData> sounds;
+    [SerializeField] private List<SoundData> sounds;
     
     public AudioClip GetClip(Definitions.SoundType soundType)
     {
-        return sounds.First(sound => sound.soundType == soundType).audioClip;
+        var clips = sounds.First(sound => sound.soundType == soundType).audioClips;
+        return clips[UnityEngine.Random.Range(0, clips.Count)];
     }
 }
 
@@ -18,5 +19,5 @@ public class SoundDictionary : ScriptableObject
 public struct SoundData
 {
     public Definitions.SoundType soundType;
-    public AudioClip audioClip;
+    public List<AudioClip> audioClips;
 }
