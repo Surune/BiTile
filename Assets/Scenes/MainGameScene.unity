@@ -829,6 +829,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d1223b9d543d49dbb8cc283b3fb70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_StarNotification
+--- !u!114 &1257632126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6516267996663725768, guid: 8a0f9776a83efe64db83466f6ae6c21f, type: 3}
+  m_PrefabInstance: {fileID: 1257632120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!4 &2000768014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8718706236146295350, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
@@ -901,6 +912,10 @@ PrefabInstance:
       propertyPath: clearNotification
       value: 
       objectReference: {fileID: 1257632124}
+    - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
+      propertyPath: continueText
+      value:
+      objectReference: {fileID: 1257632126}
     - target: {fileID: 8586938331772422315, guid: 8402a457baf5e3940924cbd38ff0641e, type: 3}
       propertyPath: redoButtonKey.Button
       value: 

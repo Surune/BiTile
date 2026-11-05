@@ -18,9 +18,9 @@ public class UI_StarNotification : MonoBehaviour
     [SerializeField] private float reboundScale = 1.08f;
     [SerializeField] private float reboundDuration = 0.05f;
     [SerializeField] private float settleDuration = 0.1f;
-    [SerializeField] private float holdDuration = 1.5f;
-    [SerializeField] private float fadeOutDuration = 0.2f;
-    [SerializeField] private float exitMoveDuration = 0.2f;
+    [SerializeField] private float holdDuration = 1f;
+    [SerializeField] private float fadeOutDuration = 0.25f;
+    [SerializeField] private float exitMoveDuration = 0.25f;
     [SerializeField] private float exitScale = 0.7f;
     private Vector3 originalAnchoredPos;
 

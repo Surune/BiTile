@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -26,6 +27,7 @@ public class PuzzleBoard : MonoBehaviour
     [Header("UI")]
     [SerializeField] private UI_StarNotification starNotification;
     [SerializeField] private Transform clearNotification;
+    [SerializeField] private TMP_Text continueText;
     [SerializeField] private Button hintButton;
     [SerializeField] private ButtonKey undoButtonKey;
     [SerializeField] private ButtonKey redoButtonKey;
@@ -574,12 +576,17 @@ public class PuzzleBoard : MonoBehaviour
 
     private void SetNextButtonActive()
     {
+        continueText.gameObject.SetActive(false);
         GameManager.Instance.Sound.PlaySFX(Definitions.SoundType.StageClear);
         
         clearNotification.transform.rotation = Quaternion.Euler(0, 270, 0);
         clearNotification.transform.DORotate(Vector3.zero, 0.5f)
             .OnComplete(() => canLoadNextStage = !acquiredStar);
         clearNotification.gameObject.SetActive(true);
+        if (!acquiredStar)
+        {
+            ShowContinueText();
+        }
 
         OnOffUndoButton(false);
         OnOffRedoButton(false);
@@ -599,7 +606,21 @@ public class PuzzleBoard : MonoBehaviour
 
     private void SetStarNotificationActive()
     {
-        starNotification.Play(() => canLoadNextStage = true);
+        starNotification.Play(() =>
+        {
+            ShowContinueText();
+            canLoadNextStage = true;
+        });
+    }
+
+    private void ShowContinueText()
+    {
+        continueText.DOKill();
+        continueText.alpha = 0f;
+        continueText.gameObject.SetActive(true);
+        continueText.DOFade(1f, 0.3f)
+            .SetUpdate(true)
+            .SetLink(continueText.gameObject, LinkBehaviour.KillOnDisable);
     }
 
     public void Retry()
